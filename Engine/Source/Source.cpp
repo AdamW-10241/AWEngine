@@ -1,9 +1,13 @@
 #include <iostream>
-#include "SDL2/SDL.h"
+#include "Game.h"
 
 int main(int argc, char* argv[])
 {
-	printf("Hello World!\n");
+	// Static Function - Can Run Without Instance
+	// Create Game
+	Game::GetGame()->Run();
+	// Destroy Game
+	Game::DestroyGame();
 
 	return 0;
 }
