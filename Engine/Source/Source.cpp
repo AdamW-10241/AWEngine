@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Game.h"
 
-int main(int argc, char* argv[])
+int main()
 {
 	// Static Function - Can Run Without Instance
 	// Create Game

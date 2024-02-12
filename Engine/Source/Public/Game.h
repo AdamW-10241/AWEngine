@@ -1,5 +1,10 @@
 #pragma once
 
+// Forward Declaration
+struct SDL_Window;
+struct SDL_Renderer;
+class Texture;
+
 class Game {
 public:
 	// Get the game singleton or create one if it does not exist
@@ -8,6 +13,8 @@ public:
 	static void DestroyGame();
 	// Run the game
 	void Run() { Initialise(); }
+	// Exit the app
+	void QuitApp() { m_IsGameOpen = false; }
 
 private:
 	// Constructor runs when the class is created
@@ -18,9 +25,9 @@ private:
 
 	// Core Game Functions
 	// Initialise the dependencies/external libraries
-	// This will exit the game if any fail
+	// Exit the game if any fail
 	void Initialise();
-	// This will run the post-initialise function that rely on dependencies
+	// Run the post-initialise function that rely on dependencies
 	// Load the window and any start game functions
 	void Start();
 	// Run the game loop functions of the game until the app closes
@@ -41,4 +48,11 @@ private:
 private:
 	// Flag that decides when the game loop ends
 	bool m_IsGameOpen;
+	// Stores the window for the app/game
+	SDL_Window* m_WindowRef;
+	// Stores the renderer for the SDL window
+	SDL_Renderer* m_RendererRef;
+
+	// DEBUG TESTING VARIABLES
+	Texture* m_TestTexture1;
 };
