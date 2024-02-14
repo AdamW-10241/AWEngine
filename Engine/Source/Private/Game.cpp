@@ -31,6 +31,15 @@ Game::Game()
 
 	// DEBUG VARS
 	m_TestTexture1 = nullptr;
+	m_TestTexture2 = nullptr;
+	m_TestTexture3 = nullptr;
+	m_TestTexture4 = nullptr;
+	m_TestTexture5 = nullptr;
+	m_TestTexture6 = nullptr;
+	m_TestTexture7 = nullptr;
+	m_TestTexture8 = nullptr;
+	m_TestTexture9 = nullptr;
+	m_TestTexture10 = nullptr;
 }
 
 Game::~Game()
@@ -87,7 +96,7 @@ void Game::Start()
 
 	// DEBUG
 	m_TestTexture1 = new Texture(m_RendererRef);
-	if (!m_TestTexture1->ImportTexture("Content/Letters/DBlue.png"))
+	if (!m_TestTexture1->ImportTexture("Content/Letters/HRed.png"))
 	{
 		m_TestTexture1->Cleanup();
 		delete m_TestTexture1;
@@ -98,6 +107,132 @@ void Game::Start()
 		m_TestTexture1->m_PosX = 100.0f;
 		m_TestTexture1->m_PosY = 120.0f;
 		m_TestTexture1->m_Scale = 1.5f;
+	}
+
+	m_TestTexture2 = new Texture(m_RendererRef);
+	if (!m_TestTexture2->ImportTexture("Content/Letters/E.png"))
+	{
+		m_TestTexture2->Cleanup();
+		delete m_TestTexture2;
+		m_TestTexture2 = nullptr;
+	}
+	else
+	{
+		m_TestTexture2->m_PosX = 250.0f;
+		m_TestTexture2->m_PosY = 100.0f;
+		m_TestTexture2->m_Scale = 1.2f;
+	}
+
+	m_TestTexture3 = new Texture(m_RendererRef);
+	if (!m_TestTexture3->ImportTexture("Content/Letters/LBlue.png"))
+	{
+		m_TestTexture3->Cleanup();
+		delete m_TestTexture3;
+		m_TestTexture3 = nullptr;
+	}
+	else
+	{
+		m_TestTexture3->m_PosX = 350.0f;
+		m_TestTexture3->m_PosY = 180.0f;
+		m_TestTexture3->m_Scale = 1.6f;
+	}
+
+	m_TestTexture4 = new Texture(m_RendererRef);
+	if (!m_TestTexture4->ImportTexture("Content/Letters/L.png"))
+	{
+		m_TestTexture4->Cleanup();
+		delete m_TestTexture4;
+		m_TestTexture4 = nullptr;
+	}
+	else
+	{
+		m_TestTexture4->m_PosX = 450.0f;
+		m_TestTexture4->m_PosY = 160.0f;
+		m_TestTexture4->m_Scale = 1.8f;
+	}
+
+	m_TestTexture5 = new Texture(m_RendererRef);
+	if (!m_TestTexture5->ImportTexture("Content/Letters/ORed.png"))
+	{
+		m_TestTexture5->Cleanup();
+		delete m_TestTexture5;
+		m_TestTexture5 = nullptr;
+	}
+	else
+	{
+		m_TestTexture5->m_PosX = 600.0f;
+		m_TestTexture5->m_PosY = 130.0f;
+		m_TestTexture5->m_Scale = 2.0f;
+	}
+
+	m_TestTexture6 = new Texture(m_RendererRef);
+	if (!m_TestTexture6->ImportTexture("Content/Letters/WBlue.png"))
+	{
+		m_TestTexture6->Cleanup();
+		delete m_TestTexture6;
+		m_TestTexture6 = nullptr;
+	}
+	else
+	{
+		m_TestTexture6->m_PosX = 250.0f;
+		m_TestTexture6->m_PosY = 450.0f;
+		m_TestTexture6->m_Scale = 2.0f;
+	}
+
+	m_TestTexture7 = new Texture(m_RendererRef);
+	if (!m_TestTexture7->ImportTexture("Content/Letters/O.png"))
+	{
+		m_TestTexture7->Cleanup();
+		delete m_TestTexture7;
+		m_TestTexture7 = nullptr;
+	}
+	else
+	{
+		m_TestTexture7->m_PosX = 400.0f;
+		m_TestTexture7->m_PosY = 470.0f;
+		m_TestTexture7->m_Scale = 1.1f;
+	}
+
+	m_TestTexture8 = new Texture(m_RendererRef);
+	if (!m_TestTexture8->ImportTexture("Content/Letters/RRed.png"))
+	{
+		m_TestTexture8->Cleanup();
+		delete m_TestTexture8;
+		m_TestTexture8 = nullptr;
+	}
+	else
+	{
+		m_TestTexture8->m_PosX = 550.0f;
+		m_TestTexture8->m_PosY = 450.0f;
+		m_TestTexture8->m_Scale = 1.8f;
+	}
+
+	m_TestTexture9 = new Texture(m_RendererRef);
+	if (!m_TestTexture9->ImportTexture("Content/Letters/L.png"))
+	{
+		m_TestTexture9->Cleanup();
+		delete m_TestTexture9;
+		m_TestTexture9 = nullptr;
+	}
+	else
+	{
+		m_TestTexture9->m_PosX = 720.0f;
+		m_TestTexture9->m_PosY = 399.0f;
+		m_TestTexture9->m_Scale = 1.7f;
+	}
+
+	m_TestTexture10 = new Texture(m_RendererRef);
+	if (!m_TestTexture10->ImportTexture("Content/Letters/DBlue.png"))
+	{
+		m_TestTexture10->Cleanup();
+		delete m_TestTexture10;
+		m_TestTexture10 = nullptr;
+	}
+	else
+	{
+		m_TestTexture10->m_PosX = 870.0f;
+		m_TestTexture10->m_PosY = 430.0f;
+		m_TestTexture10->m_Scale = 1.5f;
 	}
 
 	GameLoop();
@@ -123,6 +258,51 @@ void Game::Cleanup()
 	{
 		m_TestTexture1->Cleanup();
 		delete m_TestTexture1;
+	}
+	if (m_TestTexture2 != nullptr)
+	{
+		m_TestTexture2->Cleanup();
+		delete m_TestTexture2;
+	}
+	if (m_TestTexture3 != nullptr)
+	{
+		m_TestTexture3->Cleanup();
+		delete m_TestTexture3;
+	}
+	if (m_TestTexture4 != nullptr)
+	{
+		m_TestTexture4->Cleanup();
+		delete m_TestTexture4;
+	}
+	if (m_TestTexture5 != nullptr)
+	{
+		m_TestTexture5->Cleanup();
+		delete m_TestTexture5;
+	}
+	if (m_TestTexture6 != nullptr)
+	{
+		m_TestTexture6->Cleanup();
+		delete m_TestTexture6;
+	}
+	if (m_TestTexture7 != nullptr)
+	{
+		m_TestTexture7->Cleanup();
+		delete m_TestTexture7;
+	}
+	if (m_TestTexture8 != nullptr)
+	{
+		m_TestTexture8->Cleanup();
+		delete m_TestTexture8;
+	}
+	if (m_TestTexture9 != nullptr)
+	{
+		m_TestTexture9->Cleanup();
+		delete m_TestTexture9;
+	}
+	if (m_TestTexture10 != nullptr)
+	{
+		m_TestTexture10->Cleanup();
+		delete m_TestTexture10;
 	}
 	
 	// Cleanup SDL
@@ -167,7 +347,11 @@ void Game::Update()
 	{
 		m_TestTexture1->m_Angle = Angle;
 	}
-	Angle += 0.1f;
+	if (m_TestTexture8 != nullptr)
+	{
+		m_TestTexture8->m_Angle = Angle / 2;
+	}
+	Angle += 0.025f;
 }
 
 void Game::Render()
@@ -181,6 +365,42 @@ void Game::Render()
 	if (m_TestTexture1 != nullptr)
 	{
 		m_TestTexture1->Draw();
+	}
+	if (m_TestTexture2 != nullptr)
+	{
+		m_TestTexture2->Draw();
+	}
+	if (m_TestTexture3 != nullptr)
+	{
+		m_TestTexture3->Draw();
+	}
+	if (m_TestTexture4 != nullptr)
+	{
+		m_TestTexture4->Draw();
+	}
+	if (m_TestTexture5 != nullptr)
+	{
+		m_TestTexture5->Draw();
+	}
+	if (m_TestTexture6 != nullptr)
+	{
+		m_TestTexture6->Draw();
+	}
+	if (m_TestTexture7 != nullptr)
+	{
+		m_TestTexture7->Draw();
+	}
+	if (m_TestTexture8 != nullptr)
+	{
+		m_TestTexture8->Draw();
+	}
+	if (m_TestTexture9 != nullptr)
+	{
+		m_TestTexture9->Draw();
+	}
+	if (m_TestTexture10 != nullptr)
+	{
+		m_TestTexture10->Draw();
 	}
 
 	// Present the graphics to the renderer

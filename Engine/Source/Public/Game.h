@@ -55,4 +55,13 @@ private:
 
 	// DEBUG TESTING VARIABLES
 	Texture* m_TestTexture1;
+	Texture* m_TestTexture2;
+	Texture* m_TestTexture3;
+	Texture* m_TestTexture4;
+	Texture* m_TestTexture5;
+	Texture* m_TestTexture6;
+	Texture* m_TestTexture7;
+	Texture* m_TestTexture8;
+	Texture* m_TestTexture9;
+	Texture* m_TestTexture10;
 };
