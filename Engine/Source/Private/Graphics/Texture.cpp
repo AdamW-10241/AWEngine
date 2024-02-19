@@ -13,6 +13,15 @@ Texture::Texture(SDL_Renderer* Renderer)
 	m_Scale = 1.0f;
 	m_SurfaceData = nullptr;
 	m_TextureRef = nullptr;
+	m_ClipRect = nullptr;
+}
+
+Texture::~Texture()
+{
+	if (m_ClipRect != nullptr)
+	{
+		delete m_ClipRect;
+	}
 }
 
 bool Texture::ImportTexture(const char* PathToFile)
@@ -49,6 +58,13 @@ bool Texture::ImportTexture(const char* PathToFile)
 	return true;
 }
 
+void Texture::CopyTexture(Texture* CopyTexture)
+{
+	m_Path = CopyTexture->m_Path;
+	m_SurfaceData = CopyTexture->m_SurfaceData;
+	m_TextureRef = CopyTexture->m_TextureRef;
+}
+
 void Texture::Draw()
 {
 	float ImageWidth = (float)m_SurfaceData->w;
@@ -61,6 +77,17 @@ void Texture::Draw()
 		ImageHeight * m_Scale
 	};
 
+	// If we have a set clip then update the width and height of the texture
+	if (m_ClipRect != nullptr)
+	{
+		DestRect.w = m_ClipRect->w * m_Scale;
+		DestRect.h = m_ClipRect->h * m_Scale;
+	}
+
+	// Move the texture to be centered at the middle point of the image
+	DestRect.x -= DestRect.w / 2;
+	DestRect.y -= DestRect.h / 2;
+
 	SDL_FPoint Center {
 		DestRect.w / 2,
 		DestRect.h / 2
@@ -69,7 +96,7 @@ void Texture::Draw()
 	SDL_RenderCopyExF(
 		m_RendererRef,	// Renderer to draw to
 		m_TextureRef,	// Texture to draw to renderer
-		NULL,			// Clip rect
+		m_ClipRect,		// Clip rect
 		&DestRect,		// Position and scale on the screen
 		m_Angle,		// Rotation of the texture
 		&Center,		// Center point for rotation
@@ -92,4 +119,19 @@ void Texture::Cleanup()
 	}
 
 	AW_LOG("Texture", "Successfully destroyed image: " << m_Path);
+}
+
+void Texture::SetClip(int x, int y, int w, int h)
+{
+	if (m_ClipRect == nullptr)
+	{
+		// Create the SDL Rect object
+		m_ClipRect = new SDL_Rect();
+	}
+
+	// Set the Clip Rect values
+	m_ClipRect->x = x;
+	m_ClipRect->y = y;
+	m_ClipRect->w = w;
+	m_ClipRect->h = h;
 }

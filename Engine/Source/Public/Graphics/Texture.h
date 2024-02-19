@@ -4,20 +4,25 @@
 struct SDL_Renderer;
 struct SDL_Texture;
 struct SDL_Surface;
+struct SDL_Rect;
 
 class Texture {
 public:
 	Texture(SDL_Renderer* Renderer);
-	~Texture() = default;
+	~Texture();
 
 	// Import and create a texture
 	bool ImportTexture(const char* PathToFile);
+	// Copy the texture
+	void CopyTexture(Texture* CopyTexture);
 	// Draw the texture to the renderer
 	void Draw();
 	// Deallocate memory
 	void Cleanup();
 	// Get the original image path
 	const char* GetPath() const { return m_Path; }
+	// Set the clip for the texture
+	void SetClip(int x, int y, int w, int h);
 
 public:
 	// Position X & Y to render to
@@ -41,4 +46,7 @@ private:
 
 	// Path to original image
 	const char* m_Path;
+
+	// Store the clip for the texture
+	SDL_Rect* m_ClipRect;
 };
