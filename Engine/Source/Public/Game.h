@@ -63,6 +63,20 @@ private:
 	// Stores all of the textures in the game
 	TArray<Texture*> m_TextureStack;
 
-	// DEBUG TESTING VARIABLES
-	Animation* m_TestAnim1;
+	// Assessment 1 Animations & Sprites
+	Animation* m_AnimBackground;
+	Animation* m_AnimWatermill;
+	Animation* m_AnimMillHouse;
+	Animation* m_AnimMillPropeller;
+	Animation* m_AnimChicken1;
+	Animation* m_AnimChicken2;
+	Animation* m_AnimPig;
+	Animation* m_AnimPlant1;
+	Animation* m_AnimPlant2;
+	Animation* m_AnimPlant3;
+	Animation* m_AnimFlag;
+	Animation* m_AnimWaterRipple;
+	Animation* m_AnimLeaf1;
+	Animation* m_AnimLeaf2;
+	Animation* m_AnimFrog;
 };

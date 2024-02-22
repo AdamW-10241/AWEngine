@@ -11,6 +11,7 @@ Texture::Texture(SDL_Renderer* Renderer)
 	m_Path = "";
 	m_PosX = m_PosY = 0;
 	m_Scale = 1.0f;
+	m_FlipHorizontally = false;
 	m_SurfaceData = nullptr;
 	m_TextureRef = nullptr;
 	m_ClipRect = nullptr;
@@ -100,7 +101,7 @@ void Texture::Draw()
 		&DestRect,		// Position and scale on the screen
 		m_Angle,		// Rotation of the texture
 		&Center,		// Center point for rotation
-		SDL_FLIP_NONE	// Flip the texture vertical or horizontal
+		(m_FlipHorizontally == true) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE // Flip the texture vertical or horizontal
 	);
 }
 

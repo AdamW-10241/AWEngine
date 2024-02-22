@@ -44,8 +44,8 @@ bool Animation::CreateAnimation(const char* PathToFile, AnimationParams* Params)
 
 		// Update the clip to start on the first frame
 		m_TextureRef->SetClip(
-			m_AnimParams->FrameWidth * m_CurrentFrame,
-			0,
+			m_AnimParams->ClipX + (m_AnimParams->FrameWidth * m_CurrentFrame),
+			m_AnimParams->ClipY,
 			m_AnimParams->FrameWidth,
 			m_AnimParams->FrameHeight
 		);
@@ -71,13 +71,14 @@ void Animation::Update(float DeltaTime)
 
 		if (m_CurrentFrame > m_AnimParams->EndFrame)
 		{
-			m_CurrentFrame = 0;
+			// Set to Start Frame
+			m_CurrentFrame = m_AnimParams->StartFrame;
 		}
 
 		// Update the clip to start on the next frame
 		m_TextureRef->SetClip(
-			m_AnimParams->FrameWidth * m_CurrentFrame,
-			0,
+			m_AnimParams->ClipX + (m_AnimParams->FrameWidth * m_CurrentFrame),
+			m_AnimParams->ClipY,
 			m_AnimParams->FrameWidth,
 			m_AnimParams->FrameHeight
 		);
@@ -116,4 +117,40 @@ void Animation::SetScale(float Scale)
 	}
 
 	m_TextureRef->m_Scale = Scale;
+}
+
+void Animation::MoveXBetween(float StartX, float EndX, float TimeToMoveBetween, float DeltaTime)
+{
+	if (m_TextureRef == nullptr)
+	{
+		return;
+	}
+
+	// Change Direction Of Sprite and Movement
+	if (m_TextureRef->m_PosX > EndX)
+	{
+		m_TextureRef->m_FlipHorizontally = true;
+	}
+	else if (m_TextureRef->m_PosX < StartX)
+	{
+		m_TextureRef->m_FlipHorizontally = false;
+	}
+
+	// Change movement direction based on the horizontal flip status
+	signed int FlipStatusMultiplier = (m_TextureRef->m_FlipHorizontally == false) ? 1 : -1;
+
+	// Move sprite between the start and end x values
+	// Take the set amount of time To move between the x values
+	m_TextureRef->m_PosX += (EndX - StartX) * DeltaTime / TimeToMoveBetween * FlipStatusMultiplier;
+}
+
+void Animation::Rotate(float TimeToRotate, float DeltaTime)
+{
+	if (m_TextureRef == nullptr)
+	{
+		return;
+	}
+
+	// Rotate Animation
+	m_TextureRef->m_Angle += 360 * DeltaTime / TimeToRotate;
 }

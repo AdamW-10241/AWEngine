@@ -5,6 +5,7 @@ class Texture;
 struct AnimationParams {
 	AnimationParams() {
 		FrameWidth = FrameHeight = 0;
+		ClipX = ClipY = 0;
 		fps = 0.0f;
 		StartFrame = EndFrame = 0;
 		MaxFrames = 0;
@@ -12,6 +13,9 @@ struct AnimationParams {
 
 	// Width and height of each frame
 	unsigned int FrameWidth, FrameHeight;
+
+	// X and Y Position of the sprite on the spritesheet to clip at
+	unsigned int ClipX, ClipY;
 
 	// Frames per second
 	float fps;
@@ -39,6 +43,12 @@ public:
 	void SetRotation(float Angle);
 
 	void SetScale(float Scale);
+
+	// Oscillate the x position between the first and second x positions within a specified time to move between them
+	void MoveXBetween(float FirstX, float SecondX, float TimeToMoveBetween, float DeltaTime);
+
+	// Rotate the animation with a complete rotation in the specified time
+	void Rotate(float TimeToRotate, float DeltaTime);
 
 private:
 	// Stores the texture to render

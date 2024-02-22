@@ -26,13 +26,16 @@ public:
 
 public:
 	// Position X & Y to render to
-	int m_PosX, m_PosY;
+	float m_PosX, m_PosY;
 
 	// Rotation of the image
 	float m_Angle;
 
 	// Scale the texture
 	float m_Scale;
+
+	// Flip the texture horizontally
+	bool m_FlipHorizontally;
 
 private:
 	// Texture that SDL understands
