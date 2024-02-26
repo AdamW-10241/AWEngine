@@ -2,9 +2,11 @@
 #include "SDL2/SDL.h"
 #include "Debug.h"
 #include "Graphics/Texture.h"
+#include "Input.h"
 
 // DEBUG
-#include "Graphics/Animation.h"	
+#include "Math/Vector2.h"
+#include "Graphics/Animation.h"
 
 Game* Game::GetGame()
 {
@@ -162,6 +164,9 @@ void Game::Start()
 		return;
 	}
 
+	// Create the game input
+	m_GameInput = new Input();
+
 	// DEBUG
 	AnimationParams AnimParams;
 	AnimParams.fps = 24.0f;
@@ -224,18 +229,7 @@ void Game::Cleanup()
 
 void Game::ProcessInput()
 {
-	// Data type that reads SDL window input events
-	SDL_Event InputEvent;
-
-	// Run through each input each frame
-	while (SDL_PollEvent(&InputEvent))
-	{
-		// If the window cross is pressed, close the app
-		if (InputEvent.type == SDL_QUIT)
-		{
-			QuitApp();
-		}
-	}
+	m_GameInput->ProcessInput();
 }
 
 void Game::Update()
@@ -251,9 +245,37 @@ void Game::Update()
 	// Set the last tick time
 	LastTickTime = CurrentTickTime;
 
-	// TODO: Update Game Logic
-	if (m_TestAnim1 != nullptr)
+	// DEBUG
+	// Position of the animation on the screen
+	static Vector2 Position(640.0f, 360.0f);
+	// Speed of the movement
+	float Speed(200.0f * (float)DeltaTime);
+	// Direction to move in
+	Vector2 MovementDirection(0.0f);
+
+	if (m_GameInput->IsKeyDown(AW_KEY_W))
 	{
+		MovementDirection.y += -1.0f;
+	}
+	if (m_GameInput->IsKeyDown(AW_KEY_S))
+	{
+		MovementDirection.y += 1.0f;
+	}
+	if (m_GameInput->IsKeyDown(AW_KEY_A))
+	{
+		MovementDirection.x += -1.0f;
+	}
+	if (m_GameInput->IsKeyDown(AW_KEY_D))
+	{
+		MovementDirection.x += 1.0f;
+	}
+
+	// Move the animation to the right
+	Position += MovementDirection * Speed;
+
+	// TODO: Update Game Logic
+	if (m_TestAnim1 != nullptr) {
+		m_TestAnim1->SetPosition(Position.x, Position.y);
 		m_TestAnim1->Update((float)DeltaTime);
 	}
 }
