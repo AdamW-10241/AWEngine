@@ -3,8 +3,10 @@
 #include "Debug.h"
 #include "Graphics/Texture.h"
 #include "Input.h"
+#include "GameObjects/GameObject.h"
 
 // DEBUG
+#include "GameObjects/PhysicsObject.h"
 #include "Math/Vector2.h"
 #include "Graphics/Animation.h"
 
@@ -99,6 +101,18 @@ void Game::DestroyTexture(Texture* TextureToDestroy)
 	AW_LOG("Game", "Texture has been destroyed.");
 }
 
+template<typename T>
+T* Game::AddGameObject()
+{
+	// Create the game object
+	T* NewObject = new T();
+
+	// Add the object to our pending spawn array
+	m_GameObjectPendingSpawn.push_back(NewObject);
+	
+	return NewObject;
+}
+
 Game::Game()
 {
 	printf("Game Created.\n");
@@ -107,9 +121,11 @@ Game::Game()
 	m_IsGameOpen = true;
 	m_WindowRef = nullptr;
 	m_RendererRef = nullptr;
+	m_GameInput = nullptr;
 
 	// DEBUG VARS
 	m_TestAnim1 = nullptr;
+	m_TestObject = nullptr;
 }
 
 Game::~Game()
@@ -166,23 +182,9 @@ void Game::Start()
 
 	// Create the game input
 	m_GameInput = new Input();
-
+	
 	// DEBUG
-	AnimationParams AnimParams;
-	AnimParams.fps = 24.0f;
-	AnimParams.MaxFrames = 12;
-	AnimParams.EndFrame = 11;
-	AnimParams.FrameWidth = 64;
-	AnimParams.FrameHeight = 64;
-
-	m_TestAnim1 = new Animation();
-	m_TestAnim1->CreateAnimation(
-		"Content/Sprites/Main Ship/Main Ship - Shields/PNGs/Main Ship - Shields - Round Shield.png",
-		&AnimParams
-	);
-
-	m_TestAnim1->SetPosition(640.0, 320.0);
-	m_TestAnim1->SetScale(3.0);
+	m_TestObject = AddGameObject<PhysicsObject>();
 
 	GameLoop();
 }
@@ -192,6 +194,7 @@ void Game::GameLoop()
 	// while IsGameOpen is true, keep the game running
 	while (m_IsGameOpen)
 	{
+		PreLoop();
 		ProcessInput();
 		Update();
 		Render();
@@ -203,6 +206,20 @@ void Game::GameLoop()
 
 void Game::Cleanup()
 {
+	// Destroy any objects pending spawn
+	for (auto GO : m_GameObjectPendingSpawn) {
+		GO->Cleanup();
+		delete GO;
+		GO = nullptr;
+	}
+
+	// Destroy any remaining game objects
+	for (auto GO : m_GameObjectStack) {
+		GO->Cleanup();
+		delete GO;
+		GO = nullptr;
+	}
+	
 	// Cleanup and remove all textures in the texture stack
 	for (int i = m_TextureStack.size() - 1; i > -1; --i)
 	{
@@ -227,9 +244,29 @@ void Game::Cleanup()
 	AW_LOG("Game", "Game has deallocated all memory.");
 }
 
+void Game::PreLoop()
+{
+	// Add all game object pending spawn to the game object stack
+	for (auto GO : m_GameObjectPendingSpawn) {
+		m_GameObjectStack.push_back(GO);
+		GO->Start();
+	}
+
+	// Resize the array to 0
+	m_GameObjectPendingSpawn.clear();
+}
+
 void Game::ProcessInput()
 {
+	// Process the inputs for the game
 	m_GameInput->ProcessInput();
+
+	// Run the input listener function for all game objects
+	for (auto GO : m_GameObjectStack) {
+		if (GO != nullptr) {
+			GO->ProcessInput(m_GameInput);
+		}
+	}
 }
 
 void Game::Update()
@@ -245,38 +282,53 @@ void Game::Update()
 	// Set the last tick time
 	LastTickTime = CurrentTickTime;
 
-	// DEBUG
-	// Position of the animation on the screen
-	static Vector2 Position(640.0f, 360.0f);
-	// Speed of the movement
-	float Speed(200.0f * (float)DeltaTime);
-	// Direction to move in
-	Vector2 MovementDirection(0.0f);
+	//// DEBUG
+	//// Position of the animation on the screen
+	//static Vector2 Position(640.0f, 360.0f);
+	//// Speed of the movement
+	//float Speed(200.0f * (float)DeltaTime);
+	//// Direction to move in
+	//Vector2 MovementDirection(0.0f);
 
-	if (m_GameInput->IsKeyDown(AW_KEY_W))
-	{
-		MovementDirection.y += -1.0f;
-	}
-	if (m_GameInput->IsKeyDown(AW_KEY_S))
-	{
-		MovementDirection.y += 1.0f;
-	}
-	if (m_GameInput->IsKeyDown(AW_KEY_A))
-	{
-		MovementDirection.x += -1.0f;
-	}
-	if (m_GameInput->IsKeyDown(AW_KEY_D))
-	{
-		MovementDirection.x += 1.0f;
-	}
+	//if (m_GameInput->IsKeyDown(AW_KEY_W))
+	//{
+	//	MovementDirection.y += -1.0f;
+	//}
+	//if (m_GameInput->IsKeyDown(AW_KEY_S))
+	//{
+	//	MovementDirection.y += 1.0f;
+	//}
+	//if (m_GameInput->IsKeyDown(AW_KEY_A))
+	//{
+	//	MovementDirection.x += -1.0f;
+	//}
+	//if (m_GameInput->IsKeyDown(AW_KEY_D))
+	//{
+	//	MovementDirection.x += 1.0f;
+	//}
+	//if (m_GameInput->IsKeyDown(AW_KEY_Q))
+	//{
+	//	if (m_TestObject != nullptr) {
+	//		m_TestObject->DestroyObject();
+	//		m_TestObject = nullptr;
+	//	}
+	//}
 
-	// Move the animation to the right
-	Position += MovementDirection * Speed;
+	//// Move the animation to the right
+	//Position += MovementDirection * Speed;
 
-	// TODO: Update Game Logic
-	if (m_TestAnim1 != nullptr) {
-		m_TestAnim1->SetPosition(Position.x, Position.y);
-		m_TestAnim1->Update((float)DeltaTime);
+	//// TODO: Update Game Logic
+	//if (m_TestAnim1 != nullptr) {
+	//	m_TestAnim1->SetPosition(Position.x, Position.y);
+	//	m_TestAnim1->Update((float)DeltaTime);
+	//}
+
+	// Run the update logic for all game objects
+	for (auto GO : m_GameObjectStack) {
+		if (GO != nullptr) {
+			GO->Update((float)DeltaTime);
+			GO->PostUpdate((float)DeltaTime);
+		}
 	}
 }
 
@@ -304,4 +356,18 @@ void Game::Render()
 void Game::CollectGarbage()
 {
 	// TODO: Delete Objects at the end of each frame.
+	for (int i = m_GameObjectStack.size() - 1; i >= 0; --i) {
+		if (!m_GameObjectStack[i]->IsPendingDestroy()) {
+			continue;
+		}
+
+		// Make sure the game object isn't nullptr
+		if (m_GameObjectStack[i] != nullptr) {
+			m_GameObjectStack[i]->Cleanup();
+			delete m_GameObjectStack[i];
+		}
+
+		// Remove from and resize the array
+		m_GameObjectStack.erase(m_GameObjectStack.begin() + i);
+	}
 }

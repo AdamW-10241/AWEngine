@@ -32,7 +32,7 @@ public:
 	float m_Angle;
 
 	// Scale the texture
-	float m_Scale;
+	float m_ScaleX, m_ScaleY;
 
 private:
 	// Texture that SDL understands
