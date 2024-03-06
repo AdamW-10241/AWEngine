@@ -43,9 +43,9 @@ void PhysicsObject::OnProcessInput(Input* GameInput)
 void PhysicsObject::OnUpdate(float DeltaTime)
 {
 	// Move the Object
-	m_Speed = 400.0f * (float)DeltaTime;
+	float speed = 400.0f * (float)DeltaTime;
 
-	SetPosition(GetTransform().Position + m_MovementDirection * m_Speed);
+	SetPosition(GetTransform().Position + m_MovementDirection * speed);
 
 	// Update the Sprite
 	if (m_Sprite != nullptr) {
