@@ -318,11 +318,6 @@ void Game::Update()
 	//Position += MovementDirection * Speed;
 
 	//// TODO: Update Game Logic
-	//if (m_TestAnim1 != nullptr) {
-	//	m_TestAnim1->SetPosition(Position.x, Position.y);
-	//	m_TestAnim1->Update((float)DeltaTime);
-	//}
-
 	// Run the update logic for all game objects
 	for (auto GO : m_GameObjectStack) {
 		if (GO != nullptr) {

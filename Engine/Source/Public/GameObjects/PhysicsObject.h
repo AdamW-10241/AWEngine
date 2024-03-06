@@ -15,4 +15,6 @@ protected:
 
 private:
 	Animation* m_Sprite;
+	Vector2 m_MovementDirection;
+	float m_Speed;
 };

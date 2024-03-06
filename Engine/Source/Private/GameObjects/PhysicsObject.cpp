@@ -1,4 +1,5 @@
 #include "GameObjects/PhysicsObject.h"
+#include "Input.h"
 
 void PhysicsObject::OnStart()
 {
@@ -18,13 +19,35 @@ void PhysicsObject::OnStart()
 
 void PhysicsObject::OnProcessInput(Input* GameInput)
 {
-	// TODO create movement input
+	// Find the Movement Direction
+	m_MovementDirection = { 0.0f };
+
+	if (GameInput->IsKeyDown(AW_KEY_W))
+	{
+		m_MovementDirection.y += -1.0f;
+	}
+	if (GameInput->IsKeyDown(AW_KEY_S))
+	{
+		m_MovementDirection.y += 1.0f;
+	}
+	if (GameInput->IsKeyDown(AW_KEY_A))
+	{
+		m_MovementDirection.x += -1.0f;
+	}
+	if (GameInput->IsKeyDown(AW_KEY_D))
+	{
+		m_MovementDirection.x += 1.0f;
+	}
 }
 
 void PhysicsObject::OnUpdate(float DeltaTime)
 {
-	// TODO move the object here
+	// Move the Object
+	m_Speed = 400.0f * (float)DeltaTime;
 
+	SetPosition(GetTransform().Position + m_MovementDirection * m_Speed);
+
+	// Update the Sprite
 	if (m_Sprite != nullptr) {
 		m_Sprite->Update(DeltaTime);
 	}
