@@ -35,7 +35,7 @@ public:
 	// Destroy the game object
 	void DestroyObject();
 	// Is the object pending destroy at the end of the loop
-	bool IsPendingDestroy() const{ return m_ShouldDestroy; }
+	bool IsPendingDestroy() const { return m_ShouldDestroy; }
 	// Remove any memory references
 	virtual void Cleanup() {}
 	// Get the transform of the object

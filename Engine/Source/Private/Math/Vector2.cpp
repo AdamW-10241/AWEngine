@@ -2,6 +2,8 @@
 #include <iostream>
 #include "Debug.h"
 
+#define MINNORMAL 0.00001f
+
 Vector2 Vector2::operator/(const Vector2& Other)
 {
 	Vector2 NewVector(NaN());
@@ -50,7 +52,7 @@ Vector2 Vector2::NaN()
 	return Vector2(std::numeric_limits<float>::quiet_NaN());
 }
 
-float Vector2::Length()
+float Vector2::Length() const
 {
 	// sqrtf(x^2 * y^2)
 	return std::sqrtf(LengthSqd());
@@ -60,6 +62,27 @@ float Vector2::Distance(Vector2& V1, Vector2& V2)
 {
 	// sqrtf(x^2 + y^2)
 	return std::sqrtf(DistSqd(V1, V2));
+}
+
+Vector2& Vector2::Normalise()
+{
+	if (Length() > MINNORMAL) {
+		*this /= Length();
+	}
+	else {
+		*this = Vector2();
+	}
+
+	return *this;
+}
+
+Vector2 Vector2::Normalised(const Vector2& Other)
+{
+	if (Other.Length() > MINNORMAL) {
+		return Vector2(Other.x / Other.Length(), Other.y / Other.Length());
+	}
+
+	return Vector2();
 }
 
 void Vector2::Log()

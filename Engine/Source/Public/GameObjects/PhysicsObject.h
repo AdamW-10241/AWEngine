@@ -3,17 +3,39 @@
 
 class PhysicsObject : public SpriteObject {
 public:
-	PhysicsObject() : m_Sprite(nullptr) {}
-	~PhysicsObject() = default;
+	PhysicsObject();
+
+	// Add force to the object
+	// @param 1 - Direction for the force to be applied
+	// @param 2 - Power of the force to apply
+	void AddForce(Vector2 Direction, float Force);
 
 protected:
-	virtual void OnStart() override;
+	virtual void OnPostUpdate(float DeltaTime) override;
 
-	virtual void OnProcessInput(Input* GameInput) override;
+protected:
+	// After stopping moving, slow down
+	float m_Deceleration;
 
-	virtual void OnUpdate(float DeltaTime) override;
+	// Constant wind force against the physics
+	float m_Drag;
+
+	// How heavy the object is
+	float m_Mass;
+
+	// Maximum velocity speed that we can travel
+	float m_MaxSpeed;
+
+	// Direction and speed of the physics objects
+	Vector2 m_Velocity;
 
 private:
-	Animation* m_Sprite;
-	Vector2 m_MovementDirection;
+	// The hidden force changing velocity
+	Vector2 m_Acceleration;
+
+	// Custom force that pushes our objects in physics
+	Vector2 m_AccelerationForce;
+
+	// Previous velocity on the last tick
+	Vector2 m_LastTickVelocity;
 };

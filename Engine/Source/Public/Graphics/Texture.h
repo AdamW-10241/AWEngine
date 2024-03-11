@@ -34,6 +34,9 @@ public:
 	// Scale the texture
 	float m_ScaleX, m_ScaleY;
 
+	// Determine whether or not to render the texture
+	bool m_IsVisible;
+
 private:
 	// Texture that SDL understands
 	SDL_Texture* m_TextureRef;

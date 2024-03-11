@@ -1,54 +1,61 @@
 #include "GameObjects/PhysicsObject.h"
-#include "Input.h"
 
-void PhysicsObject::OnStart()
+#define Super SpriteObject
+
+PhysicsObject::PhysicsObject() : 
+	m_Deceleration(0.0f), 
+	m_Drag(1.0f), 
+	m_Mass(1.0f), 
+	m_MaxSpeed(600.0f) {}
+
+void PhysicsObject::AddForce(Vector2 Direction, float Force)
 {
-	SetPosition({ 640.0f, 360.0f });
-	SetScale({ 4.0f, 4.0f });
-	
-	AnimationParams AnimParams;
-	AnimParams.fps = 24.0f;
-	AnimParams.MaxFrames = 12;
-	AnimParams.EndFrame = 11;
-	AnimParams.FrameWidth = 64;
-	AnimParams.FrameHeight = 64;
-	
-	m_Sprite = AddSprite("Content/Sprites/Main Ship/Main Ship - Shields/PNGs/Main Ship - Shields - Round Shield.png",
-		&AnimParams);
+	m_AccelerationForce = Direction * Force;
 }
 
-void PhysicsObject::OnProcessInput(Input* GameInput)
+void PhysicsObject::OnPostUpdate(float DeltaTime)
 {
-	// Find the Movement Direction
-	m_MovementDirection = { 0.0f };
+	// The constant wind force against the object
+	Vector2 DragForce(m_Velocity * -m_Drag);
 
-	if (GameInput->IsKeyDown(AW_KEY_W))
-	{
-		m_MovementDirection.y += -1.0f;
-	}
-	if (GameInput->IsKeyDown(AW_KEY_S))
-	{
-		m_MovementDirection.y += 1.0f;
-	}
-	if (GameInput->IsKeyDown(AW_KEY_A))
-	{
-		m_MovementDirection.x += -1.0f;
-	}
-	if (GameInput->IsKeyDown(AW_KEY_D))
-	{
-		m_MovementDirection.x += 1.0f;
-	}
-}
+	// Combined forces for the velocity
+	// acceleration force being a custom additive force
+	Vector2 FullForce(DragForce + m_AccelerationForce);
 
-void PhysicsObject::OnUpdate(float DeltaTime)
-{
-	// Move the Object
-	float speed = 400.0f * (float)DeltaTime;
+	// Physics force algorithm, F = MA, (A = F/M)
+	m_Acceleration = FullForce / std::max(m_Mass, 0.00001f);
 
-	SetPosition(GetTransform().Position + m_MovementDirection * speed);
+	// Apply acceleration and multiply by time
+	m_Velocity += m_Acceleration * DeltaTime;
 
-	// Update the Sprite
-	if (m_Sprite != nullptr) {
-		m_Sprite->Update(DeltaTime);
+	// Cap the velocity at the maximum value
+	if (m_Velocity.Length() > m_MaxSpeed) {
+		m_Velocity = Vector2::Normalised(m_Velocity) * m_MaxSpeed;
 	}
+
+	// The force that should stop the object faster
+	Vector2 DecelForce;
+
+	// Set the deceleration force only if we need to decelerate
+	if (m_Velocity.Length() < m_LastTickVelocity.Length()) {
+		DecelForce = m_Velocity * -m_Deceleration;
+	}
+
+	// Apply deceleration force to velocity
+	m_Velocity += DecelForce * DeltaTime;
+
+	// The amount to move from the position based on time
+	Vector2 TimeVelocity(m_Velocity * DeltaTime);
+
+	// Move the position based on velocity
+	SetPosition(GetTransform().Position + TimeVelocity);
+
+	// Reset the push force
+	m_AccelerationForce = Vector2();
+
+	// Update the last tick velocity
+	m_LastTickVelocity = m_Velocity;
+
+	// Runs the sprite stuff after physics has applied
+	Super::OnPostUpdate(DeltaTime);
 }

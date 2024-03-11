@@ -8,9 +8,6 @@ class Texture;
 class Input;
 class GameObject;
 
-// DEBUG
-class Animation;
-
 class Game {
 public:
 	// Get the game singleton or create one if it does not exist
@@ -75,9 +72,4 @@ private:
 	TArray<GameObject*> m_GameObjectPendingSpawn;
 	// Store all of the game objects in the game
 	TArray<GameObject*> m_GameObjectStack;
-
-	// DEBUG TESTING VARIABLES
-	Animation* m_TestAnim1;
-
-	GameObject* m_TestObject;
 };

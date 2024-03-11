@@ -40,6 +40,9 @@ public:
 
 	void SetScale(float x, float y);
 
+	// Set the visibility of the animation
+	void SetVisible(bool IsVisible);
+
 private:
 	// Stores the texture to render
 	Texture* m_TextureRef;
