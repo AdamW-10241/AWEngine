@@ -3,21 +3,19 @@
 
 #define Super Character
 
-#define ENGINE_IDLE 0
-#define ENGINE_POWERED 1
+#define DIRECTION_RIGHT 0
+#define DIRECTION_LEFT 1
+#define DIRECTION_UP 2
+#define DIRECTION_DOWN 3
 
 Player::Player()
 {
+	// Default Values
 	m_MaxSpeed = 600.0f;
 	m_Deceleration = 5.0f;
 	m_AccelerationSpeed = 5000.0f;
 
-	// Add engine sprite
-	AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engines/PNGs/Main Ship - Engines - Supercharged Engine.png"
-	);
-
-	// Add ship base sprite
+	// Add player base sprite
 	m_MainSprite = AddSprite(
 		"Content/Sprites/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png"
 	);
@@ -29,19 +27,55 @@ Player::Player()
 	AnimParams.EndFrame = 3;
 	AnimParams.MaxFrames = 4;
 
-	// Add the idle engine effect
-	m_EngineEffects.push_back(AddSprite(
+	// Add player sprite: right, idle
+	m_DirectionSprites.push_back(AddSprite(
 		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Idle.png",
 		&AnimParams
 	));
 
-	// Add the powered engine effect
-	m_EngineEffects.push_back(AddSprite(
+	// Add player sprite: left, idle
+	m_DirectionSprites.push_back(AddSprite(
 		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
 		&AnimParams
 	));
 
-	SetPoweredEngine(false);
+	// Add player sprite: up, idle
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
+		&AnimParams
+	));
+
+	// Add player sprite: down, idle
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
+		&AnimParams
+	));
+
+	// Add player sprite: right, moving
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Idle.png",
+		&AnimParams
+	));
+
+	// Add player sprite: left, moving
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
+		&AnimParams
+	));
+
+	// Add player sprite: up, moving
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
+		&AnimParams
+	));
+
+	// Add player sprite: down, moving
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
+		&AnimParams
+	));
+
+	SetAnimation(DIRECTION_UP, true);
 }
 
 void Player::OnStart()
@@ -74,20 +108,48 @@ void Player::OnUpdate(float DeltaTime)
 {
 	Super::OnUpdate(DeltaTime);
 
+	// Get the player idle state
+	bool IdleState;
+
 	if (m_MoveDirection.Length() > 0.0f) {
-		SetPoweredEngine(true);
+		IdleState = true;
 	}
 	else {
-		SetPoweredEngine(false);
+		IdleState = false;
+	}
+
+	// Set the player animation
+	if (m_MoveDirection.x > 0) {
+		SetAnimation(DIRECTION_RIGHT, IdleState);
+	}
+	else if (m_MoveDirection.x < 0) {
+		SetAnimation(DIRECTION_LEFT, IdleState);
+	}	
+	else if (m_MoveDirection.y > 0) {
+		SetAnimation(DIRECTION_UP, IdleState);
+	}
+	else if (m_MoveDirection.y < 0) {
+		SetAnimation(DIRECTION_DOWN, IdleState);
 	}
 }
 
-void Player::SetPoweredEngine(bool Powered)
+void Player::SetAnimation(uint32_t Direction, bool IdleState)
 {
-	if (m_EngineEffects.size() > 1) {
-		if (m_EngineEffects[ENGINE_IDLE] != nullptr && m_EngineEffects[ENGINE_POWERED] != nullptr) {
-			m_EngineEffects[ENGINE_IDLE]->SetActive(!Powered);
-			m_EngineEffects[ENGINE_POWERED]->SetActive(Powered);
+	// Check all sprites are non nullptr
+	if (m_DirectionSprites.size() > 7) {
+		for (int Sprite = 0; Sprite < 8; Sprite++) {
+			if (m_DirectionSprites[Sprite] == nullptr) {
+				return;
+			}
 		}
 	}
+
+	// Set all direction sprites (idle and moving) to inactive
+	for (int Sprite = 0; Sprite < 8; Sprite++) {
+		m_DirectionSprites[Sprite]->SetActive(false);
+	}
+
+	// Activate the correct direction sprite (idle and moving)
+	// + 4 when the idle state is moving to get the latter moving sprites
+	m_DirectionSprites[Direction + !IdleState * 4]->SetActive(true);
 }

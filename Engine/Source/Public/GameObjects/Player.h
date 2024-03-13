@@ -12,10 +12,10 @@ protected:
 
 	virtual void OnUpdate(float DeltaTime) override;
 
-	// Change the engine effects animations
-	void SetPoweredEngine(bool Powered);
+	// Change the player sprite based on direction and idle state
+	void SetAnimation(uint32_t Direction, bool IdleState);
 
 protected:
-	// Store the different effects for the engine effects
-	TArray<Sprite*> m_EngineEffects;
+	// Store the different sprites for the player
+	TArray<Sprite*> m_DirectionSprites;
 };
