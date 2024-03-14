@@ -1,7 +1,7 @@
 #pragma once
-#include "GameObjects/Character.h"
+#include "GameObjects/DirectionalCharacter.h"
 
-class Enemy : public Character {
+class Enemy : public DirectionalCharacter {
 public:
 	Enemy();
 
