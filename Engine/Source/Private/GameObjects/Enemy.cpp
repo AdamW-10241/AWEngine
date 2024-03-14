@@ -75,7 +75,11 @@ void Enemy::OnStart()
 {
 	Super::OnStart();
 
-	SetPosition({ 640.0f, 360.0f });
+	// Set starting position
+	static float StartingPosition(0.0f);
+	SetPosition({ 640.0f, StartingPosition });
+	StartingPosition += 40.0f;
+
 	SetScale(SCALE);
 }
 
@@ -86,7 +90,7 @@ void Enemy::OnUpdate(float DeltaTime)
 		// Randomly determine movement direction
 		m_MovementChoice = { (float)((rand() % 3) - 1), (float)((rand() % 3) - 1) };
 		// Randomly get time until next choice
-		m_TimeUntilNextMovementChoice = rand() % 3;
+		m_TimeUntilNextMovementChoice = rand() % 4;
 	}
 	
 	// Reduce time until choice

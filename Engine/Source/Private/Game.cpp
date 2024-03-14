@@ -8,6 +8,7 @@
 // DEBUG
 #include "GameObjects/Player.h"
 #include "GameObjects/Enemy.h"
+#include "GameObjects/Background.h"
 
 Game* Game::GetGame()
 {
@@ -178,12 +179,16 @@ void Game::Start()
 	// Create the game input
 	m_GameInput = new Input();
 	
-	// DEBUG
-	for (int i = 0; i < 50; i++) {
+	// DEBUG GAME OBJECTS
+	AddGameObject<Background>();
+
+	for (int i = 0; i < 20; i++) {
 		AddGameObject<Enemy>();
 	}
+
 	AddGameObject<Player>();
 
+	// Start game loop
 	GameLoop();
 }
 
