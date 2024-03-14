@@ -3,6 +3,10 @@
 
 #define Super DirectionalCharacter
 
+#define SCALE 4.0f
+#define SIZE (16.0f) * SCALE
+#define HALF_SIZE (SIZE / 2.0f)
+
 Player::Player()
 {
 	// Default Values
@@ -71,7 +75,7 @@ void Player::OnStart()
 	Super::OnStart();
 	
 	SetPosition({ 640.0f, 360.0f });
-	SetScale(4.0f);
+	SetScale(SCALE);
 }
 
 void Player::OnProcessInput(Input* GameInput)
@@ -95,4 +99,7 @@ void Player::OnProcessInput(Input* GameInput)
 void Player::OnUpdate(float DeltaTime)
 {
 	Super::OnUpdate(DeltaTime);
+
+	// Screen Wrap
+	ScreenWrap(HALF_SIZE);
 }

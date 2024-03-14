@@ -53,3 +53,24 @@ void DirectionalCharacter::SetAnimation(uint32_t Direction, bool IdleState)
 	// + 4 when the idle state is false (moving) to get the latter moving sprites
 	m_DirectionSprites[Direction + !IdleState * 4]->SetActive(true);
 }
+
+void DirectionalCharacter::ScreenWrap(float HalfSpriteSize)
+{
+	// Screen wrap the directional character
+	// Bottom to top
+	if (GetTransform().Position.y - HalfSpriteSize > 720) {
+		SetPosition({ GetTransform().Position.x, -HalfSpriteSize });
+	}
+	// Top to bottom
+	if (GetTransform().Position.y + HalfSpriteSize < -HalfSpriteSize) {
+		SetPosition({ GetTransform().Position.x, 720 + HalfSpriteSize });
+	}
+	// Right to left
+	if (GetTransform().Position.x - HalfSpriteSize > 1280) {
+		SetPosition({ -HalfSpriteSize, GetTransform().Position.y });
+	}
+	// Left to right
+	if (GetTransform().Position.x + HalfSpriteSize < -HalfSpriteSize) {
+		SetPosition({ 1280 + HalfSpriteSize, GetTransform().Position.y });
+	}
+}

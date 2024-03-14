@@ -179,7 +179,9 @@ void Game::Start()
 	m_GameInput = new Input();
 	
 	// DEBUG
-	AddGameObject<Enemy>();
+	for (int i = 0; i < 50; i++) {
+		AddGameObject<Enemy>();
+	}
 	AddGameObject<Player>();
 
 	GameLoop();
@@ -277,7 +279,7 @@ void Game::Update()
 	double DeltaTime = LongDelta / 1000.0;
 	// Set the last tick time
 	LastTickTime = CurrentTickTime;
-
+	
 	// Run the update logic for all game objects
 	for (auto GO : m_GameObjectStack) {
 		if (GO != nullptr) {

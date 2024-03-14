@@ -9,9 +9,11 @@
 Enemy::Enemy()
 {
 	// Default Values
-	m_MaxSpeed = 200.0f;
-	m_Deceleration = 7.0f;
-	m_AccelerationSpeed = 5000.0f;
+	m_MaxSpeed = 100.0f;
+	m_Deceleration = 5.0f;
+	m_AccelerationSpeed = 1000.0f;
+
+	m_TimeUntilNextMovementChoice = 0.0f;
 
 	AnimationParams AnimParams;
 	AnimParams.fps = 12;
@@ -73,33 +75,28 @@ void Enemy::OnStart()
 {
 	Super::OnStart();
 
-	// Start the enemy above the screen
 	SetPosition({ 640.0f, 360.0f });
-	// Set the scale
 	SetScale(SCALE);
 }
 
 void Enemy::OnUpdate(float DeltaTime)
 {
-	AddMovementInput(Vector2(-1.0f, 0.0f));
+	// Randomly choose movement
+	if (m_TimeUntilNextMovementChoice - DeltaTime <= 0.0f) {
+		// Randomly determine movement direction
+		m_MovementChoice = { (float)((rand() % 3) - 1), (float)((rand() % 3) - 1) };
+		// Randomly get time until next choice
+		m_TimeUntilNextMovementChoice = rand() % 3;
+	}
 	
+	// Reduce time until choice
+	m_TimeUntilNextMovementChoice -= DeltaTime;
+
+	// Add movement
+	AddMovementInput(m_MovementChoice);
+
 	Super::OnUpdate(DeltaTime);
 
-	// Screen Wrapping
-	// Bottom to top
-	if (GetTransform().Position.y - HALF_SIZE > 720) {
-		SetPosition({ GetTransform().Position.x, -HALF_SIZE });
-	}
-	// Top to bottom
-	if (GetTransform().Position.y + HALF_SIZE < -HALF_SIZE ) {
-		SetPosition({ GetTransform().Position.x, 720 + HALF_SIZE });
-	}
-	// Right to left
-	if (GetTransform().Position.x - HALF_SIZE > 1280) {
-		SetPosition({ -HALF_SIZE, GetTransform().Position.y });
-	}
-	// Left to right
-	if (GetTransform().Position.x + HALF_SIZE < -HALF_SIZE) {
-		SetPosition({ 1280 + HALF_SIZE, GetTransform().Position.y });
-	}
+	// Screen Wrap
+	ScreenWrap(HALF_SIZE);
 }

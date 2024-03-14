@@ -10,13 +10,16 @@ class DirectionalCharacter : public Character {
 public:
 	DirectionalCharacter() : m_LastMovementDirection(0) {}
 
+	// Change the directional character sprite based on direction and idle state
+	void SetAnimation(uint32_t Direction, bool IdleState);
+
+	// Check and screen wrap the directional character
+	void ScreenWrap(float HalfSpriteSize);
+
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
 
 	virtual void OnUpdate(float DeltaTime) override;
-
-	// Change the player sprite based on direction and idle state
-	void SetAnimation(uint32_t Direction, bool IdleState);
 
 protected:
 	// Store the different sprites
