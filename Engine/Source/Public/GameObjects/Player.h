@@ -18,4 +18,8 @@ protected:
 protected:
 	// Store the different sprites for the player
 	TArray<Sprite*> m_DirectionSprites;
+
+	// Store the last movement direction as integer
+	// Right - 1, Left - 2, Up - 3, Down - 4
+	uint32_t m_LastMovementDirection;
 };

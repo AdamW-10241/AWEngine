@@ -1,5 +1,4 @@
 #include "GameObjects/Enemy.h"
-#include "Debug.h"
 
 #define Super Character
 
@@ -20,10 +19,6 @@ Enemy::Enemy()
 void Enemy::OnStart()
 {
 	Super::OnStart();
-
-	//static float PositionX = 640.0f;
-	//AW_LOG("Enemy", PositionX);
-	//PositionX += 100.0f;
 
 	// Start the enemy above the screen
 	SetPosition({ 640.0f, -HALF_SIZE });

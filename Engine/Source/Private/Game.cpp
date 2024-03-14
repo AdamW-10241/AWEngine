@@ -180,7 +180,6 @@ void Game::Start()
 	
 	// DEBUG
 	AddGameObject<Enemy>();
-	AddGameObject<Enemy>();
 	AddGameObject<Player>();
 
 	GameLoop();

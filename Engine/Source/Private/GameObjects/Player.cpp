@@ -11,71 +11,64 @@
 Player::Player()
 {
 	// Default Values
-	m_MaxSpeed = 600.0f;
-	m_Deceleration = 5.0f;
+	m_MaxSpeed = 400.0f;
+	m_Deceleration = 7.0f;
 	m_AccelerationSpeed = 5000.0f;
 
-	// Add player base sprite
-	m_MainSprite = AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png"
-	);
-
 	AnimationParams AnimParams;
-	AnimParams.fps = 24;
-	AnimParams.FrameHeight = 48;
-	AnimParams.FrameWidth = 48;
+	AnimParams.fps = 12;
+	AnimParams.FrameHeight = 16;
+	AnimParams.FrameWidth = 16;
 	AnimParams.EndFrame = 3;
 	AnimParams.MaxFrames = 4;
 
-	// Add player sprite: right, idle
+	// Add player sprite: idle, right
 	m_DirectionSprites.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Idle.png",
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Right.png"
+	));
+
+	// Add player sprite: idle, left
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Left.png"
+	));
+
+	// Add player sprite: idle, up
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Up.png"
+	));
+
+	// Add player sprite: idle, down
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Down.png"
+	));
+
+	// Add player sprite: moving, right
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Right.png",
 		&AnimParams
 	));
 
-	// Add player sprite: left, idle
+	// Add player sprite: moving, left
 	m_DirectionSprites.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Left.png",
 		&AnimParams
 	));
 
-	// Add player sprite: up, idle
+	// Add player sprite: moving, up
 	m_DirectionSprites.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Up.png",
 		&AnimParams
 	));
 
-	// Add player sprite: down, idle
+	// Add player sprite: moving, down
 	m_DirectionSprites.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Down.png",
 		&AnimParams
 	));
 
-	// Add player sprite: right, moving
-	m_DirectionSprites.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Idle.png",
-		&AnimParams
-	));
-
-	// Add player sprite: left, moving
-	m_DirectionSprites.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
-		&AnimParams
-	));
-
-	// Add player sprite: up, moving
-	m_DirectionSprites.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
-		&AnimParams
-	));
-
-	// Add player sprite: down, moving
-	m_DirectionSprites.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
-		&AnimParams
-	));
-
-	SetAnimation(DIRECTION_UP, true);
+	// Set base animation state
+	m_LastMovementDirection = DIRECTION_DOWN;
+	SetAnimation(m_LastMovementDirection, true);
 }
 
 void Player::OnStart()
@@ -83,7 +76,7 @@ void Player::OnStart()
 	Super::OnStart();
 	
 	SetPosition({ 640.0f, 360.0f });
-	SetScale(3.0f);
+	SetScale(4.0f);
 }
 
 void Player::OnProcessInput(Input* GameInput)
@@ -109,33 +102,30 @@ void Player::OnUpdate(float DeltaTime)
 	Super::OnUpdate(DeltaTime);
 
 	// Get the player idle state
-	bool IdleState;
+	// idle = true, moving = false
+	bool IdleState = (m_MoveDirection.Length() <= 0.0f);
 
-	if (m_MoveDirection.Length() > 0.0f) {
-		IdleState = true;
-	}
-	else {
-		IdleState = false;
-	}
-
-	// Set the player animation
+	// Update the last movement direction
 	if (m_MoveDirection.x > 0) {
-		SetAnimation(DIRECTION_RIGHT, IdleState);
+		m_LastMovementDirection = DIRECTION_RIGHT;
 	}
 	else if (m_MoveDirection.x < 0) {
-		SetAnimation(DIRECTION_LEFT, IdleState);
+		m_LastMovementDirection = DIRECTION_LEFT;
 	}	
-	else if (m_MoveDirection.y > 0) {
-		SetAnimation(DIRECTION_UP, IdleState);
-	}
 	else if (m_MoveDirection.y < 0) {
-		SetAnimation(DIRECTION_DOWN, IdleState);
+		m_LastMovementDirection = DIRECTION_UP;
 	}
+	else if (m_MoveDirection.y > 0) {
+		m_LastMovementDirection = DIRECTION_DOWN;
+	}
+
+	// Set the player animations
+	SetAnimation(m_LastMovementDirection, IdleState);
 }
 
 void Player::SetAnimation(uint32_t Direction, bool IdleState)
 {
-	// Check all sprites are non nullptr
+	// Check all sprites are not nullptr
 	if (m_DirectionSprites.size() > 7) {
 		for (int Sprite = 0; Sprite < 8; Sprite++) {
 			if (m_DirectionSprites[Sprite] == nullptr) {
@@ -150,6 +140,6 @@ void Player::SetAnimation(uint32_t Direction, bool IdleState)
 	}
 
 	// Activate the correct direction sprite (idle and moving)
-	// + 4 when the idle state is moving to get the latter moving sprites
+	// + 4 when the idle state is false (moving) to get the latter moving sprites
 	m_DirectionSprites[Direction + !IdleState * 4]->SetActive(true);
 }
