@@ -4,6 +4,7 @@
 #include "Graphics/Texture.h"
 #include "Input.h"
 #include "GameObjects/GameObject.h"
+#include "Math/Bounds.h"
 
 // DEBUG
 #include "GameObjects/Player.h"
@@ -180,7 +181,6 @@ void Game::Start()
 	
 	// DEBUG
 	AddGameObject<Enemy>();
-	AddGameObject<Enemy>();
 	AddGameObject<Player>();
 
 	GameLoop();
@@ -284,6 +284,15 @@ void Game::Update()
 		if (GO != nullptr) {
 			GO->Update((float)DeltaTime);
 			GO->PostUpdate((float)DeltaTime);
+
+			// Looking through all of the other game objects
+			for (auto OtherGO : m_GameObjectStack) {
+				// Running through all of the other game object bounds
+				for (auto OtherBounds : OtherGO->GetAllBounds()) {
+					// Testing the bounds for overlapping events
+					GO->TestOverLapEvent(OtherBounds);
+				}
+			}
 		}
 	}
 
@@ -307,11 +316,41 @@ void Game::Render()
 
 	// TODO: Render custom graphics
 	// Draw all textures in the texture stack
-	for (Texture* TexRef : m_TextureStack)
-	{
-		if (TexRef != nullptr)
-		{
+	for (Texture* TexRef : m_TextureStack) {
+		if (TexRef != nullptr) {
 			TexRef->Draw();
+		}
+	}
+
+	// Render bounds if marked debug
+	for (auto GO : m_GameObjectStack) {
+		if (GO == nullptr) {
+			continue;
+		}
+
+		// Loop through all the game object bounds
+		for (auto TestBounds : GO->GetAllBounds()) {
+
+			// Set the colour of the next drawn thing in SDL
+			// in this case, the bounds
+			SDL_SetRenderDrawColor(
+				m_RendererRef,
+				TestBounds->m_RenderColour.r,
+				TestBounds->m_RenderColour.g,
+				TestBounds->m_RenderColour.b,
+				255
+			);
+
+			// Converting the AWRect to a SDL_FRect
+			SDL_FRect BoundsRect{
+				TestBounds->GetCenter().x,
+				TestBounds->GetCenter().y,
+				TestBounds->m_Rect.Extent.x,
+				TestBounds->m_Rect.Extent.y
+			};
+
+			// Draws a rectangle to the window
+			SDL_RenderDrawRectF(m_RendererRef, &BoundsRect);
 		}
 	}
 

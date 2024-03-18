@@ -21,17 +21,17 @@ struct Vector2 {
 
 	// Boolean Operators
 	// If two Vector2's are equal
-	bool operator==(const Vector2& Other) {
+	bool operator==(const Vector2& Other) const {
 		return x == Other.x && y == Other.y;
 	}
 	// If two Vector2's are not equal
-	bool operator!=(const Vector2& Other) {
+	bool operator!=(const Vector2& Other) const {
 		return x != Other.x || y != Other.y;
 	}
 
 	// Arithmetic Operators
 	// Addition
-	Vector2 operator+(const Vector2& Other) {
+	Vector2 operator+(const Vector2& Other) const {
 		return Vector2(Other.x + x, Other.y + y);
 	}
 	// Addition Equals
@@ -39,7 +39,7 @@ struct Vector2 {
 		return *this = *this + Other;
 	}
 	// Subtraction
-	Vector2 operator-(const Vector2& Other) {
+	Vector2 operator-(const Vector2& Other) const {
 		return Vector2(x - Other.x, y - Other.y);
 	}
 	// Subtraction Equals
@@ -47,7 +47,7 @@ struct Vector2 {
 		return *this = *this - Other;
 	}
 	// Multiply Vector2 by Vector2
-	Vector2 operator*(const Vector2& Other) {
+	Vector2 operator*(const Vector2& Other) const {
 		return Vector2(x * Other.x, y * Other.y);
 	}
 	// Multiply Equals Vector2 by Vector2
@@ -55,7 +55,7 @@ struct Vector2 {
 		return *this = *this * Other;
 	}
 	// Multiply Vector2 by Float
-	Vector2 operator*(const float Scalar) {
+	Vector2 operator*(const float Scalar) const {
 		return Vector2(x * Scalar, y * Scalar);
 	}
 	// Multiply Equals Vector2 by Float
@@ -63,13 +63,13 @@ struct Vector2 {
 		return *this = *this * Scalar;
 	}
 	// Division Vector2 by Vector2
-	Vector2 operator/(const Vector2& Other);
+	Vector2 operator/(const Vector2& Other) const;
 	// Division Equals Vector2 by Vector2
 	Vector2& operator/=(const Vector2& Other);
 	// Division Vector2 by Float
-	Vector2 operator/(const float& Scalar);
+	Vector2 operator/(const float& Scalar) const;
 	// Division Equals Vector2 by Float
-	Vector2 operator/=(const float& Scalar);
+	Vector2& operator/=(const float& Scalar);
 
 	// Return an infinite negative vector (invalid vector)
 	static Vector2 NaN();
