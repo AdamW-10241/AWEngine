@@ -22,7 +22,7 @@ struct AWTransform {
 
 class GameObject {
 public:
-	GameObject() : m_ShouldDestroy(false) {}
+	GameObject() : m_ShouldDestroy(false), m_IsOverlapping(false) {}
 	virtual ~GameObject() = default;
 
 	// Runs when this object spawns into the game
@@ -80,6 +80,10 @@ protected:
 
 	// Add a bounds to the object
 	Bounds* AddBounds(Vector2 Center = 0.0f, Vector2 Extent = 1.0f);
+
+protected:
+	// If the object is overlapping
+	bool m_IsOverlapping;
 
 private:
 	// Set all bounds to match the object position

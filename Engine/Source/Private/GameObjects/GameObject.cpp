@@ -151,13 +151,16 @@ void GameObject::TestOverLapEvent(Bounds* OtherBounds)
 		}
 
 		// Change the colour if there is anything overlapping this bounds
+		// and set the overlapping flag
 		if (TestBounds->m_Overlapped.size() > 0) {
 			// Green
 			TestBounds->m_RenderColour = STBoundsColour(0, 255, 0);
+			m_IsOverlapping = true;
 		}
 		else {
 			// Red
 			TestBounds->m_RenderColour = STBoundsColour(255, 0, 0);
+			m_IsOverlapping = false;
 		}
 	}
 }
