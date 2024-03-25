@@ -45,8 +45,15 @@ void GameObject::PostUpdate(float DeltaTime)
 void GameObject::DestroyObject()
 {
 	// Ensure the OnDestroy only runs once
-	if (!m_ShouldDestroy) {
-		OnDestroy();
+	if (m_ShouldDestroy) {
+		return;
+	}
+
+	OnDestroy();
+
+	// Loop through all of the bounds and mark them for destroy
+	for (const auto TestBounds : m_BoundsStack) {
+		TestBounds->DestroyBounds();
 	}
 
 	m_ShouldDestroy = true;
@@ -113,6 +120,22 @@ void GameObject::TestOverLapEvent(Bounds* OtherBounds)
 			continue;
 		}
 
+		// Change the colour if there is anything overlapping this bounds
+		// and set the overlapping flag
+		if (TestBounds->m_Debug) {
+			if (TestBounds->m_Overlapped.size() > 0) {
+				// Green
+				TestBounds->m_RenderColour = STBoundsColour(0, 255, 0);
+			}
+			else {
+				// Red
+				TestBounds->m_RenderColour = STBoundsColour(255, 0, 0);
+			}
+		}
+
+		// Custom Overlap Boolean
+		m_IsOverlapping = (TestBounds->m_Overlapped.size() > 0);
+
 		// This makes sure that the bounds is not from this object
 		if (OtherBounds->GetOwner() == this) {
 			continue;
@@ -149,19 +172,19 @@ void GameObject::TestOverLapEvent(Bounds* OtherBounds)
 				AW_LOG("GameObject", "Enter Intersection.");
 			}
 		}
+	}
+}
 
-		// Change the colour if there is anything overlapping this bounds
-		// and set the overlapping flag
-		if (TestBounds->m_Overlapped.size() > 0) {
-			// Green
-			TestBounds->m_RenderColour = STBoundsColour(0, 255, 0);
-			m_IsOverlapping = true;
-		}
-		else {
-			// Red
-			TestBounds->m_RenderColour = STBoundsColour(255, 0, 0);
-			m_IsOverlapping = false;
-		}
+void GameObject::CollectGarbage()
+{
+	// Loops through all of the bounds and checks if the overlapping bounds are marked for destroy
+	// If so remove those bounds from the overlapping array
+	for (const auto TestBounds : m_BoundsStack) {
+		std::erase_if(TestBounds->m_Overlapped,
+			// Local function inside other function (lambda function)
+			// Square brackets are for value passing
+			[](Bounds* OBounds) { return OBounds->isPendingDestroy(); }
+			);
 	}
 }
 

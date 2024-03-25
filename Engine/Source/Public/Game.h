@@ -7,24 +7,30 @@ struct SDL_Renderer;
 class Texture;
 class Input;
 class GameObject;
+class GameStateMachine;
 
 class Game {
 public:
 	// Get the game singleton or create one if it does not exist
 	static Game* GetGame();
+
 	// Deallocate the game from memory
 	static void DestroyGame();
+
 	// Run the game
 	void Run() { Initialise(); }
+
 	// Exit the app
 	void QuitApp() { m_IsGameOpen = false; }
+
 	// Import a texture to the game
 	Texture* ImportTexture(const char* PathToFile);
+
 	// Safe destroy the texture
 	void DestroyTexture(Texture* TextureToDestroy);
-	// Add a game object to the game
-	template<typename T>
-	T* AddGameObject();
+
+	// Gets the game state machine
+	GameStateMachine* GetGameStateMachine() const { return m_GameStateMachine; }
 
 private:
 	// Constructor runs when the class is created
@@ -68,8 +74,6 @@ private:
 	TArray<Texture*> m_TextureStack;
 	// Store the input handler for the game
 	Input* m_GameInput;
-	// Store all game objects that need to be spawned on the next loop
-	TArray<GameObject*> m_GameObjectPendingSpawn;
-	// Store all of the game objects in the game
-	TArray<GameObject*> m_GameObjectStack;
+	// Game state machine for the game
+	GameStateMachine* m_GameStateMachine;
 };

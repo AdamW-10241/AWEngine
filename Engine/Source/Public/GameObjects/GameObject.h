@@ -56,6 +56,9 @@ public:
 	// Return all bounds on the object
 	TArray<Bounds*> GetAllBounds() const { return m_BoundsStack; }
 
+	// Cleanup Garbage in a game object level
+	void CollectGarbage();
+
 protected:
 	// Run when the game object has been marked for destroy
 	virtual void OnDestroy();

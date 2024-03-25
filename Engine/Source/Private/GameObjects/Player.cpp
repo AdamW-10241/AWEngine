@@ -51,6 +51,7 @@ Player::Player()
 
 	Bounds* PlayerBounds = AddBounds({ 640.0f, 360.0f }, SIZE);
 	PlayerBounds->m_OriginOffset = -HALF_SIZE;
+	PlayerBounds->m_Debug = true;
 }
 
 void Player::OnStart()
@@ -65,6 +66,7 @@ void Player::OnProcessInput(Input* GameInput)
 {
 	Super::OnProcessInput(GameInput);
 
+	/*
 	if (GameInput->IsMouseButtonDown(AW_MOUSE_LEFT)) {
 		if (m_IsOverlapping) {
 			AW_LOG("Player", "Input and IS overlapping.");
@@ -73,6 +75,7 @@ void Player::OnProcessInput(Input* GameInput)
 			AW_LOG("Player", "Input and NOT overlapping.");
 		}
 	}
+	*/
 	
 	if (GameInput->IsKeyDown(AW_KEY_W)) {
 		AddMovementInput(Vector2(0.0f, -1.0f));

@@ -57,6 +57,11 @@ public:
 	// Get the game object that owns the bounds
 	GameObject* GetOwner() const { return m_Owner; }
 
+	// Mark the bounds for destroy
+	void DestroyBounds() { m_ShouldDestroy = true; }
+
+	// Check if the bounds is marked for destroy
+	bool isPendingDestroy() const { return m_ShouldDestroy; }
 public:
 	// The rectangle that defines the bounds
 	AWRect m_Rect;
@@ -76,7 +81,13 @@ public:
 	// All currently overlapping bounds
 	TArray<Bounds*> m_Overlapped;
 
+	// Debug visualise bounds
+	bool m_Debug;
+
 private:
 	// The owner object the bounds is attached to
 	GameObject* m_Owner;
+	
+	// Flag that says whether the bounds should be marked for destroy
+	bool m_ShouldDestroy;
 };
