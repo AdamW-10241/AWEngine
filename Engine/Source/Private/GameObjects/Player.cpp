@@ -126,4 +126,11 @@ void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 		OverlapBounds->GetOwner()->DestroyObject();
 	}
 	*/
+
+	/*
+	if (OverlapBounds->m_Tag == "WALL") {
+		// HitBounds = Player
+
+	}
+	*/
 }
