@@ -84,13 +84,13 @@ struct Vector2 {
 
 	// Get the distance between two Vector2's
 	// This is inaccurate by double the size but cheaper
-	static float DistSqd(Vector2& V1, Vector2& V2) {
+	static float DistSqd(const Vector2& V1, const Vector2& V2) {
 		Vector2 DistanceVector(V1 - V2);
 		// x^2 + y^2
 		return DistanceVector.x * DistanceVector.x + DistanceVector.y * DistanceVector.y;
 	}
 	// Get the distance between two Vector2's
-	static float Distance(Vector2& V1, Vector2& V2);
+	static float Distance(const Vector2& V1, const Vector2& V2);
 
 	// Change the Vector2 to a normalised value
 	Vector2& Normalise();

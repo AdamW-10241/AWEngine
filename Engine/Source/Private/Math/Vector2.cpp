@@ -58,7 +58,7 @@ float Vector2::Length() const
 	return std::sqrtf(LengthSqd());
 }
 
-float Vector2::Distance(Vector2& V1, Vector2& V2)
+float Vector2::Distance(const Vector2& V1, const Vector2& V2)
 {
 	// sqrtf(x^2 + y^2)
 	return std::sqrtf(DistSqd(V1, V2));

@@ -133,4 +133,12 @@ void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 
 	}
 	*/
+
+	AW_LOG("Player", Vector2::Distance(GetTransform().Position, OverlapBounds->GetOwner()->GetTransform().Position));
+		
+
+	//SetPosition(
+	//	
+	//);
+
 }
