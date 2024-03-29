@@ -102,6 +102,7 @@
     <ClCompile Include="Source\Private\GameObjects\GameObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\PhysicsObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Player.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\Projectile.cpp" />
     <ClCompile Include="Source\Private\GameObjects\SpriteObject.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameState.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameStateMachine.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="Source\Public\GameObjects\Character.h" />
     <ClInclude Include="Source\Public\GameObjects\Enemy.h" />
     <ClInclude Include="Source\Public\GameObjects\GameObject.h" />
+    <ClInclude Include="Source\Public\GameObjects\Projectile.h" />
     <ClInclude Include="Source\Public\GameStates\GameStateMachine.h" />
     <ClInclude Include="Source\Public\GameObjects\PhysicsObject.h" />
     <ClInclude Include="Source\Public\GameObjects\Player.h" />

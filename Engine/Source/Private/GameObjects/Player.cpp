@@ -1,4 +1,5 @@
 #include "GameObjects/Player.h"
+#include "GameObjects/Projectile.h"
 #include "Input.h"
 #include "GameObjects/Enemy.h"
 #include "Debug.h"
@@ -65,17 +66,6 @@ void Player::OnStart()
 void Player::OnProcessInput(Input* GameInput)
 {
 	Super::OnProcessInput(GameInput);
-
-	/*
-	if (GameInput->IsMouseButtonDown(AW_MOUSE_LEFT)) {
-		if (m_IsOverlapping) {
-			AW_LOG("Player", "Input and IS overlapping.");
-		}
-		else {
-			AW_LOG("Player", "Input and NOT overlapping.");
-		}
-	}
-	*/
 	
 	if (GameInput->IsKeyDown(AW_KEY_W)) {
 		AddMovementInput(Vector2(0.0f, -1.0f));
