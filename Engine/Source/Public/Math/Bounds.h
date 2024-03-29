@@ -49,7 +49,7 @@ public:
 	Bounds(GameObject* Owner, Vector2 Origin = 0.0f, Vector2 Extent = 1.0f);
 
 	// The center equals the origin + the offset
-	Vector2 GetCenter() { return m_Rect.Origin + m_OriginOffset; }
+	Vector2 GetCenter() const { return m_Rect.Origin + m_OriginOffset; }
 
 	// Detect if two bounds are intersecting
 	static bool BoundsIntersect(const Bounds& BoundsA, const Bounds& BoundsB);
@@ -62,6 +62,7 @@ public:
 
 	// Check if the bounds is marked for destroy
 	bool isPendingDestroy() const { return m_ShouldDestroy; }
+
 public:
 	// The rectangle that defines the bounds
 	AWRect m_Rect;

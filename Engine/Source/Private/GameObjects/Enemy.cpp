@@ -19,6 +19,7 @@ Enemy::Enemy()
 	Bounds* EnemyBounds = AddBounds(0.0f, SIZE);
 	EnemyBounds->m_OriginOffset = -HALF_SIZE;
 	EnemyBounds->m_Tag = "ENEMY";
+	EnemyBounds->m_Debug = true;
 }
 
 void Enemy::OnStart()

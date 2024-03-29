@@ -126,19 +126,4 @@ void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 		OverlapBounds->GetOwner()->DestroyObject();
 	}
 	*/
-
-	/*
-	if (OverlapBounds->m_Tag == "WALL") {
-		// HitBounds = Player
-
-	}
-	*/
-
-	//AW_LOG("Player", Vector2::Distance(GetTransform().Position, OverlapBounds->GetOwner()->GetTransform().Position));
-		
-
-	//SetPosition(
-	//	
-	//);
-
 }
