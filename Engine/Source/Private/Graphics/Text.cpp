@@ -87,10 +87,6 @@ void Text::SetFontSize(int NewSize)
 
 void Text::SetFontColor(SDL_Color Color)
 {
-	if (m_TextColor == &Color) {
-		return;
-	}
-
 	m_TextColor = &Color;
 
 	UpdateFont();
