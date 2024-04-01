@@ -1,4 +1,5 @@
 #pragma once
+#include "Graphics/TextureTypes.h"
 
 // Forward Declaration
 struct SDL_Renderer;
@@ -9,18 +10,23 @@ struct SDL_Rect;
 class Texture {
 public:
 	Texture(SDL_Renderer* Renderer);
-	~Texture();
+	virtual ~Texture();
 
 	// Import and create a texture
-	bool ImportTexture(const char* PathToFile);
+	virtual bool ImportTexture(const char* PathToFile);
+
 	// Copy the texture
 	void CopyTexture(Texture* CopyTexture);
+
 	// Draw the texture to the renderer
 	void Draw();
+
 	// Deallocate memory
-	void Cleanup();
+	virtual void Cleanup();
+
 	// Get the original image path
 	const char* GetPath() const { return m_Path; }
+
 	// Set the clip for the texture
 	void SetClip(int x, int y, int w, int h);
 
@@ -37,7 +43,10 @@ public:
 	// Determine whether or not to render the texture
 	bool m_IsVisible;
 
-private:
+	// Adjust the alignment of the texture
+	EAlignment m_Alignment;
+
+protected:
 	// Texture that SDL understands
 	SDL_Texture* m_TextureRef;
 

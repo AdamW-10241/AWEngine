@@ -1,6 +1,8 @@
 #pragma once
 #include "GameStates/GameState.h"
 
+class TextObject;
+
 class PlayState : public GameState {
 public:
 	PlayState() = default;
@@ -8,5 +10,8 @@ public:
 protected:
 	virtual void OnStart() override;
 
-	virtual void OnProcessInput(Input* GameInput) override;
+	virtual void OnUpdate(float DeltaTime) override;
+
+protected:
+	TextObject* m_ScoreText;
 };

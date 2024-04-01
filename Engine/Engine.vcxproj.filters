@@ -63,7 +63,10 @@
     <ClCompile Include="Source\Private\GameStates\PlayState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Private\GameObjects\Projectile.cpp">
+    <ClCompile Include="Source\Private\Graphics\Text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\GameObjects\TextObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,7 +122,13 @@
     <ClInclude Include="Source\Public\GameStates\PlayState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Public\GameObjects\Projectile.h">
+    <ClInclude Include="Source\Public\Graphics\Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\GameObjects\TextObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\Graphics\TextureTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

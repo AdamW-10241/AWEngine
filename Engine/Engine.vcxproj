@@ -65,7 +65,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)ExternalLibs\StaticLibs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(ProjectDir)ExternalLibs\DynamicLibs\*.dll" "$(SolutionDir)Build\$(Configuration)"</Command>
@@ -89,7 +89,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)ExternalLibs\StaticLibs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(ProjectDir)ExternalLibs\DynamicLibs\*.dll" "$(SolutionDir)Build\$(Configuration)"</Command>
@@ -102,12 +102,13 @@
     <ClCompile Include="Source\Private\GameObjects\GameObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\PhysicsObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Player.cpp" />
-    <ClCompile Include="Source\Private\GameObjects\Projectile.cpp" />
     <ClCompile Include="Source\Private\GameObjects\SpriteObject.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\TextObject.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameState.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameStateMachine.cpp" />
     <ClCompile Include="Source\Private\GameStates\PlayState.cpp" />
     <ClCompile Include="Source\Private\Graphics\Animation.cpp" />
+    <ClCompile Include="Source\Private\Graphics\Text.cpp" />
     <ClCompile Include="Source\Private\Graphics\Texture.cpp" />
     <ClCompile Include="Source\Private\Input.cpp" />
     <ClCompile Include="Source\Private\Math\Bounds.cpp" />
@@ -121,7 +122,7 @@
     <ClInclude Include="Source\Public\GameObjects\Character.h" />
     <ClInclude Include="Source\Public\GameObjects\Enemy.h" />
     <ClInclude Include="Source\Public\GameObjects\GameObject.h" />
-    <ClInclude Include="Source\Public\GameObjects\Projectile.h" />
+    <ClInclude Include="Source\Public\GameObjects\TextObject.h" />
     <ClInclude Include="Source\Public\GameStates\GameStateMachine.h" />
     <ClInclude Include="Source\Public\GameObjects\PhysicsObject.h" />
     <ClInclude Include="Source\Public\GameObjects\Player.h" />
@@ -129,10 +130,12 @@
     <ClInclude Include="Source\Public\GameStates\GameState.h" />
     <ClInclude Include="Source\Public\GameStates\PlayState.h" />
     <ClInclude Include="Source\Public\Graphics\Animation.h" />
+    <ClInclude Include="Source\Public\Graphics\Text.h" />
     <ClInclude Include="Source\Public\Graphics\Texture.h" />
     <ClInclude Include="Source\Public\Input.h" />
     <ClInclude Include="Source\Public\Math\Bounds.h" />
     <ClInclude Include="Source\Public\Math\Vector2.h" />
+    <ClInclude Include="Source\Public\Graphics\TextureTypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

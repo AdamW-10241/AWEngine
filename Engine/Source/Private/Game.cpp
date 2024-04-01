@@ -5,6 +5,8 @@
 #include "Input.h"
 #include "GameObjects/GameObject.h"
 #include "GameStates/GameStateMachine.h"
+#include "SDL2/SDL_ttf.h"
+#include "Graphics/Text.h"
 
 Game* Game::GetGame()
 {
@@ -97,6 +99,32 @@ void Game::DestroyTexture(Texture* TextureToDestroy)
 	AW_LOG("Game", "Texture has been destroyed.");
 }
 
+Text* Game::ImportText(const char* PathToFile)
+{
+	Text* NewText = new Text(m_RendererRef);
+
+	if (!NewText->ImportTexture(PathToFile)) {
+		delete NewText;
+		return nullptr;
+	}
+
+	// Add texture to the texture stack
+	m_TextStack.push_back(NewText);
+
+	return NewText;
+}
+
+void Game::DestroyText(Text* TextToDestroy)
+{
+	// Iterate through each item and if it matches then remove it from array
+	std::erase_if(m_TextStack,
+		[TextToDestroy](const auto Item) { return Item == TextToDestroy; }
+	);
+
+	TextToDestroy->Cleanup();
+	delete TextToDestroy;
+}
+
 Game::Game()
 {
 	printf("Game Created.\n");
@@ -116,7 +144,7 @@ Game::~Game()
 
 void Game::Initialise()
 {
-	// TODO: Run initialisation of dependencies
+	// Run initialisation of dependencies
 	// Initialise SDL and end the game if it fails
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) 
 	{
@@ -125,19 +153,30 @@ void Game::Initialise()
 		return;
 	}
 
+	// Initialise fonts through ttf
+	if (TTF_Init() == -1) {
+		// If init is -1, initalisation has failed
+		AW_LOG("Game", "TTF failed to init: " << TTF_GetError());
+		Cleanup();
+		return;
+	}
+
+	AW_LOG("Game", "Game successfully initialised all libraries.");
+
 	Start();
 }
 
 void Game::Start()
 {
-	// TODO: Launch the game window
+	// Launch the game window
 	// Create a window and check if it failed
 	m_WindowRef = SDL_CreateWindow(
 		"AWEngine",					// Window Title
 		SDL_WINDOWPOS_CENTERED,		// Start X position on the screeen
 		SDL_WINDOWPOS_CENTERED,		// Start Y position on the screeen
 		1280, 720,					// Window resolution
-		0);							// Special window setting flags
+		0							// Special window setting flags
+	);							
 
 	// Check if the window failed
 	if (m_WindowRef == nullptr)
@@ -191,6 +230,11 @@ void Game::Cleanup()
 	// Run the cleanup for the active game state
 	m_GameStateMachine->Cleanup();
 
+	for (const auto Item : m_TextStack) {
+		Item->Cleanup();
+		delete Item;
+	}
+
 	// Cleanup and remove all textures in the texture stack
 	for (int i = m_TextureStack.size() - 1; i > -1; --i)
 	{
@@ -210,6 +254,7 @@ void Game::Cleanup()
 		SDL_DestroyWindow(m_WindowRef);
 	}
 
+	TTF_Quit();
 	SDL_Quit();
 
 	AW_LOG("Game", "Game has deallocated all memory.");
@@ -266,9 +311,16 @@ void Game::Render()
 
 	// Render custom graphics
 	// Draw all textures in the texture stack
-	for (Texture* TexRef : m_TextureStack) {
+	for (const auto TexRef : m_TextureStack) {
 		if (TexRef != nullptr) {
 			TexRef->Draw();
+		}
+	}
+
+	// Draw text
+	for (const auto Item : m_TextStack) {
+		if (Item != nullptr) {
+			Item->Draw();
 		}
 	}
 

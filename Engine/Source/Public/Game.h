@@ -8,6 +8,7 @@ class Texture;
 class Input;
 class GameObject;
 class GameStateMachine;
+class Text;
 
 class Game {
 public:
@@ -29,6 +30,12 @@ public:
 	// Safe destroy the texture
 	void DestroyTexture(Texture* TextureToDestroy);
 
+	// Import text to the game
+	Text* ImportText(const char* PathToFile);
+
+	// Safe destroy the text
+	void DestroyText(Text* TextToDestroy);
+
 	// Gets the game state machine
 	GameStateMachine* GetGameStateMachine() const { return m_GameStateMachine; }
 
@@ -43,37 +50,52 @@ private:
 	// Initialise the dependencies/external libraries
 	// Exit the game if any fail
 	void Initialise();
+
 	// Run the post-initialise function that rely on dependencies
 	// Load the window and any start game functions
 	void Start();
+
 	// Run the game loop functions of the game until the app closes
 	void GameLoop();
+
 	// Deallocate memory after the game loop has been exited
 	void Cleanup();
 
 	// Game Loop
 	// Checks if any objects need to be spawned
 	void PreLoop();
+
 	// Listen for user input and process it
 	void ProcessInput();
+
 	// Update the game logic based on user inputs
 	void Update();
+
 	// Display the results and render graphics based on logic
 	void Render();
+
 	// Any objects marked for deletion will be deallocated from memory here
 	void CollectGarbage();
 
 private:
 	// Flag that decides when the game loop ends
 	bool m_IsGameOpen;
+
 	// Stores the window for the app/game
 	SDL_Window* m_WindowRef;
+
 	// Stores the renderer for the SDL window
 	SDL_Renderer* m_RendererRef;
+
 	// Stores all of the textures in the game
 	TArray<Texture*> m_TextureStack;
+
+	// Stores all text elements
+	TArray<Text*> m_TextStack;
+
 	// Store the input handler for the game
 	Input* m_GameInput;
+
 	// Game state machine for the game
 	GameStateMachine* m_GameStateMachine;
 };
