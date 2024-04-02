@@ -72,7 +72,7 @@ void Text::SetText(const char* NewText)
 
 void Text::SetFontSize(int NewSize)
 {
-	if (m_FontSize == NewSize) {
+	if (m_FontSize == NewSize) { 
 		return;
 	}
 
@@ -87,7 +87,14 @@ void Text::SetFontSize(int NewSize)
 
 void Text::SetFontColor(SDL_Color Color)
 {
-	m_TextColor = &Color;
+	if (m_TextColor == &Color) {
+		return;
+	}
+
+	m_TextColor->r = Color.r;
+	m_TextColor->g = Color.g;
+	m_TextColor->b = Color.b;
+	m_TextColor->a = Color.a;
 
 	UpdateFont();
 }

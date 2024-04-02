@@ -3,6 +3,7 @@
 
 class TextObject;
 class Enemy;
+class Player;
 
 class PlayState : public GameState {
 public:
@@ -15,8 +16,11 @@ protected:
 
 protected:
 	Enemy* m_SpawnedEnemy;
+	Player* m_SpawnedPlayer;
 	TextObject* m_ScoreText;
-	TextObject* m_Text1;
-	TextObject* m_Text2;
-	TextObject* m_Text3;
+	TextObject* m_PlayerText;
+	TextObject* m_EnemyText;
+	TextObject* m_RotateText;
+	TextObject* m_HideText;
+	TextObject* m_SizeText;
 };
