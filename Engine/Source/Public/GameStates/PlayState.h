@@ -18,9 +18,4 @@ protected:
 	Enemy* m_SpawnedEnemy;
 	Player* m_SpawnedPlayer;
 	TextObject* m_ScoreText;
-	TextObject* m_PlayerText;
-	TextObject* m_EnemyText;
-	TextObject* m_RotateText;
-	TextObject* m_HideText;
-	TextObject* m_SizeText;
 };

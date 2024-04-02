@@ -1,7 +1,7 @@
 #pragma once
-#include "GameObjects/Character.h"
+#include "GameObjects/DirectionalCharacter.h"
 
-class Player : public Character {
+class Player : public DirectionalCharacter {
 public:
 	Player();
 
@@ -12,12 +12,5 @@ protected:
 
 	virtual void OnUpdate(float DeltaTime) override;
 
-	// Change the engine effects animations
-	void SetPoweredEngine(bool Powered);
-
 	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;
-
-protected:
-	// Store the different effects for the engine effects
-	TArray<Sprite*> m_EngineEffects;
 };

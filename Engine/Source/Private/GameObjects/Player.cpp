@@ -3,52 +3,75 @@
 #include "GameObjects/Enemy.h"
 #include "Debug.h"
 
-#define Super Character
+#define Super DirectionalCharacter
 
-#define ENGINE_IDLE 0
-#define ENGINE_POWERED 1
-
-#define SCALE 3.0f
-#define SIZE ((48.0f - 16.0f) * SCALE)
+#define SCALE 4.0f
+#define SIZE (16.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 
 Player::Player()
 {
-	m_MaxSpeed = 600.0f;
-	m_Deceleration = 5.0f;
+	// Default Values
+	m_MaxSpeed = 400.0f;
+	m_Deceleration = 7.0f;
 	m_AccelerationSpeed = 5000.0f;
 
-	// Add engine sprite
-	AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engines/PNGs/Main Ship - Engines - Supercharged Engine.png"
-	);
-
-	// Add ship base sprite
-	m_MainSprite = AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png"
-	);
-
 	AnimationParams AnimParams;
-	AnimParams.fps = 24;
-	AnimParams.FrameHeight = 48;
-	AnimParams.FrameWidth = 48;
+	AnimParams.fps = 12;
+	AnimParams.FrameHeight = 16;
+	AnimParams.FrameWidth = 16;
 	AnimParams.EndFrame = 3;
 	AnimParams.MaxFrames = 4;
 
-	// Add the idle engine effect
-	m_EngineEffects.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Idle.png",
+	// Add player sprite: idle, right
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Right.png"
+	));
+
+	// Add player sprite: idle, left
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Left.png"
+	));
+
+	// Add player sprite: idle, up
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Up.png"
+	));
+
+	// Add player sprite: idle, down
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Down.png"
+	));
+
+	// Add player sprite: moving, right
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Right.png",
 		&AnimParams
 	));
 
-	// Add the powered engine effect
-	m_EngineEffects.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
+	// Add player sprite: moving, left
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Left.png",
 		&AnimParams
 	));
 
-	SetPoweredEngine(false);
+	// Add player sprite: moving, up
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Up.png",
+		&AnimParams
+	));
 
+	// Add player sprite: moving, down
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Down.png",
+		&AnimParams
+	));
+
+	// Set base animation state
+	m_LastMovementDirection = DIRECTION_DOWN;
+	SetAnimation(m_LastMovementDirection, true);
+
+	// Add bounds
 	Bounds* PlayerBounds = AddBounds({ 640.0f, 360.0f }, SIZE);
 	PlayerBounds->m_OriginOffset = -HALF_SIZE;
 	PlayerBounds->m_Debug = true;
@@ -84,22 +107,8 @@ void Player::OnUpdate(float DeltaTime)
 {
 	Super::OnUpdate(DeltaTime);
 
-	if (m_MoveDirection.Length() > 0.0f) {
-		SetPoweredEngine(true);
-	}
-	else {
-		SetPoweredEngine(false);
-	}
-}
-
-void Player::SetPoweredEngine(bool Powered)
-{
-	if (m_EngineEffects.size() > 1) {
-		if (m_EngineEffects[ENGINE_IDLE] != nullptr && m_EngineEffects[ENGINE_POWERED] != nullptr) {
-			m_EngineEffects[ENGINE_IDLE]->SetActive(!Powered);
-			m_EngineEffects[ENGINE_POWERED]->SetActive(Powered);
-		}
-	}
+	// Screen Wrap
+	ScreenWrap(HALF_SIZE);
 }
 
 void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
