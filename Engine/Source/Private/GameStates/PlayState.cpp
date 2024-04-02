@@ -1,15 +1,19 @@
 #include "GameStates/PlayState.h"
 
+#include <string>
 #include "Game.h"
 #include "GameStates/GameStateMachine.h"
 #include "Input.h"
 #include "GameObjects/Player.h"
 #include "GameObjects/Enemy.h"
 #include "GameObjects/TextObject.h"
-#include <string>
+#include "GameObjects/Collectable.h"
+
 #include "Debug.h"
 
 #define Super GameState
+
+float PlayState::m_Score = 0.0f;
 
 PlayState::PlayState()
 {
@@ -38,12 +42,29 @@ void PlayState::OnUpdate(float DeltaTime)
 	Super::OnUpdate(DeltaTime);
 
 	// Score Text
-	static float Score = 0.0f;
-	Score += DeltaTime * 10.0f;
-
 	std::string ScoreString = "Score: " + 
-		std::to_string(static_cast<int>(std::trunc(Score))
+		std::to_string(static_cast<int>(std::trunc(PlayState::m_Score))
 	);
 
 	m_ScoreText->SetText(ScoreString.c_str());
+
+	for (const auto Item : m_Collectables) {
+		if (Item == nullptr) {
+			//m_Collectables.
+		}
+	}
+
+	if (m_Collectables.size() < 5) {
+		m_Collectables.push_back(AddGameObject<Collectable>());
+	}
+}
+
+void PlayState::OnCleanup()
+{
+	// Cleanup collectables
+	for (const auto Item : m_Collectables) {
+		Item->DestroyObject();
+	}
+
+	Super::OnCleanup();
 }

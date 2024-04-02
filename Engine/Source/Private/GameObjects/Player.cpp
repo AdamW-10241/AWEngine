@@ -74,6 +74,7 @@ Player::Player()
 	// Add bounds
 	Bounds* PlayerBounds = AddBounds({ 640.0f, 360.0f }, SIZE);
 	PlayerBounds->m_OriginOffset = -HALF_SIZE;
+	PlayerBounds->m_Tag = "PLAYER";
 	PlayerBounds->m_Debug = true;
 }
 
@@ -113,12 +114,6 @@ void Player::OnUpdate(float DeltaTime)
 
 void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
-	/*
-	if (dynamic_cast<Enemy*>(OverlapBounds->GetOwner())) {
-		OverlapBounds->GetOwner()->DestroyObject();
-	}
-	*/
-
 	/*
 	if (OverlapBounds->m_Tag == "ENEMY") {
 		OverlapBounds->GetOwner()->DestroyObject();
