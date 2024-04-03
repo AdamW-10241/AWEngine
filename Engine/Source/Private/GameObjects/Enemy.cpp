@@ -1,7 +1,7 @@
 #include "GameObjects/Enemy.h"
-#include "GameStates/PlayState.h"
 #include "Game.h"
 #include "GameStates/GameStateMachine.h"
+#include "GameObjects/Player.h"
 
 #include "Debug.h"
 
@@ -11,14 +11,12 @@
 #define SIZE (16.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 
-Enemy::Enemy() : m_ScoreValue(250.0f)
+Enemy::Enemy() : m_TimeUntilNextMovementChoice(0.0f), m_ScoreValue(250.0f), m_PlayerRef(nullptr)
 {
 	// Default Values
-	m_MaxSpeed = 200.0f;
+	m_MaxSpeed = 150.0f;
 	m_Deceleration = 5.0f;
 	m_AccelerationSpeed = 1000.0f;
-
-	m_TimeUntilNextMovementChoice = 0.0f;
 
 	AnimationParams AnimParams;
 	AnimParams.fps = 12;
@@ -79,15 +77,18 @@ Enemy::Enemy() : m_ScoreValue(250.0f)
 	Bounds* EnemyBounds = AddBounds(0.0f, SIZE);
 	EnemyBounds->m_OriginOffset = -HALF_SIZE;
 	EnemyBounds->m_Tag = "ENEMY";
-	EnemyBounds->m_Debug = true;
+	EnemyBounds->m_Debug = false;
 }
 
 void Enemy::OnStart()
 {
 	Super::OnStart();
 
-	// Pick random spot
-	SetPosition({ (float)(rand() % 1280), 100 });
+	// Get player reference
+	m_PlayerRef = PlayState::GetPlayer();
+
+	// Pick random spawn spot
+	SetPosition({(float)(rand() % 1280), 25.0f});
 
 	SetScale(SCALE);
 }
@@ -96,8 +97,23 @@ void Enemy::OnUpdate(float DeltaTime)
 {
 	// Randomly choose movement
 	if (m_TimeUntilNextMovementChoice - DeltaTime <= 0.0f) {
+		// Check player is valid
+		if (m_PlayerRef == nullptr) {
+			return;
+		}
+
 		// Randomly determine movement direction
-		m_MovementChoice = { (float)((rand() % 3) - 1), (float)((rand() % 3) - 1) };
+		if (rand() % 3 <= 1) {
+			// Toward player
+			// 2/3 to follow
+			m_MovementChoice = (*m_PlayerRef).GetTransform().Position - GetTransform().Position;
+		}
+		else {
+			// Random direction
+			// 1/3 to move randomly
+			m_MovementChoice = { (float)((rand() % 3) - 1), (float)((rand() % 3) - 1) };
+		}
+		
 		// Randomly get time until next choice
 		m_TimeUntilNextMovementChoice = rand() % 4;
 	}
@@ -110,20 +126,26 @@ void Enemy::OnUpdate(float DeltaTime)
 
 	Super::OnUpdate(DeltaTime);
 
-	// Screen wrap
-	ScreenWrap(HALF_SIZE);
+	// Screen border
+	ScreenBorder(HALF_SIZE);
 }
 
 void Enemy::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
 	if (OverlapBounds->m_Tag == "PROJECTILE") {
-		// Destroy Projectile
+		// Destroy projectile
 		OverlapBounds->GetOwner()->DestroyObject();
 
-		// Add score and destroy
+		// Add score
 		PlayState::AddScore(m_ScoreValue);
-		PlayState::SpawnCollectable(GetTransform().Position);
 
+		// Random chance to spawn a collectable
+		// 1/3 chance
+		if (rand() % 3 == 0) {
+			PlayState::SpawnCollectable(GetTransform().Position);
+		}
+
+		// Destroy enemy
 		DestroyObject();
 	}
 }

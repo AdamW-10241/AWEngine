@@ -159,7 +159,7 @@ void GameObject::TestOverLapEvent(Bounds* OtherBounds)
 				// Run the exit function
 				OnOverlapExit(OtherBounds, TestBounds);
 
-				AW_LOG("GameObject", "Exit Intersection.");
+				//AW_LOG("GameObject", "Exit Intersection.");
 			}
 		}
 		else {
@@ -169,7 +169,7 @@ void GameObject::TestOverLapEvent(Bounds* OtherBounds)
 				// Run the enter function
 				OnOverlapEnter(OtherBounds, TestBounds);
 
-				AW_LOG("GameObject", "Enter Intersection.");
+				//AW_LOG("GameObject", "Enter Intersection.");
 			}
 		}
 	}

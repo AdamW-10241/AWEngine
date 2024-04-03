@@ -26,7 +26,7 @@ Collectable::Collectable() : m_ScoreValue(500.0f)
 	Bounds* CollectableBounds = AddBounds(0.0f, SIZE);
 	CollectableBounds->m_OriginOffset = -HALF_SIZE;
 	CollectableBounds->m_Tag = "COLLECTABLE";
-	CollectableBounds->m_Debug = true;
+	CollectableBounds->m_Debug = false;
 }
 
 void Collectable::OnStart()

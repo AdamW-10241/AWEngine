@@ -5,7 +5,7 @@ class TextObject;
 class Enemy;
 class Player;
 class Collectable;
-class Vector2;
+struct Vector2;
 
 class PlayState : public GameState {
 public:
@@ -16,6 +16,9 @@ public:
 
 	// Spawn a collectable into the level
 	static void SpawnCollectable(Vector2 Position);
+
+	// Get a reference to the player
+	static Player* GetPlayer();
 
 protected:
 	virtual void OnStart() override;

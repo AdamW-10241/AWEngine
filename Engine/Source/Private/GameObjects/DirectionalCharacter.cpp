@@ -74,3 +74,24 @@ void DirectionalCharacter::ScreenWrap(float HalfSpriteSize)
 		SetPosition({ 1280 + HalfSpriteSize, GetTransform().Position.y });
 	}
 }
+
+void DirectionalCharacter::ScreenBorder(float HalfSpriteSize)
+{
+	// Screen border the directional character
+	// Bottom to top
+	if (GetTransform().Position.y + HalfSpriteSize > 720) {
+		SetPosition({ GetTransform().Position.x, 720 - HalfSpriteSize });
+	}
+	// Top to bottom
+	if (GetTransform().Position.y - HalfSpriteSize < 0) {
+		SetPosition({ GetTransform().Position.x, HalfSpriteSize });
+	}
+	// Right to left
+	if (GetTransform().Position.x + HalfSpriteSize > 1280) {
+		SetPosition({ 1280 - HalfSpriteSize, GetTransform().Position.y });
+	}
+	// Left to right
+	if (GetTransform().Position.x - HalfSpriteSize < 0) {
+		SetPosition({ HalfSpriteSize, GetTransform().Position.y });
+	}
+}

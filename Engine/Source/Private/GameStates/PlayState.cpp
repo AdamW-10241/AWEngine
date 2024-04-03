@@ -30,6 +30,13 @@ void PlayState::SpawnCollectable(Vector2 Position)
 	(*PS).m_Collectables.back()->SetPosition(Position);
 }
 
+Player* PlayState::GetPlayer()
+{
+	// Get player reference
+	PlayState* PS = (PlayState*)Game::GetGame()->GetGameStateMachine()->GetActiveGameState();
+	return (*PS).m_SpawnedPlayer;
+}
+
 void PlayState::OnStart()
 {
 	Super::OnStart();
@@ -101,7 +108,7 @@ void PlayState::OnCleanup()
 void PlayState::AddObjects()
 {
 	// Add more enemies
-	for (int i = m_Enemies.size(); i < 10; i++) {
+	for (int i = m_Enemies.size(); i < 20; i++) {
 		m_Enemies.push_back(AddGameObject<Enemy>());
 	}
 }

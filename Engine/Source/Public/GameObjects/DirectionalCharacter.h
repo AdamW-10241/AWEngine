@@ -16,6 +16,9 @@ public:
 	// Check and screen wrap the directional character
 	void ScreenWrap(float HalfSpriteSize);
 
+	// Check and screen border the directional character
+	void ScreenBorder(float HalfSpriteSize);
+
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
 

@@ -33,7 +33,7 @@ Projectile::Projectile()
 	Bounds* CollectableBounds = AddBounds(0.0f, SIZE);
 	CollectableBounds->m_OriginOffset = -HALF_SIZE;
 	CollectableBounds->m_Tag = "PROJECTILE";
-	CollectableBounds->m_Debug = true;
+	CollectableBounds->m_Debug = false;
 }
 
 void Projectile::OnStart()

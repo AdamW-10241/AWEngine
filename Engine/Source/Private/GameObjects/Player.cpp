@@ -81,7 +81,7 @@ Player::Player() : m_FireDelay(0.0f)
 	Bounds* PlayerBounds = AddBounds({ 640.0f, 360.0f }, SIZE);
 	PlayerBounds->m_OriginOffset = -HALF_SIZE;
 	PlayerBounds->m_Tag = "PLAYER";
-	PlayerBounds->m_Debug = true;
+	PlayerBounds->m_Debug = false;
 }
 
 void Player::OnStart()
@@ -121,8 +121,8 @@ void Player::OnUpdate(float DeltaTime)
 	// Reduce fire delay
 	m_FireDelay -= DeltaTime;
 
-	// Screen wrap
-	ScreenWrap(HALF_SIZE);
+	// Screen border
+	ScreenBorder(HALF_SIZE);
 }
 
 void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
@@ -167,7 +167,7 @@ void Player::CollectGarbage()
 
 void Player::FireProjectile(Vector2 AimPosition)
 {
-	if (m_Projectiles.size() >= 3 || m_FireDelay > 0.0f) {
+	if (m_Projectiles.size() >= 1 || m_FireDelay > 0.0f) {
 		return;
 	}
 

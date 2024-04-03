@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObjects/DirectionalCharacter.h"
 
+class Player;
+
 class Enemy : public DirectionalCharacter {
 public:
 	Enemy();
@@ -21,4 +23,7 @@ protected:
 
 	// Enemy score value
 	float m_ScoreValue;
+
+	// Player reference
+	Player* m_PlayerRef;
 };
