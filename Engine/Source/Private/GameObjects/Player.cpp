@@ -3,6 +3,7 @@
 #include "GameObjects/Enemy.h"
 #include "GameStates/GameStateMachine.h"
 #include "Game.h"
+#include "GameObjects/Projectile.h"
 
 #include "Debug.h"
 
@@ -12,7 +13,9 @@
 #define SIZE (16.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 
-Player::Player()
+#define PI 3.1415926f
+
+Player::Player() : m_FireDelay(0.0f)
 {
 	// Default Values
 	m_MaxSpeed = 400.0f;
@@ -105,13 +108,20 @@ void Player::OnProcessInput(Input* GameInput)
 	if (GameInput->IsKeyDown(AW_KEY_D)) {
 		AddMovementInput(Vector2(1.0f, 0.0f));
 	}
+
+	if (GameInput->IsMouseButtonDown(AW_MOUSE_LEFT)) {
+		FireProjectile(GameInput->GetMousePos());
+	}
 }
 
 void Player::OnUpdate(float DeltaTime)
 {
 	Super::OnUpdate(DeltaTime);
 
-	// Screen Wrap
+	// Reduce fire delay
+	m_FireDelay -= DeltaTime;
+
+	// Screen wrap
 	ScreenWrap(HALF_SIZE);
 }
 
@@ -124,4 +134,62 @@ void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 
 		AW_LOG("Player", "GameState changed to the GameOverState");
 	}
+}
+
+void Player::Cleanup()
+{
+	// Destroy projectiles
+	for (const auto Item : m_Projectiles) {
+		if (Item != nullptr) {
+			Item->DestroyObject();
+			AW_LOG("Player", "Cleaned up projectile.");
+		}
+	}
+
+	Super::Cleanup();
+}
+
+void Player::CollectGarbage()
+{
+	// Delete marked projectiles
+	std::erase_if(m_Projectiles,
+		[](Projectile* Item) {
+			if (!Item->IsPendingDestroy()) {
+				return false;
+			}
+
+			AW_LOG("Player", "Removed destroy-marked projectile from stack.");
+			return true; }
+	);
+
+	Super::CollectGarbage();
+}
+
+void Player::FireProjectile(Vector2 AimPosition)
+{
+	if (m_Projectiles.size() >= 3 || m_FireDelay > 0.0f) {
+		return;
+	}
+
+	// Add new projectile
+	m_Projectiles.push_back(
+		Game::GetGame()->GetGameStateMachine()->GetActiveGameState()->AddGameObject<Projectile>()
+	);
+
+	// Set the projectiles position to match the player
+	m_Projectiles.back()->SetPosition(GetTransform().Position);
+
+	// Angle projectile toward cursor
+	Vector2 PlayerPosition = GetTransform().Position;
+
+	m_Projectiles.back()->SetRotation(
+		// Calculate angle from aim position and player position
+		atan2((AimPosition.y - PlayerPosition.y), (AimPosition.x - PlayerPosition.x)) * 180 / PI
+	);
+
+	// Move projectile toward cursor
+	m_Projectiles.back()->AddForce(AimPosition - PlayerPosition, 1000.0f);
+
+	// Set fire delay
+	m_FireDelay = 0.2f;
 }

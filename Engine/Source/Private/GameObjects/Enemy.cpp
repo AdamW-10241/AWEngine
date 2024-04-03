@@ -1,5 +1,7 @@
 #include "GameObjects/Enemy.h"
 #include "GameStates/PlayState.h"
+#include "Game.h"
+#include "GameStates/GameStateMachine.h"
 
 #include "Debug.h"
 
@@ -95,7 +97,7 @@ void Enemy::OnUpdate(float DeltaTime)
 	// Randomly choose movement
 	if (m_TimeUntilNextMovementChoice - DeltaTime <= 0.0f) {
 		// Randomly determine movement direction
-		m_MovementChoice = { (float)((rand() % 3) - 1), 0 };
+		m_MovementChoice = { (float)((rand() % 3) - 1), (float)((rand() % 3) - 1) };
 		// Randomly get time until next choice
 		m_TimeUntilNextMovementChoice = rand() % 4;
 	}
@@ -108,15 +110,20 @@ void Enemy::OnUpdate(float DeltaTime)
 
 	Super::OnUpdate(DeltaTime);
 
-	// Screen Wrap
+	// Screen wrap
 	ScreenWrap(HALF_SIZE);
 }
 
 void Enemy::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
-	//if (OverlapBounds->m_Tag == "PLAYER") {
-	//	// Add score and destroy
-	//	PlayState::AddScore(m_ScoreValue);
-	//	DestroyObject();
-	//}
+	if (OverlapBounds->m_Tag == "PROJECTILE") {
+		// Destroy Projectile
+		OverlapBounds->GetOwner()->DestroyObject();
+
+		// Add score and destroy
+		PlayState::AddScore(m_ScoreValue);
+		PlayState::SpawnCollectable(GetTransform().Position);
+
+		DestroyObject();
+	}
 }

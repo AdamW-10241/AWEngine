@@ -5,6 +5,7 @@ class TextObject;
 class Enemy;
 class Player;
 class Collectable;
+class Vector2;
 
 class PlayState : public GameState {
 public:
@@ -12,6 +13,9 @@ public:
 
 	// Add to the game score
 	static void AddScore(float Score) { m_Score += Score; }
+
+	// Spawn a collectable into the level
+	static void SpawnCollectable(Vector2 Position);
 
 protected:
 	virtual void OnStart() override;
@@ -22,8 +26,13 @@ protected:
 
 	virtual void OnCleanup() override;
 
+	virtual void AddObjects();
+
+	virtual void RemoveDestroyedObjects();
+
 protected:
 	Player* m_SpawnedPlayer;
+
 	TextObject* m_ScoreText;
 
 private:
@@ -31,5 +40,7 @@ private:
 
 	// Store spawned collectables
 	TArray<Collectable*> m_Collectables;
+
+	// Store spawned enemies
 	TArray<Enemy*> m_Enemies;
 };

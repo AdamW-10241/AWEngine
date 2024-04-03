@@ -8,6 +8,7 @@
 #include "GameObjects/Enemy.h"
 #include "GameObjects/TextObject.h"
 #include "GameObjects/Collectable.h"
+#include "Math/Vector2.h"
 
 #include "Debug.h"
 
@@ -21,10 +22,22 @@ PlayState::PlayState()
 	m_ScoreText = nullptr;
 }
 
+void PlayState::SpawnCollectable(Vector2 Position)
+{
+	// Spawn collectable
+	PlayState* PS = (PlayState*)Game::GetGame()->GetGameStateMachine()->GetActiveGameState();
+	(*PS).m_Collectables.push_back((*PS).AddGameObject<Collectable>());
+	(*PS).m_Collectables.back()->SetPosition(Position);
+}
+
 void PlayState::OnStart()
 {
 	Super::OnStart();
 
+	// Reset score
+	m_Score = 0.0f;
+
+	// Add objects
 	m_SpawnedPlayer = AddGameObject<Player>();
 
 	m_ScoreText = AddGameObject<TextObject>();
@@ -33,6 +46,9 @@ void PlayState::OnStart()
 	m_ScoreText->SetText("Score:0");
 	m_ScoreText->SetAligment(AL_TOP_LEFT);
 	m_ScoreText->SetFontColor(0, 255, 0, 255);
+
+	// Add to object stacks
+	AddObjects();
 }
 
 void PlayState::OnUpdate(float DeltaTime)
@@ -46,18 +62,51 @@ void PlayState::OnUpdate(float DeltaTime)
 
 	m_ScoreText->SetText(ScoreString.c_str());
 
-	// Add more collectables
-	for (int i = m_Collectables.size(); i < 10; i++) {
-		m_Collectables.push_back(AddGameObject<Collectable>());
+	// Add to object stacks
+	AddObjects();
+}
+
+void PlayState::OnGarbageCollection()
+{
+	// Remove destroyed objects from object stacks
+	RemoveDestroyedObjects();
+}
+
+void PlayState::OnCleanup()
+{
+	// Destroy collectables
+	for (const auto Item : m_Collectables) {
+		if (Item != nullptr) {
+			Item->DestroyObject();
+		}
 	}
 
+	// Destroy enemies
+	for (const auto Item : m_Enemies) {
+		if (Item != nullptr) {
+			Item->DestroyObject();
+		}
+	}
+
+	// Destroy other objects
+	m_SpawnedPlayer->DestroyObject();
+	m_SpawnedPlayer = nullptr;
+
+	m_ScoreText->DestroyObject();
+	m_ScoreText = nullptr;
+
+	Super::OnCleanup();
+}
+
+void PlayState::AddObjects()
+{
 	// Add more enemies
-	for (int i = m_Enemies.size(); i < 5; i++) {
+	for (int i = m_Enemies.size(); i < 10; i++) {
 		m_Enemies.push_back(AddGameObject<Enemy>());
 	}
 }
 
-void PlayState::OnGarbageCollection()
+void PlayState::RemoveDestroyedObjects()
 {
 	// Remove collected collectables
 	std::erase_if(m_Collectables,
@@ -78,26 +127,4 @@ void PlayState::OnGarbageCollection()
 
 			return true; }
 	);
-}
-
-void PlayState::OnCleanup()
-{
-	// Destroy collectables
-	for (const auto Item : m_Collectables) {
-		Item->DestroyObject();
-	}
-
-	// Destroy enemies
-	for (const auto Item : m_Enemies) {
-		Item->DestroyObject();
-	}
-
-	// Destroy other objects
-	m_SpawnedPlayer->DestroyObject();
-	m_SpawnedPlayer = nullptr;
-
-	m_ScoreText->DestroyObject();
-	m_ScoreText = nullptr;
-
-	Super::OnCleanup();
 }

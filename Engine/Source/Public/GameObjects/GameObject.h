@@ -71,7 +71,7 @@ public:
 	TArray<Bounds*> GetAllBounds() const { return m_BoundsStack; }
 
 	// Cleanup Garbage in a game object level
-	void CollectGarbage();
+	virtual void CollectGarbage();
 
 	// Get the overlap state of the game object
 	bool GetOverlap() const { return m_IsOverlapping; }

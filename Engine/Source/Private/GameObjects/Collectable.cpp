@@ -33,9 +33,6 @@ void Collectable::OnStart()
 {
 	Super::OnStart();
 
-	// Pick random spot
-	SetPosition({ (float)(rand() % 1280), (float)(rand() % 720) });
-
 	SetScale(SCALE);
 }
 
