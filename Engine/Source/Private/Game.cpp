@@ -1,12 +1,13 @@
 #include "Game.h"
 #include "SDL2/SDL.h"
-#include "Debug.h"
 #include "Graphics/Texture.h"
 #include "Input.h"
 #include "GameObjects/GameObject.h"
 #include "GameStates/GameStateMachine.h"
 #include "SDL2/SDL_ttf.h"
 #include "Graphics/Text.h"
+
+#include "Debug.h"
 
 Game* Game::GetGame()
 {
@@ -204,8 +205,7 @@ void Game::Start()
 	m_GameInput = new Input();
 
 	// Create the game state machine
-	GameState* Default = new PlayState();
-	m_GameStateMachine = new GameStateMachine(Default);
+	m_GameStateMachine = new GameStateMachine(new PlayState());
 
 	GameLoop();
 }

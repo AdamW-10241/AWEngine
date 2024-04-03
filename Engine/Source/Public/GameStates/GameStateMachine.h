@@ -2,6 +2,7 @@
 #include "EngineTypes.h"
 #include "GameStates/GameState.h"
 #include "GameStates/PlayState.h"
+#include "GameStates/GameOverState.h"
 
 class GameStateMachine {
 public:

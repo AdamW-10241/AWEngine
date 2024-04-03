@@ -12,7 +12,7 @@
 Enemy::Enemy() : m_ScoreValue(250.0f)
 {
 	// Default Values
-	m_MaxSpeed = 100.0f;
+	m_MaxSpeed = 200.0f;
 	m_Deceleration = 5.0f;
 	m_AccelerationSpeed = 1000.0f;
 
@@ -84,10 +84,8 @@ void Enemy::OnStart()
 {
 	Super::OnStart();
 
-	// Set starting position
-	static float StartingPosition(0.0f);
-	SetPosition({ 640.0f, StartingPosition });
-	StartingPosition += 40.0f;
+	// Pick random spot
+	SetPosition({ (float)(rand() % 1280), 100 });
 
 	SetScale(SCALE);
 }
@@ -97,7 +95,7 @@ void Enemy::OnUpdate(float DeltaTime)
 	// Randomly choose movement
 	if (m_TimeUntilNextMovementChoice - DeltaTime <= 0.0f) {
 		// Randomly determine movement direction
-		m_MovementChoice = { (float)((rand() % 3) - 1), (float)((rand() % 3) - 1) };
+		m_MovementChoice = { (float)((rand() % 3) - 1), 0 };
 		// Randomly get time until next choice
 		m_TimeUntilNextMovementChoice = rand() % 4;
 	}
@@ -116,9 +114,9 @@ void Enemy::OnUpdate(float DeltaTime)
 
 void Enemy::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
-	if (OverlapBounds->m_Tag == "PLAYER") {
-		// Add score and destroy
-		PlayState::AddScore(m_ScoreValue);
-		DestroyObject();
-	}
+	//if (OverlapBounds->m_Tag == "PLAYER") {
+	//	// Add score and destroy
+	//	PlayState::AddScore(m_ScoreValue);
+	//	DestroyObject();
+	//}
 }

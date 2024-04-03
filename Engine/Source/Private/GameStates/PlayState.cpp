@@ -29,8 +29,8 @@ void PlayState::OnStart()
 
 	m_ScoreText = AddGameObject<TextObject>();
 	m_ScoreText->SetPosition({ 10.0f, 10.0f });
-	m_ScoreText->SetFontSize(35);
-	m_ScoreText->SetText("Score: 0");
+	m_ScoreText->SetFontSize(25);
+	m_ScoreText->SetText("Score:0");
 	m_ScoreText->SetAligment(AL_TOP_LEFT);
 	m_ScoreText->SetFontColor(0, 255, 0, 255);
 }
@@ -40,7 +40,7 @@ void PlayState::OnUpdate(float DeltaTime)
 	Super::OnUpdate(DeltaTime);
 
 	// Score Text
-	std::string ScoreString = "Score: " + 
+	std::string ScoreString = "Score:" + 
 		std::to_string(static_cast<int>(std::trunc(PlayState::m_Score))
 	);
 
@@ -91,6 +91,13 @@ void PlayState::OnCleanup()
 	for (const auto Item : m_Enemies) {
 		Item->DestroyObject();
 	}
+
+	// Destroy other objects
+	m_SpawnedPlayer->DestroyObject();
+	m_SpawnedPlayer = nullptr;
+
+	m_ScoreText->DestroyObject();
+	m_ScoreText = nullptr;
 
 	Super::OnCleanup();
 }

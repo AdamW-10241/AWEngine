@@ -1,6 +1,9 @@
 #include "GameObjects/Player.h"
 #include "Input.h"
 #include "GameObjects/Enemy.h"
+#include "GameStates/GameStateMachine.h"
+#include "Game.h"
+
 #include "Debug.h"
 
 #define Super DirectionalCharacter
@@ -114,9 +117,11 @@ void Player::OnUpdate(float DeltaTime)
 
 void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
-	/*
 	if (OverlapBounds->m_Tag == "ENEMY") {
-		OverlapBounds->GetOwner()->DestroyObject();
+		// Change to game over state
+		Game::GetGame()->GetGameStateMachine()->GetActiveGameState()->DestroyGameState();
+		Game::GetGame()->GetGameStateMachine()->SetNewGameState(new GameOverState());
+
+		AW_LOG("Player", "GameState changed to the GameOverState");
 	}
-	*/
 }
