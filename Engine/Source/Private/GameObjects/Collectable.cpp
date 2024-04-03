@@ -4,14 +4,11 @@
 #define Super Character
 
 #define SCALE 4.0f
-#define SIZE (16.0f) * SCALE
+#define SIZE (10.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 
-Collectable::Collectable()
+Collectable::Collectable() : m_ScoreValue(500.0f)
 {
-	// Score Value
-	m_ScoreValue = 100.0f;
-	
 	// Main sprite
 	AnimationParams AnimParams;
 	AnimParams.fps = 12;
@@ -19,7 +16,6 @@ Collectable::Collectable()
 	AnimParams.FrameWidth = 10;
 	AnimParams.EndFrame = 3;
 	AnimParams.MaxFrames = 4;
-
 
 	m_MainSprite = AddSprite(
 		"Content/NinjaAdventure/Items/Treasure/Coin2.png",
@@ -46,8 +42,8 @@ void Collectable::OnStart()
 void Collectable::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
 	if (OverlapBounds->m_Tag == "PLAYER") {
+		// Add score and destroy
 		PlayState::AddScore(m_ScoreValue);
+		DestroyObject();
 	}
-
-	DestroyObject();
 }

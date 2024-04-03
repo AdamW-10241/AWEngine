@@ -17,7 +17,6 @@ float PlayState::m_Score = 0.0f;
 
 PlayState::PlayState()
 {
-	m_SpawnedEnemy = nullptr;
 	m_SpawnedPlayer = nullptr;
 	m_ScoreText = nullptr;
 }
@@ -26,7 +25,6 @@ void PlayState::OnStart()
 {
 	Super::OnStart();
 
-	m_SpawnedEnemy = AddGameObject<Enemy>();
 	m_SpawnedPlayer = AddGameObject<Player>();
 
 	m_ScoreText = AddGameObject<TextObject>();
@@ -48,21 +46,49 @@ void PlayState::OnUpdate(float DeltaTime)
 
 	m_ScoreText->SetText(ScoreString.c_str());
 
-	for (const auto Item : m_Collectables) {
-		if (Item == nullptr) {
-			//m_Collectables.
-		}
-	}
-
-	if (m_Collectables.size() < 5) {
+	// Add more collectables
+	for (int i = m_Collectables.size(); i < 10; i++) {
 		m_Collectables.push_back(AddGameObject<Collectable>());
 	}
+
+	// Add more enemies
+	for (int i = m_Enemies.size(); i < 5; i++) {
+		m_Enemies.push_back(AddGameObject<Enemy>());
+	}
+}
+
+void PlayState::OnGarbageCollection()
+{
+	// Remove collected collectables
+	std::erase_if(m_Collectables,
+		[](Collectable* Item) {
+			if (!Item->IsPendingDestroy()) {
+				return false;
+			}
+
+			return true; }
+	);
+
+	// Remove defeated enemies
+	std::erase_if(m_Enemies,
+		[](Enemy* Item) {
+			if (!Item->IsPendingDestroy()) {
+				return false;
+			}
+
+			return true; }
+	);
 }
 
 void PlayState::OnCleanup()
 {
-	// Cleanup collectables
+	// Destroy collectables
 	for (const auto Item : m_Collectables) {
+		Item->DestroyObject();
+	}
+
+	// Destroy enemies
+	for (const auto Item : m_Enemies) {
 		Item->DestroyObject();
 	}
 

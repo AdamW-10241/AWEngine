@@ -1,4 +1,6 @@
 #include "GameObjects/Enemy.h"
+#include "GameStates/PlayState.h"
+
 #include "Debug.h"
 
 #define Super DirectionalCharacter
@@ -7,7 +9,7 @@
 #define SIZE (16.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 
-Enemy::Enemy()
+Enemy::Enemy() : m_ScoreValue(250.0f)
 {
 	// Default Values
 	m_MaxSpeed = 100.0f;
@@ -110,4 +112,13 @@ void Enemy::OnUpdate(float DeltaTime)
 
 	// Screen Wrap
 	ScreenWrap(HALF_SIZE);
+}
+
+void Enemy::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
+{
+	if (OverlapBounds->m_Tag == "PLAYER") {
+		// Add score and destroy
+		PlayState::AddScore(m_ScoreValue);
+		DestroyObject();
+	}
 }

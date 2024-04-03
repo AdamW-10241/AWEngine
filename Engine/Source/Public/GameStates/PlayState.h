@@ -18,10 +18,11 @@ protected:
 
 	virtual void OnUpdate(float DeltaTime) override;
 
+	virtual void OnGarbageCollection() override;
+
 	virtual void OnCleanup() override;
 
 protected:
-	Enemy* m_SpawnedEnemy;
 	Player* m_SpawnedPlayer;
 	TextObject* m_ScoreText;
 
@@ -30,4 +31,5 @@ private:
 
 	// Store spawned collectables
 	TArray<Collectable*> m_Collectables;
+	TArray<Enemy*> m_Enemies;
 };

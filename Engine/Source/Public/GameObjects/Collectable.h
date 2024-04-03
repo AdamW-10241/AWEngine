@@ -11,5 +11,6 @@ protected:
 	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;
 
 protected:
+	// Collectable score value
 	float m_ScoreValue;
 };
