@@ -14,6 +14,9 @@ public:
 	// Add to the game score
 	static void AddScore(float Score) { m_Score += Score; }
 
+	// Get the game score
+	static float const GetScore() { return m_Score; }
+
 	// Spawn a collectable into the level
 	static void SpawnCollectable(Vector2 Position);
 

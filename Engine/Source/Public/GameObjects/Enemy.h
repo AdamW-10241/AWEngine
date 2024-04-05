@@ -26,4 +26,7 @@ protected:
 
 	// Player reference
 	Player* m_PlayerRef;
+
+	// Flag to see if dead
+	bool m_Dead;
 };

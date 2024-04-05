@@ -11,9 +11,15 @@
 #define SIZE (16.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 
-Enemy::Enemy() : m_TimeUntilNextMovementChoice(0.0f), m_ScoreValue(250.0f), m_PlayerRef(nullptr)
+Enemy::Enemy()
 {
-	// Default Values
+	// Set variables
+	m_TimeUntilNextMovementChoice = 0.0f;
+	m_ScoreValue = 100.0f;
+	m_PlayerRef = nullptr;
+	m_Dead = false;
+
+	// Default values
 	m_MaxSpeed = 150.0f;
 	m_Deceleration = 5.0f;
 	m_AccelerationSpeed = 1000.0f;
@@ -115,7 +121,7 @@ void Enemy::OnUpdate(float DeltaTime)
 		}
 		
 		// Randomly get time until next choice
-		m_TimeUntilNextMovementChoice = rand() % 4;
+		m_TimeUntilNextMovementChoice = rand() % 8;
 	}
 
 	// Reduce time until choice
@@ -132,6 +138,10 @@ void Enemy::OnUpdate(float DeltaTime)
 
 void Enemy::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
+	if (m_Dead) {
+		return;
+	}
+	
 	if (OverlapBounds->m_Tag == "PROJECTILE") {
 		// Destroy projectile
 		OverlapBounds->GetOwner()->DestroyObject();
@@ -140,12 +150,15 @@ void Enemy::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 		PlayState::AddScore(m_ScoreValue);
 
 		// Random chance to spawn a collectable
-		// 1/3 chance
-		if (rand() % 3 == 0) {
+		// 1/4 chance
+		if (rand() % 4 == 0) {
 			PlayState::SpawnCollectable(GetTransform().Position);
 		}
 
 		// Destroy enemy
 		DestroyObject();
+
+		// Set dead
+		m_Dead = true;
 	}
 }

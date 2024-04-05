@@ -29,4 +29,7 @@ private:
 
 	// Delay between firing projectiles
 	float m_FireDelay;
+
+	// Flag to see if dead
+	bool m_Dead;
 };

@@ -15,9 +15,13 @@
 
 #define PI 3.1415926f
 
-Player::Player() : m_FireDelay(0.0f)
+Player::Player()
 {
-	// Default Values
+	// Set variables
+	m_FireDelay = 0.0f;
+	m_Dead = false;
+	
+	// Default values
 	m_MaxSpeed = 400.0f;
 	m_Deceleration = 7.0f;
 	m_AccelerationSpeed = 5000.0f;
@@ -127,12 +131,18 @@ void Player::OnUpdate(float DeltaTime)
 
 void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
+	// Stop overlap code if dead
+	if (m_Dead) {
+		return;
+	}
+	
 	if (OverlapBounds->m_Tag == "ENEMY") {
 		// Change to game over state
-		Game::GetGame()->GetGameStateMachine()->GetActiveGameState()->DestroyGameState();
 		Game::GetGame()->GetGameStateMachine()->SetNewGameState(new GameOverState());
-
 		AW_LOG("Player", "GameState changed to the GameOverState");
+
+		// Set dead flag
+		m_Dead = true;
 	}
 }
 
@@ -167,7 +177,7 @@ void Player::CollectGarbage()
 
 void Player::FireProjectile(Vector2 AimPosition)
 {
-	if (m_Projectiles.size() >= 1 || m_FireDelay > 0.0f) {
+	if (m_Projectiles.size() >= 2 || m_FireDelay > 0.0f) {
 		return;
 	}
 

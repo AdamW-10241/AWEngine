@@ -24,8 +24,15 @@ PlayState::PlayState()
 
 void PlayState::SpawnCollectable(Vector2 Position)
 {
-	// Spawn collectable
+	// Get playstate
 	PlayState* PS = (PlayState*)Game::GetGame()->GetGameStateMachine()->GetActiveGameState();
+
+	// Check collectable limit
+	if ((*PS).m_Collectables.size() >= 10) {
+		return;
+	}
+
+	// Spawn and set collectable position
 	(*PS).m_Collectables.push_back((*PS).AddGameObject<Collectable>());
 	(*PS).m_Collectables.back()->SetPosition(Position);
 }
@@ -97,10 +104,7 @@ void PlayState::OnCleanup()
 
 	// Destroy other objects
 	m_SpawnedPlayer->DestroyObject();
-	m_SpawnedPlayer = nullptr;
-
 	m_ScoreText->DestroyObject();
-	m_ScoreText = nullptr;
 
 	Super::OnCleanup();
 }
@@ -108,7 +112,7 @@ void PlayState::OnCleanup()
 void PlayState::AddObjects()
 {
 	// Add more enemies
-	for (int i = m_Enemies.size(); i < 20; i++) {
+	for (int i = m_Enemies.size(); i < 25; i++) {
 		m_Enemies.push_back(AddGameObject<Enemy>());
 	}
 }

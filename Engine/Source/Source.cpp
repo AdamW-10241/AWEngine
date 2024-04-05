@@ -3,6 +3,8 @@
 
 int main()
 {
+	// Randomise
+	srand(time(0));
 	// Static Function - Can Run Without Instance
 	// Create Game
 	Game::GetGame()->Run();

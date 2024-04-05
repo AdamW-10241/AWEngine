@@ -7,8 +7,11 @@
 #define SIZE (10.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 
-Collectable::Collectable() : m_ScoreValue(500.0f)
+Collectable::Collectable()
 {
+	// Set variables
+	m_ScoreValue = 1000.0f;
+	
 	// Main sprite
 	AnimationParams AnimParams;
 	AnimParams.fps = 12;
