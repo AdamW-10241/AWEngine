@@ -17,4 +17,6 @@ protected:
 	TextObject* m_RestartText;
 
 	TextObject* m_ScoreText;
+
+	TextObject* m_HintText;
 };

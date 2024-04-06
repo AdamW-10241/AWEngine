@@ -82,7 +82,7 @@ Player::Player()
 	SetAnimation(m_LastMovementDirection, true);
 
 	// Add bounds
-	Bounds* PlayerBounds = AddBounds({ 640.0f, 360.0f }, SIZE);
+	Bounds* PlayerBounds = AddBounds(0.0f, SIZE);
 	PlayerBounds->m_OriginOffset = -HALF_SIZE;
 	PlayerBounds->m_Tag = "PLAYER";
 	PlayerBounds->m_Debug = false;
@@ -92,7 +92,6 @@ void Player::OnStart()
 {
 	Super::OnStart();
 	
-	SetPosition({ 640.0f, 360.0f });
 	SetScale(SCALE);
 }
 

@@ -10,7 +10,7 @@
 Collectable::Collectable()
 {
 	// Set variables
-	m_ScoreValue = 200.0f;
+	m_ScoreValue = 250.0f;
 	
 	// Main sprite
 	AnimationParams AnimParams;

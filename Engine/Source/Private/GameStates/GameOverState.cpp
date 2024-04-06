@@ -14,6 +14,7 @@ GameOverState::GameOverState()
 {
 	m_RestartText = nullptr;
 	m_ScoreText = nullptr;
+	m_HintText = nullptr;
 }
 
 void GameOverState::OnStart()
@@ -25,7 +26,7 @@ void GameOverState::OnStart()
 	m_Background->SetScale(0.9f);
 
 	m_RestartText = AddGameObject<TextObject>();
-	m_RestartText->SetPosition({ 640.0f, 400.0f });
+	m_RestartText->SetPosition({ 640.0f, 500.0f });
 	m_RestartText->SetFontSize(50);
 	m_RestartText->SetText("Press \'R\' to restart.");
 	m_RestartText->SetAligment(AL_CENTER);
@@ -42,6 +43,13 @@ void GameOverState::OnStart()
 	m_ScoreText->SetText(ScoreString.c_str());
 	m_ScoreText->SetAligment(AL_CENTER);
 	m_ScoreText->SetFontColor(255, 255, 255, 255);
+
+	m_HintText = AddGameObject<TextObject>();
+	m_HintText->SetPosition({ 640.0f, 350.0f });
+	m_HintText->SetFontSize(20);
+	m_HintText->SetText("Move with WASD and Fire Toward Cursor with LEFT-CLICK!");
+	m_HintText->SetAligment(AL_CENTER);
+	m_HintText->SetFontColor(255, 255, 255, 255);
 }
 
 void GameOverState::OnProcessInput(Input* GameInput)

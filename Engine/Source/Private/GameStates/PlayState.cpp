@@ -59,6 +59,7 @@ void PlayState::OnStart()
 	m_Background->SetScale(0.9f);
 
 	m_SpawnedPlayer = AddGameObject<Player>();
+	m_SpawnedPlayer->SetPosition({ 320.0f, 320.0f });
 
 	m_ScoreText = AddGameObject<TextObject>();
 	m_ScoreText->SetPosition({ 30.0f, 30.0f });
