@@ -3,14 +3,14 @@
 
 #define Super Character
 
-#define SCALE 4.0f
+#define SCALE 3.5f
 #define SIZE (10.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 
 Collectable::Collectable()
 {
 	// Set variables
-	m_ScoreValue = 1000.0f;
+	m_ScoreValue = 200.0f;
 	
 	// Main sprite
 	AnimationParams AnimParams;

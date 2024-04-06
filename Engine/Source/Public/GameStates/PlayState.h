@@ -2,6 +2,7 @@
 #include "GameStates/GameState.h"
 
 class TextObject;
+class Background;
 class Enemy;
 class Player;
 class Collectable;
@@ -32,17 +33,19 @@ protected:
 
 	virtual void OnCleanup() override;
 
-	virtual void AddObjects();
+	virtual void AddStackObjects();
 
 	virtual void RemoveDestroyedObjects();
 
 protected:
+	// Global score
+	static float m_Score;
+	
+	// Store player
 	Player* m_SpawnedPlayer;
 
+	// Store score text
 	TextObject* m_ScoreText;
-
-private:
-	static float m_Score;
 
 	// Store spawned collectables
 	TArray<Collectable*> m_Collectables;

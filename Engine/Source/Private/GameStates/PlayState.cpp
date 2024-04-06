@@ -9,6 +9,7 @@
 #include "GameObjects/TextObject.h"
 #include "GameObjects/Collectable.h"
 #include "Math/Vector2.h"
+#include "GameObjects/Background.h"
 
 #include "Debug.h"
 
@@ -52,17 +53,22 @@ void PlayState::OnStart()
 	m_Score = 0.0f;
 
 	// Add objects
+	m_Background = AddGameObject<Background>();
+	m_Background->SetBackgroundSprite("Content/NinjaAdventure/Custom Background/Background_PlayState.png");
+	m_Background->SetPosition({ 640.0f, 360.0f });
+	m_Background->SetScale(0.9f);
+
 	m_SpawnedPlayer = AddGameObject<Player>();
 
 	m_ScoreText = AddGameObject<TextObject>();
-	m_ScoreText->SetPosition({ 10.0f, 10.0f });
-	m_ScoreText->SetFontSize(25);
+	m_ScoreText->SetPosition({ 30.0f, 30.0f });
+	m_ScoreText->SetFontSize(40);
 	m_ScoreText->SetText("Score:0");
 	m_ScoreText->SetAligment(AL_TOP_LEFT);
-	m_ScoreText->SetFontColor(0, 255, 0, 255);
+	m_ScoreText->SetFontColor(255, 255, 255, 255);
 
 	// Add to object stacks
-	AddObjects();
+	AddStackObjects();
 }
 
 void PlayState::OnUpdate(float DeltaTime)
@@ -77,7 +83,7 @@ void PlayState::OnUpdate(float DeltaTime)
 	m_ScoreText->SetText(ScoreString.c_str());
 
 	// Add to object stacks
-	AddObjects();
+	AddStackObjects();
 }
 
 void PlayState::OnGarbageCollection()
@@ -102,17 +108,13 @@ void PlayState::OnCleanup()
 		}
 	}
 
-	// Destroy other objects
-	m_SpawnedPlayer->DestroyObject();
-	m_ScoreText->DestroyObject();
-
 	Super::OnCleanup();
 }
 
-void PlayState::AddObjects()
+void PlayState::AddStackObjects()
 {
 	// Add more enemies
-	for (int i = m_Enemies.size(); i < 25; i++) {
+	for (int i = m_Enemies.size(); i < 30; i++) {
 		m_Enemies.push_back(AddGameObject<Enemy>());
 	}
 }

@@ -4,7 +4,7 @@
 
 #define Super Character
 
-#define SCALE 1.5f
+#define SCALE 1.3f
 #define SIZE (23.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 

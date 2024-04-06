@@ -7,7 +7,7 @@
 
 #define Super DirectionalCharacter
 
-#define SCALE 4.0f
+#define SCALE 3.5f
 #define SIZE (16.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 
@@ -20,7 +20,7 @@ Enemy::Enemy()
 	m_Dead = false;
 
 	// Default values
-	m_MaxSpeed = 150.0f;
+	m_MaxSpeed = 200.0f;
 	m_Deceleration = 5.0f;
 	m_AccelerationSpeed = 1000.0f;
 
@@ -94,7 +94,7 @@ void Enemy::OnStart()
 	m_PlayerRef = PlayState::GetPlayer();
 
 	// Pick random spawn spot
-	SetPosition({(float)(rand() % 1280), 25.0f});
+	SetPosition({ 1255.0f , (float)(rand() % 720) });
 
 	SetScale(SCALE);
 }
@@ -109,15 +109,17 @@ void Enemy::OnUpdate(float DeltaTime)
 		}
 
 		// Randomly determine movement direction
+		Vector2 RandomOffset = { (float)((rand() % 3) - 1), (float)((rand() % 3) - 1) };
+
 		if (rand() % 3 <= 1) {
-			// Toward player
+			// Toward player with random offset
 			// 2/3 to follow
-			m_MovementChoice = (*m_PlayerRef).GetTransform().Position - GetTransform().Position;
+			m_MovementChoice = (*m_PlayerRef).GetTransform().Position - GetTransform().Position + (RandomOffset * 50.0f);
 		}
 		else {
 			// Random direction
 			// 1/3 to move randomly
-			m_MovementChoice = { (float)((rand() % 3) - 1), (float)((rand() % 3) - 1) };
+			m_MovementChoice = RandomOffset;
 		}
 		
 		// Randomly get time until next choice

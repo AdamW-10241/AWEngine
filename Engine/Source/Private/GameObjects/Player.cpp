@@ -9,7 +9,7 @@
 
 #define Super DirectionalCharacter
 
-#define SCALE 4.0f
+#define SCALE 3.5f
 #define SIZE (16.0f) * SCALE
 #define HALF_SIZE (SIZE / 2.0f)
 
