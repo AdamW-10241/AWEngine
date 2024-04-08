@@ -1,111 +1,109 @@
 #include "GameStates/PlayState.h"
 
 #include "Game.h"
-#include "GameStates/GameStateMachine.h"
 #include "Input.h"
 #include "GameObjects/Player.h"
 #include "GameObjects/Enemy.h"
 #include "GameObjects/TextObject.h"
+
 #include <string>
+#include <iomanip>
+#include <random>
+#include <sstream>
+
 #include "Debug.h"
 
 #define Super GameState
 
-PlayState::PlayState()
-{
-	m_SpawnedEnemy = nullptr;
-	m_SpawnedPlayer = nullptr;
-	m_ScoreText = nullptr;
-	m_PlayerText = nullptr;
-	m_EnemyText = nullptr;
-	m_RotateText = nullptr;
-	m_HideText = nullptr;
-	m_SizeText = nullptr;
-}
+// Initialise a random generator
+std::default_random_engine RandGenerator;
+
+PlayState::PlayState() :
+	m_ScoreText(nullptr),
+	m_FreqText(nullptr),
+	m_EnemyFrequency(3.0f),
+	m_EnemySpawnTimer(1.0f) {}
 
 void PlayState::OnStart()
 {
 	Super::OnStart();
 
-	m_SpawnedEnemy = AddGameObject<Enemy>();
-	m_SpawnedPlayer = AddGameObject<Player>();
+	Player* P = AddGameObject<Player>();
+	P->SetPosition({
+		Game::GetGame()->WindowWidthF() / 2.0f,
+		Game::GetGame()->WindowHeightF() - P->ScaledHalfSize()
+	});
 
 	m_ScoreText = AddGameObject<TextObject>();
 	m_ScoreText->SetPosition({ 10.0f, 10.0f });
 	m_ScoreText->SetFontSize(35);
-	m_ScoreText->SetText("Score: 0");
 	m_ScoreText->SetAligment(AL_TOP_LEFT);
-	m_ScoreText->SetFontColor(0, 255, 0, 255);
+	UpdateScore();
 
-	m_PlayerText = AddGameObject<TextObject>();
-	m_PlayerText->SetPosition(m_SpawnedPlayer->GetTransform().Position);
-	m_PlayerText->SetFontSize(60);
-	m_PlayerText->SetText("I'm following the player!");
-	m_PlayerText->SetAligment(AL_TOP_CENTER);
-	m_PlayerText->SetFontColor(100, 150, 200, 255);
+	m_FreqText = AddGameObject<TextObject>();
+	m_FreqText->SetPosition({ 10.0f, 55.0f });
+	m_FreqText->SetFontSize(25);
+	m_FreqText->SetAligment(AL_TOP_LEFT);
+	UpdateFrequencyText();
 
-	m_EnemyText = AddGameObject<TextObject>();
-	m_EnemyText->SetPosition(m_SpawnedEnemy->GetTransform().Position);
-	m_EnemyText->SetFontSize(40);
-	m_EnemyText->SetText("I'm following the enemy!");
-	m_EnemyText->SetAligment(AL_BOTTOM_CENTER);
-	m_EnemyText->SetFontColor(255, 255, 0, 255);
-
-	m_RotateText = AddGameObject<TextObject>();
-	m_RotateText->SetPosition({ 800.0f, 400.0f });
-	m_RotateText->SetFontSize(50);
-	m_RotateText->SetText("I'm rotating!");
-	m_RotateText->SetAligment(AL_TOP_LEFT);
-	m_RotateText->SetFontColor(165, 0, 255, 100);
-
-	m_HideText = AddGameObject<TextObject>();
-	m_HideText->SetPosition({ 400.0f, 500.0f });
-	m_HideText->SetFontSize(20);
-	m_HideText->SetText("I appear when the player collides!");
-	m_HideText->SetAligment(AL_CENTER);
-	m_HideText->SetFontColor(0, 255, 255, 255);
-
-	m_SizeText = AddGameObject<TextObject>();
-	m_SizeText->SetPosition({ 200.0f, 200.0f });
-	m_SizeText->SetFontSize(15);
-	m_SizeText->SetText("I change size!");
-	m_SizeText->SetAligment(AL_CENTER);
-	m_SizeText->SetFontColor(255, 165, 0, 255);
+	// Set the seed of random to the current calendar time
+	RandGenerator.seed(time(nullptr));
 }
 
 void PlayState::OnUpdate(float DeltaTime)
 {
 	Super::OnUpdate(DeltaTime);
 
-	// Score Text
-	static float Score = 0.0f;
-	Score += DeltaTime * 10.0f;
+	EnemySpawner(DeltaTime);
 
-	std::string ScoreString = "Score: " + 
-		std::to_string(static_cast<int>(std::trunc(Score))
-	);
+	UpdateScore();
+}
 
+void PlayState::UpdateScore()
+{
+	std::string ScoreString = "Score: " + std::to_string(Game::GetGame()->m_Score);
 	m_ScoreText->SetText(ScoreString.c_str());
-	
-	// Follow Text
-	m_PlayerText->SetPosition(m_SpawnedPlayer->GetTransform().Position);
+}
 
-	m_EnemyText->SetPosition(m_SpawnedEnemy->GetTransform().Position);
+void PlayState::UpdateFrequencyText()
+{
+	// Create a string stream that converts a float into a less precise version
+	// Set precision is the number of decimal places to see
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(1) << m_EnemyFrequency;
 
-	// Rotate Text
-	static float Rotation = 0.0f;
-	Rotation += DeltaTime * 10;
-	m_RotateText->SetRotation(Rotation);
+	std::string FreqString = "Enemy Spawn Time: " + stream.str();
+	m_FreqText->SetText(FreqString.c_str());
+}
 
-	// Hide Text
-	m_HideText->SetFontColor(0, 255, 255,
-		(m_SpawnedPlayer->GetOverlap() == true) * 254 + 1
-	);
+void PlayState::EnemySpawner(float DeltaTime)
+{
+	// Countdown timer
+	m_EnemySpawnTimer -= DeltaTime;
 
-	// Size Text
-	static float Size = 15.0f;
-	Size += DeltaTime * 10;
-	Size = (Size > 45) ? 15 : Size;
+	// If the timer reaches 0 then spawn an enemy
+	if (m_EnemySpawnTimer <= 0.0f) {
+		Enemy* E = AddGameObject<Enemy>();
 
-	m_SizeText->SetFontSize((int)Size);
+		float PosX = GetRandomFloatRange(
+			E->ScaledHalfSize(),
+			Game::GetGame()->WindowWidthF() - E->ScaledHalfSize()
+		);
+
+		E->SetPosition({ PosX, -E->ScaledHalfSize() });
+
+		// Reset the timer
+		m_EnemySpawnTimer = m_EnemyFrequency;
+		// Reduce the next spawn frequency
+		m_EnemyFrequency = std::max(0.5f, m_EnemyFrequency - 0.1f);
+		
+		UpdateFrequencyText();
+	}
+}
+
+float PlayState::GetRandomFloatRange(float min, float max) const
+{
+	std::uniform_real_distribution<float> RandNum(min, max);
+
+	return RandNum(RandGenerator);
 }

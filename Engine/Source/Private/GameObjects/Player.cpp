@@ -1,6 +1,9 @@
 #include "GameObjects/Player.h"
 #include "Input.h"
 #include "GameObjects/Enemy.h"
+#include "GameObjects/PlayerProjectile.h"
+#include "Game.h"
+
 #include "Debug.h"
 
 #define Super Character
@@ -8,15 +11,17 @@
 #define ENGINE_IDLE 0
 #define ENGINE_POWERED 1
 
-#define SCALE 3.0f
-#define SIZE ((48.0f - 16.0f) * SCALE)
-#define HALF_SIZE (SIZE / 2.0f)
-
 Player::Player()
 {
 	m_MaxSpeed = 600.0f;
 	m_Deceleration = 5.0f;
 	m_AccelerationSpeed = 5000.0f;
+
+	m_Scale = 3.0f;
+	m_Size = 48.0f - 16.0f;
+
+	m_RateOfFire = 0.2f;
+	m_FireTimer = 0.0f;
 
 	// Add engine sprite
 	AddSprite(
@@ -48,18 +53,12 @@ Player::Player()
 	));
 
 	SetPoweredEngine(false);
-
-	Bounds* PlayerBounds = AddBounds({ 640.0f, 360.0f }, SIZE);
-	PlayerBounds->m_OriginOffset = -HALF_SIZE;
-	PlayerBounds->m_Debug = true;
-}
-
-void Player::OnStart()
-{
-	Super::OnStart();
 	
-	SetPosition({ 640.0f, 360.0f });
-	SetScale(SCALE);
+	SetScale(m_Scale);
+
+	Bounds* PlayerBounds = AddBounds(0.0f, ScaledSize());
+	PlayerBounds->m_OriginOffset = -ScaledHalfSize();
+	PlayerBounds->m_Debug = false;
 }
 
 void Player::OnProcessInput(Input* GameInput)
@@ -78,11 +77,23 @@ void Player::OnProcessInput(Input* GameInput)
 	if (GameInput->IsKeyDown(AW_KEY_D)) {
 		AddMovementInput(Vector2(1.0f, 0.0f));
 	}
+
+	if (m_FireTimer <= 0.0f) {
+		if (GameInput->IsKeyDown(AW_KEY_SPACE)) {
+			SpawnProjectile();
+
+			m_FireTimer = m_RateOfFire;
+		}
+	}
 }
 
 void Player::OnUpdate(float DeltaTime)
 {
 	Super::OnUpdate(DeltaTime);
+
+	if (m_FireTimer > 0.0f) {
+		m_FireTimer -= DeltaTime;
+	}
 
 	if (m_MoveDirection.Length() > 0.0f) {
 		SetPoweredEngine(true);
@@ -105,14 +116,23 @@ void Player::SetPoweredEngine(bool Powered)
 void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
 	/*
-	if (dynamic_cast<Enemy*>(OverlapBounds->GetOwner())) {
-		OverlapBounds->GetOwner()->DestroyObject();
-	}
-	*/
-
-	/*
 	if (OverlapBounds->m_Tag == "ENEMY") {
 		OverlapBounds->GetOwner()->DestroyObject();
 	}
 	*/
+}
+
+void Player::SpawnProjectile()
+{
+	// Spawning the game object / projectile
+	PlayerProjectile* Proj = Game::GetGame()->AddGameObject<PlayerProjectile>();
+
+	// Reposition the projectile
+	Vector2 SpawnPos = GetTransform().Position;
+	SpawnPos.y -= ScaledHalfSize();
+
+	Proj->SetPosition(SpawnPos);
+
+	// Firing the projectile
+	Proj->FireProjectile(this);
 }

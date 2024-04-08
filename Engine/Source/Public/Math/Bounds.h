@@ -63,6 +63,9 @@ public:
 	// Check if the bounds is marked for destroy
 	bool isPendingDestroy() const { return m_ShouldDestroy; }
 
+	// Resize the bounds
+	void SetBoundsExtent(Vector2 Extent);
+
 public:
 	// The rectangle that defines the bounds
 	AWRect m_Rect;

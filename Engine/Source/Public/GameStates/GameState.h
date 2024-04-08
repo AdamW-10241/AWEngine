@@ -32,7 +32,7 @@ public:
 	void GarbageCollection();
 
 	// Add a game object to the game
-	template<class T>
+	template<class T, std::enable_if_t<std::is_base_of_v<GameObject, T>, T>* = nullptr>
 	T* AddGameObject() {
 		// Create the game object
 		T* NewObject = new T();

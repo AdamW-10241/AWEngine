@@ -1,5 +1,6 @@
 #pragma once
 #include "EngineTypes.h"
+#include "GameStates/GameStateMachine.h"
 
 // Forward Declaration
 struct SDL_Window;
@@ -7,7 +8,6 @@ struct SDL_Renderer;
 class Texture;
 class Input;
 class GameObject;
-class GameStateMachine;
 class Text;
 
 class Game {
@@ -38,6 +38,28 @@ public:
 
 	// Gets the game state machine
 	GameStateMachine* GetGameStateMachine() const { return m_GameStateMachine; }
+
+	// Return the width of the window
+	int WindowWidth() const;
+
+	// Return the height of the window
+	int WindowHeight() const;
+
+	// Return the width of the window as a float
+	float WindowWidthF() const;
+
+	// Return the height of the window as a float
+	float WindowHeightF() const;
+
+	// Add a game object to the game
+	template<class T, std::enable_if_t<std::is_base_of_v<GameObject, T>, T>* = nullptr>
+	T* AddGameObject() {
+		return GetGameStateMachine()->GetActiveGameState()->AddGameObject<T>();
+	}
+
+public:
+	// Score for the game
+	int m_Score;
 
 private:
 	// Constructor runs when the class is created

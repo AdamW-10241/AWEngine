@@ -125,6 +125,34 @@ void Game::DestroyText(Text* TextToDestroy)
 	delete TextToDestroy;
 }
 
+int Game::WindowWidth() const
+{
+	int w = 0;
+
+	SDL_GetWindowSize(m_WindowRef, &w, NULL);
+	
+	return w;
+}
+
+int Game::WindowHeight() const
+{
+	int h = 0;
+
+	SDL_GetWindowSize(m_WindowRef, NULL, &h);
+
+	return h;
+}
+
+float Game::WindowWidthF() const
+{
+	return static_cast<float>(WindowWidth());
+}
+
+float Game::WindowHeightF() const
+{
+	return static_cast<float>(WindowHeight());
+}
+
 Game::Game()
 {
 	printf("Game Created.\n");

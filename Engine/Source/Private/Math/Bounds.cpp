@@ -29,3 +29,8 @@ bool Bounds::BoundsIntersect(const Bounds& BoundsA, const Bounds& BoundsB)
 
 	return MinX && MaxX && MinY && MaxY;
 }
+
+void Bounds::SetBoundsExtent(Vector2 Extent)
+{
+	m_Rect.Extent = Extent;
+}

@@ -14,13 +14,19 @@ protected:
 
 	virtual void OnUpdate(float DeltaTime) override;
 
+	void EnemySpawner(float DeltaTime);
+
+	// Get a random float value between 2 floats
+	float GetRandomFloatRange(float min = 0.0f, float max = 1.0f) const;
+
+	// Text update functions
+	void UpdateScore();
+	void UpdateFrequencyText();
+
 protected:
-	Enemy* m_SpawnedEnemy;
-	Player* m_SpawnedPlayer;
 	TextObject* m_ScoreText;
-	TextObject* m_PlayerText;
-	TextObject* m_EnemyText;
-	TextObject* m_RotateText;
-	TextObject* m_HideText;
-	TextObject* m_SizeText;
+	TextObject* m_FreqText;
+
+	// Timers for enemy spawning
+	float m_EnemyFrequency, m_EnemySpawnTimer;
 };
