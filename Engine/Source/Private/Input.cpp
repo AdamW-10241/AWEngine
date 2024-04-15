@@ -2,6 +2,9 @@
 #include "SDL2/SDL.h"
 #include "Game.h"
 #include "Math/Vector2.h"
+#include "SDL2/SDL_syswm.h"
+#include "Menus/WinMenu.h"
+#include "resource.h"
 
 void Input::ProcessInput()
 {
@@ -24,6 +27,11 @@ void Input::ProcessInput()
 		// If the window cross is pressed, close the app
 		if (InputEvent.type == SDL_QUIT) {
 			Game::GetGame()->QuitApp();
+		}
+
+		// Listen for windows menu events
+		if (InputEvent.type == SDL_SYSWMEVENT) {
+			HandleWinMenuEvents(&InputEvent);
 		}
 	}
 }
@@ -65,11 +73,48 @@ void Input::DetectMouseButtonState(unsigned int Event, bool Value)
 	}
 }
 
+void Input::HandleWinMenuEvents(SDL_Event* Event)
+{
+	// Listening to the event message that was passed in
+	// if it was a system win menu message (i.e. we pressed a win menu button)
+	// then run if case is true
+	switch (Event->syswm.msg->msg.win.wParam)
+	{
+	case ID_FILE_RESTARTGAME:
+		Game::GetGame()->RestartGame();
+		break;
+	case ID_FILE_EXITAPP:
+		Game::GetGame()->QuitApp();
+		break;
+	case ID_GAME_CONTROLS:
+		Game::GetGame()->GetWinMenu()->ActivatePopup(
+			"Game Controls",
+			"WASD - Move Ship\nSpace - Fire Weapon"
+		);
+		break;
+	case ID_HELP_ABOUTASTRALWAVEENGINE:
+		Game::GetGame()->GetWinMenu()->ActivatePopup(
+			"Astral Wave Engine",
+			"Astral Wave Engine is an SDL2-based C++ 2D game engine.\nIt was created by Adam Leigh Williams in 2024."
+		);
+		break;
+	case ID_CHEATS_MAXHEAL:
+		//Game::GetGame()->GetGameStateMachine()->GetActiveGameState()->GetGameObject
+		
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"Player Max Healed!"
+		);
+		break;
+	default:
+		break;
+	}
+}
+
 Vector2 Input::GetMousePos() const
 {
 	// Mouse position variables
-	int x(0);
-	int y(0);
+	int x(0), y(0);
 
 	// This function will change our x and y variables to the mouse location
 	SDL_GetMouseState(&x, &y);

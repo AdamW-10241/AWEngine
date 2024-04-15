@@ -10,6 +10,8 @@ protected:
 
 	virtual void OnDeath(GameObject* DeathCauser) override;
 
+	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;
+
 protected:
 	float m_ScoreValue;
 };

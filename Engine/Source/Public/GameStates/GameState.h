@@ -49,6 +49,18 @@ public:
 	// Check if the game state is to be destroyed
 	bool IsPendingDestroy() const { return m_ShouldDestroy; }
 
+	// Get a game object of a specific type
+	template<class T, std::enable_if_t<std::is_base_of_v<GameObject, T>, T>* = nullptr>
+	T* GetGameObject() {
+		// Get the game object
+		for (const auto GO : m_GameObjectStack) {
+			if (typeid(GO).name() == typeid(T).name() || !GO->IsPendingDestroy()) {
+				// Found the game object
+				return GO;
+			}
+		}
+	}
+
 protected:
 	virtual void OnStart() {}
 

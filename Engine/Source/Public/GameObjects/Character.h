@@ -21,6 +21,9 @@ public:
 	// Reduce lives based on damage
 	int ApplyDamage(GameObject* DamageCauser, int Damage);
 
+	// Get the remaining lives of the character
+	int GetLives() const { return m_Lives; }
+
 public:
 	// Dimensions of the character
 	float m_Scale, m_Size;

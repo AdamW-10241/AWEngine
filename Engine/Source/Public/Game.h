@@ -9,6 +9,7 @@ class Texture;
 class Input;
 class GameObject;
 class Text;
+class WinMenu;
 
 class Game {
 public:
@@ -56,6 +57,12 @@ public:
 	T* AddGameObject() {
 		return GetGameStateMachine()->GetActiveGameState()->AddGameObject<T>();
 	}
+
+	// Restart the game to the default game state
+	void RestartGame();
+
+	// Get the windows menu
+	WinMenu* GetWinMenu() const { return m_WinMenu; }
 
 public:
 	// Score for the game
@@ -120,4 +127,7 @@ private:
 
 	// Game state machine for the game
 	GameStateMachine* m_GameStateMachine;
+
+	// Store the window menu for the game
+	WinMenu* m_WinMenu;
 };

@@ -21,6 +21,10 @@ std::default_random_engine RandGenerator;
 PlayState::PlayState() :
 	m_ScoreText(nullptr),
 	m_FreqText(nullptr),
+	m_PlayerLivesText(nullptr),
+	m_PlayerLives(-1),
+	m_PlayerRef(nullptr),
+	m_EndPlayTimer(3.0f),
 	m_EnemyFrequency(3.0f),
 	m_EnemySpawnTimer(1.0f) {}
 
@@ -28,10 +32,12 @@ void PlayState::OnStart()
 {
 	Super::OnStart();
 
-	Player* P = AddGameObject<Player>();
-	P->SetPosition({
+	Game::GetGame()->m_Score = 0;
+
+	m_PlayerRef = AddGameObject<Player>();
+	m_PlayerRef->SetPosition({
 		Game::GetGame()->WindowWidthF() / 2.0f,
-		Game::GetGame()->WindowHeightF() - P->ScaledHalfSize()
+		 Game::GetGame()->WindowHeightF() - m_PlayerRef->ScaledHalfSize()
 	});
 
 	m_ScoreText = AddGameObject<TextObject>();
@@ -39,6 +45,15 @@ void PlayState::OnStart()
 	m_ScoreText->SetFontSize(35);
 	m_ScoreText->SetAligment(AL_TOP_LEFT);
 	UpdateScore();
+
+	m_PlayerLivesText = AddGameObject<TextObject>();
+	m_PlayerLivesText->SetPosition({
+		10.0f,
+		Game::GetGame()->WindowHeightF() - 10.0f
+	});
+	m_PlayerLivesText->SetFontSize(35);
+	m_PlayerLivesText->SetAligment(AL_BOTTOM_LEFT);
+	UpdateLives();
 
 	m_FreqText = AddGameObject<TextObject>();
 	m_FreqText->SetPosition({ 10.0f, 55.0f });
@@ -57,12 +72,37 @@ void PlayState::OnUpdate(float DeltaTime)
 	EnemySpawner(DeltaTime);
 
 	UpdateScore();
+
+	if (m_PlayerLives <= 0) {
+		m_EndPlayTimer -= DeltaTime;
+
+		if (m_EndPlayTimer <= 0.0f) {
+			auto NewState = new MainMenuState();
+			Game::GetGame()->GetGameStateMachine()->SetNewGameState(NewState);
+		}
+	}
+
+	UpdateLives();
 }
 
 void PlayState::UpdateScore()
 {
-	std::string ScoreString = "Score: " + std::to_string(Game::GetGame()->m_Score);
+	int Score = Game::GetGame()->m_Score;
+	
+	std::string ScoreString = "Score: " + std::to_string(Score);
 	m_ScoreText->SetText(ScoreString.c_str());
+}
+
+void PlayState::UpdateLives()
+{
+	int Lives = m_PlayerRef->GetLives();
+
+	if (Lives != m_PlayerLives) {
+		m_PlayerLives = Lives;
+
+		std::string LivesString = "Lives: " + std::to_string(m_PlayerLives);
+		m_PlayerLivesText->SetText(LivesString.c_str());
+	}
 }
 
 void PlayState::UpdateFrequencyText()

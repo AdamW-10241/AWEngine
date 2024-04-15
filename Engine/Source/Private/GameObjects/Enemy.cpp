@@ -53,3 +53,12 @@ void Enemy::OnDeath(GameObject* DeathCauser)
 	
 	Super::OnDeath(DeathCauser);
 }
+
+void Enemy::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
+{
+	// Is the owner of the bounds we overlapped with a player
+	if (auto PlayerRef = dynamic_cast<Player*>(OverlapBounds->GetOwner())) {
+		PlayerRef->ApplyDamage(this, 1);
+		DestroyObject();
+	}
+}

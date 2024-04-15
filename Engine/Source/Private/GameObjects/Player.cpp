@@ -22,6 +22,7 @@ Player::Player()
 
 	m_RateOfFire = 0.2f;
 	m_FireTimer = 0.0f;
+	m_Lives = 3;
 
 	// Add engine sprite
 	AddSprite(
@@ -63,6 +64,10 @@ Player::Player()
 
 void Player::OnProcessInput(Input* GameInput)
 {
+	if (m_Lives <= 0) {
+		return;
+	}
+	
 	Super::OnProcessInput(GameInput);
 	
 	if (GameInput->IsKeyDown(AW_KEY_W)) {
@@ -89,6 +94,10 @@ void Player::OnProcessInput(Input* GameInput)
 
 void Player::OnUpdate(float DeltaTime)
 {
+	if (m_Lives <= 0) {
+		return;
+	}
+	
 	Super::OnUpdate(DeltaTime);
 
 	if (m_FireTimer > 0.0f) {
@@ -113,15 +122,6 @@ void Player::SetPoweredEngine(bool Powered)
 	}
 }
 
-void Player::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
-{
-	/*
-	if (OverlapBounds->m_Tag == "ENEMY") {
-		OverlapBounds->GetOwner()->DestroyObject();
-	}
-	*/
-}
-
 void Player::SpawnProjectile()
 {
 	// Spawning the game object / projectile
@@ -135,4 +135,15 @@ void Player::SpawnProjectile()
 
 	// Firing the projectile
 	Proj->FireProjectile(this);
+}
+
+void Player::OnDeath(GameObject* DeathCauser)
+{
+	for (auto Item : GetAllSprites()) {
+		Item->SetActive(false);
+	}
+
+	for (auto Item : GetAllBounds()) {
+		Item->DestroyBounds();
+	}
 }

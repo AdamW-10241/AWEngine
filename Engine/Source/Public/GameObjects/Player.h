@@ -13,9 +13,9 @@ protected:
 	// Change the engine effects animations
 	void SetPoweredEngine(bool Powered);
 
-	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;
-
 	void SpawnProjectile();
+
+	virtual void OnDeath(GameObject* DeathCauser);
 
 protected:
 	// Store the different effects for the engine effects

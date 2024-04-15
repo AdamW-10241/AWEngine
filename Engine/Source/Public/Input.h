@@ -1,4 +1,5 @@
 #pragma once
+#include "SDL2/SDL_events.h"
 
 typedef enum
 {
@@ -420,6 +421,9 @@ public:
 private:
     // Detect the state of the mouse
     void DetectMouseButtonState(unsigned int Event, bool Value);
+
+    // Listen and react to windows menu events
+    void HandleWinMenuEvents(SDL_Event* Event);
 
 private:
     // State of each button on the mouse

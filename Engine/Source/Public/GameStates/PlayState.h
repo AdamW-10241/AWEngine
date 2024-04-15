@@ -2,7 +2,6 @@
 #include "GameStates/GameState.h"
 
 class TextObject;
-class Enemy;
 class Player;
 
 class PlayState : public GameState {
@@ -21,11 +20,20 @@ protected:
 
 	// Text update functions
 	void UpdateScore();
+	void UpdateLives();
 	void UpdateFrequencyText();
 
 protected:
 	TextObject* m_ScoreText;
+	TextObject* m_PlayerLivesText;
 	TextObject* m_FreqText;
+
+	// Reference to the player
+	Player* m_PlayerRef;
+	
+	int m_PlayerLives;
+
+	float m_EndPlayTimer;
 
 	// Timers for enemy spawning
 	float m_EnemyFrequency, m_EnemySpawnTimer;

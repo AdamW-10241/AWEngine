@@ -65,7 +65,11 @@ void Text::Cleanup()
 
 void Text::SetText(const char* NewText)
 {
-	m_Text = NewText;
+	if (NewText == m_Text) {
+		return;
+	}
+	
+ 	m_Text = NewText;
 
 	UpdateFont();
 }

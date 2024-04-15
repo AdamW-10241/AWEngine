@@ -186,6 +186,13 @@ void GameObject::CollectGarbage()
 			[](Bounds* OBounds) { return OBounds->isPendingDestroy(); }
 			);
 	}
+
+	for (int i = m_BoundsStack.size() - 1; i >= 0; --i) {
+		if (m_BoundsStack[i]->isPendingDestroy()) {
+			delete m_BoundsStack[i];
+			m_BoundsStack.erase(m_BoundsStack.begin() + i);
+		}
+	}
 }
 
 void GameObject::OnDestroy()

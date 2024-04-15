@@ -44,6 +44,9 @@ protected:
 
 	virtual void OnPostUpdate(float DeltaTime) override;
 
+	// Get all the sprites attached to the object
+	TArray<Sprite*> GetAllSprites() const { return m_SpriteStack; }
+
 private:
 	void SpriteFollowObject(Sprite* SpriteToFollow);
 

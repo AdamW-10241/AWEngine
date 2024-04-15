@@ -7,6 +7,7 @@
 #include "GameStates/GameStateMachine.h"
 #include "SDL2/SDL_ttf.h"
 #include "Graphics/Text.h"
+#include "Menus\WinMenu.h"
 
 Game* Game::GetGame()
 {
@@ -153,6 +154,12 @@ float Game::WindowHeightF() const
 	return static_cast<float>(WindowHeight());
 }
 
+void Game::RestartGame()
+{
+	auto NewState = new MainMenuState();
+	GetGameStateMachine()->SetNewGameState(NewState);
+}
+
 Game::Game()
 {
 	printf("Game Created.\n");
@@ -163,6 +170,9 @@ Game::Game()
 	m_RendererRef = nullptr;
 	m_GameInput = nullptr;
 	m_GameStateMachine = nullptr;
+	m_WinMenu = nullptr;
+
+	m_Score = 0;
 }
 
 Game::~Game()
@@ -230,9 +240,17 @@ void Game::Start()
 
 	// Create the game input
 	m_GameInput = new Input();
+	
+	// Create the windows menu
+	m_WinMenu = new WinMenu(m_WindowRef);
+
+	if (!m_WinMenu->InitialiseMenu()) {
+		Cleanup();
+		return;
+	}
 
 	// Create the game state machine
-	GameState* Default = new PlayState();
+	auto Default = new MainMenuState();
 	m_GameStateMachine = new GameStateMachine(Default);
 
 	GameLoop();
@@ -255,8 +273,10 @@ void Game::GameLoop()
 
 void Game::Cleanup()
 {
-	// Run the cleanup for the active game state
-	m_GameStateMachine->Cleanup();
+	if (m_GameStateMachine != nullptr) {
+		// Run the cleanup for the active game state
+		m_GameStateMachine->Cleanup();
+	}
 
 	for (const auto Item : m_TextStack) {
 		Item->Cleanup();
@@ -269,13 +289,19 @@ void Game::Cleanup()
 		DestroyTexture(m_TextureStack[i]);
 	}
 	
-	// Cleanup SDL
+	// Destroy the windows menu
+	if (m_WinMenu != nullptr) {
+		delete m_WinMenu;
+	}
+
+	// Does the renderer exist
 	if (m_RendererRef != nullptr)
 	{
 		// Deallocate the renderer if it exists
 		SDL_DestroyRenderer(m_RendererRef);
 	}
 
+	// Does the window exist
 	if (m_WindowRef != nullptr)
 	{
 		// Deallocates the window if it exists

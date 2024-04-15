@@ -59,7 +59,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\Public;$(ProjectDir)ExternalLibs\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\Public;$(ProjectDir)ExternalLibs\Includes;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -81,7 +81,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\Public;$(ProjectDir)ExternalLibs\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\Public;$(ProjectDir)ExternalLibs\Includes;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,6 +108,7 @@
     <ClCompile Include="Source\Private\GameObjects\TextObject.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameState.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameStateMachine.cpp" />
+    <ClCompile Include="Source\Private\GameStates\MainMenuState.cpp" />
     <ClCompile Include="Source\Private\GameStates\PlayState.cpp" />
     <ClCompile Include="Source\Private\Graphics\Animation.cpp" />
     <ClCompile Include="Source\Private\Graphics\Text.cpp" />
@@ -115,9 +116,11 @@
     <ClCompile Include="Source\Private\Input.cpp" />
     <ClCompile Include="Source\Private\Math\Bounds.cpp" />
     <ClCompile Include="Source\Private\Math\Vector2.cpp" />
+    <ClCompile Include="Source\Private\Menus\WinMenu.cpp" />
     <ClCompile Include="Source\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Public\Debug.h" />
     <ClInclude Include="Source\Public\EngineTypes.h" />
     <ClInclude Include="Source\Public\Game.h" />
@@ -132,6 +135,7 @@
     <ClInclude Include="Source\Public\GameObjects\Player.h" />
     <ClInclude Include="Source\Public\GameObjects\SpriteObject.h" />
     <ClInclude Include="Source\Public\GameStates\GameState.h" />
+    <ClInclude Include="Source\Public\GameStates\MainMenuState.h" />
     <ClInclude Include="Source\Public\GameStates\PlayState.h" />
     <ClInclude Include="Source\Public\Graphics\Animation.h" />
     <ClInclude Include="Source\Public\Graphics\Text.h" />
@@ -140,6 +144,10 @@
     <ClInclude Include="Source\Public\Math\Bounds.h" />
     <ClInclude Include="Source\Public\Math\Vector2.h" />
     <ClInclude Include="Source\Public\Graphics\TextureTypes.h" />
+    <ClInclude Include="Source\Public\Menus\WinMenu.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
