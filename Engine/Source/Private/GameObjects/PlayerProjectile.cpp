@@ -13,7 +13,7 @@ void PlayerProjectile::OnStart()
 	if (m_AltSprite) {
 		// Alt
 		AnimationParams AnimParams;
-		AnimParams.fps = 3;
+		AnimParams.fps = 24;
 		AnimParams.FrameHeight = 20;
 		AnimParams.FrameWidth = 7;
 		AnimParams.EndFrame = 2;

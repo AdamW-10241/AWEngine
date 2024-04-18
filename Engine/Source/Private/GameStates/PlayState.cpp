@@ -30,7 +30,8 @@ PlayState::PlayState() {
 	m_EnemyFrequency = m_MaxEnemyFrequency;
 	m_EnemySpawnTimer = 1.0f;
 
-	m_AltEnemy = false;
+	m_AltEnemies = false;
+	m_FastEnemies = false;
 }
 
 
@@ -136,8 +137,11 @@ void PlayState::EnemySpawner(float DeltaTime)
 	if (m_EnemySpawnTimer <= 0.0f) {
 		Enemy* E = AddGameObject<Enemy>();
 
-		if (m_AltEnemy) {
+		if (m_AltEnemies) {
 			E->SetAltSprite();
+		}
+		if (m_FastEnemies) {
+			E->SetFastMode();
 		}
 
 		float PosX = Game::GetGame()->GetRandomFloatRange(

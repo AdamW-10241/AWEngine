@@ -14,13 +14,15 @@
 #define ID_VISUAL_CHANGEPROJECTILE      40009
 #define ID_VISUAL_CHANGEENEMY           40010
 #define ID_CHEATS_INVINCIBLE            40011
+#define ID_CHEATS_REVERSEDCONTROLS      40012
+#define ID_CHEATS_FASTENEMIES           40013
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        102
-#define _APS_NEXT_COMMAND_VALUE         40012
+#define _APS_NEXT_COMMAND_VALUE         40014
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

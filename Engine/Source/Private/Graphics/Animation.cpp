@@ -135,3 +135,8 @@ void Animation::SetVisible(bool IsVisible)
 
 	m_TextureRef->m_IsVisible = IsVisible;
 }
+
+void Animation::SetFirstFrame()
+{
+	m_CurrentFrame = m_AnimParams->StartFrame;
+}

@@ -23,6 +23,9 @@ public:
 	void ToggleInvincibility() { m_InvincibleToggle = !m_InvincibleToggle; }
 	bool GetInvinciblityState() const { return m_InvincibleToggle; }
 
+	// Toggle reversed controls
+	void ToggleReversedControls() { m_ReversedControlsToggle = !m_ReversedControlsToggle; }
+
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
 
@@ -30,6 +33,9 @@ protected:
 
 	// Change the engine effects animations
 	void SetPoweredEngine(bool Powered);
+
+	// Change the engine effects animations
+	void SetWeapon(bool Weapon, bool Firing);
 
 	void SpawnProjectile(Vector2 MoveDir = {0.0f}, bool AltProjectileSprite = false);
 
@@ -41,11 +47,15 @@ protected:
 	// Store the different effects for the engine effects
 	TArray<Sprite*> m_EngineEffects;
 
+	// Store the different weapons
+	TArray<Sprite*> m_Weapons;
+
 	// Toggles
 	bool m_InstantFireToggle;
 	bool m_TripleShotToggle;
 	bool m_AltProjectileSprite;
 	bool m_InvincibleToggle;
+	bool m_ReversedControlsToggle;
 
 	// Timer values for firing projectiles
 	float m_BaseRateOfFire;

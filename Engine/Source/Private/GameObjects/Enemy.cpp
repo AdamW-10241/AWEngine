@@ -13,9 +13,6 @@ Enemy::Enemy()
 	m_Scale = 3.0f;
 	m_Size = 48.0f - 16.0f;
 
-	m_MaxLives = 3;
-	m_Lives = m_MaxLives;
-
 	m_ScoreValue = 100.0f;
 	
 	m_AltSprite = false;
@@ -39,15 +36,18 @@ void Enemy::OnStart()
 {
 	// Add enemy base sprite
 	const char* PathToFile = "Content/Sprites/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Very damaged.png";
+	m_MaxLives = 2;
 
 	if (m_AltSprite) {
 		// Alt
 		PathToFile = "Content/Space/Asteroids/PNGs/Asteroid 01 - Base.png";
 		m_MoveDir = { Game::GetGame()->GetRandomFloatRange(-0.75f, 0.75f), 1.0f };
 		m_RotationAmount = Game::GetGame()->GetRandomFloatRange(-100.0f, 100.0f);
+		m_MaxLives = 3;
 	}
 
 	m_MainSprite = AddSprite(PathToFile);
+	m_Lives = m_MaxLives;
 }
 
 void Enemy::OnUpdate(float DeltaTime)

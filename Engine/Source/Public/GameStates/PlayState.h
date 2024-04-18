@@ -16,7 +16,12 @@ public:
 
 	// Toggle alt enemies
 	void ToggleAltEnemies() {
-		m_AltEnemy = !m_AltEnemy;
+		m_AltEnemies = !m_AltEnemies;
+	}
+
+	// Toggle fast enemies
+	void ToggleFastEnemies() {
+		m_FastEnemies = !m_FastEnemies;
 	}
 
 public:
@@ -51,6 +56,7 @@ protected:
 	float m_MinEnemyFrequency, m_MaxEnemyFrequency;
 	float m_EnemyFrequency, m_EnemySpawnTimer;
 
-	// Flags for alternate sprites
-	bool m_AltEnemy;
+	// Flags for cheats
+	bool m_AltEnemies;
+	bool m_FastEnemies;
 };

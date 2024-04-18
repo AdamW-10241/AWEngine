@@ -5,7 +5,9 @@ class Enemy : public Character {
 public:
 	Enemy();
 
+	// Toggles
 	void SetAltSprite() { m_AltSprite = true; }
+	void SetFastMode() { m_MaxSpeed *= 2.5f; }
 
 protected:
 	virtual void OnStart() override;

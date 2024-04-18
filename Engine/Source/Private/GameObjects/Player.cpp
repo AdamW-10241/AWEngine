@@ -11,6 +11,9 @@
 #define ENGINE_IDLE 0
 #define ENGINE_POWERED 1
 
+#define WEAPON_LASER 0
+#define WEAPON_ROCKET 1
+
 Player::Player()
 {
 	m_MaxSpeed = 600.0f;
@@ -24,8 +27,9 @@ Player::Player()
 	m_TripleShotToggle = false;
 	m_AltProjectileSprite = false;
 	m_InvincibleToggle = false;
+	m_ReversedControlsToggle = false;
 
-	m_BaseRateOfFire = 0.2f;
+	m_BaseRateOfFire = 0.25f;
 	m_RateOfFire = m_BaseRateOfFire;
 	m_FireTimer = 0.0f;
 
@@ -42,26 +46,53 @@ Player::Player()
 		"Content/Sprites/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png"
 	);
 
-	AnimationParams AnimParams;
-	AnimParams.fps = 24;
-	AnimParams.FrameHeight = 48;
-	AnimParams.FrameWidth = 48;
-	AnimParams.EndFrame = 3;
-	AnimParams.MaxFrames = 4;
+	AnimationParams AnimParamsEngine;
+	AnimParamsEngine.fps = 24;
+	AnimParamsEngine.FrameHeight = 48;
+	AnimParamsEngine.FrameWidth = 48;
+	AnimParamsEngine.EndFrame = 3;
+	AnimParamsEngine.MaxFrames = 4;
 
 	// Add the idle engine effect
 	m_EngineEffects.push_back(AddSprite(
 		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Idle.png",
-		&AnimParams
+		&AnimParamsEngine
 	));
 
 	// Add the powered engine effect
 	m_EngineEffects.push_back(AddSprite(
 		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
-		&AnimParams
+		&AnimParamsEngine
+	));
+
+	AnimationParams AnimParamsWeaponLaser;
+	AnimParamsWeaponLaser.fps = 48;
+	AnimParamsWeaponLaser.FrameHeight = 48;
+	AnimParamsWeaponLaser.FrameWidth = 48;
+	AnimParamsWeaponLaser.EndFrame = 11;
+	AnimParamsWeaponLaser.MaxFrames = 12;
+
+	// Add the laser weapon
+	m_Weapons.push_back(AddSprite(
+		"Content/Sprites/Main Ship/Main Ship - Weapons/PNGs/Main Ship - Weapons - Big Space Gun.png",
+		&AnimParamsWeaponLaser
+	));
+
+	AnimationParams AnimParamsWeaponRocket;
+	AnimParamsWeaponRocket.fps = 24;
+	AnimParamsWeaponRocket.FrameHeight = 48;
+	AnimParamsWeaponRocket.FrameWidth = 48;
+	AnimParamsWeaponRocket.EndFrame = 16;
+	AnimParamsWeaponRocket.MaxFrames = 17;
+
+	// Add the laser weapon
+	m_Weapons.push_back(AddSprite(
+		"Content/Sprites/Main Ship/Main Ship - Weapons/PNGs/Main Ship - Weapons - Rockets.png",
+		&AnimParamsWeaponRocket
 	));
 
 	SetPoweredEngine(false);
+	SetWeapon(WEAPON_LASER, false);
 	
 	SetScale(m_Scale);
 
@@ -77,18 +108,20 @@ void Player::OnProcessInput(Input* GameInput)
 	}
 	
 	Super::OnProcessInput(GameInput);
+
+	int ReversedControlFactor = m_ReversedControlsToggle ? -1 : 1;
 	
 	if (GameInput->IsKeyDown(AW_KEY_W)) {
-		AddMovementInput(Vector2(0.0f, -1.0f));
+		AddMovementInput(Vector2(0.0f, -1.0f * ReversedControlFactor));
 	}
 	if (GameInput->IsKeyDown(AW_KEY_S)) {
-		AddMovementInput(Vector2(0.0f, 1.0f));
+		AddMovementInput(Vector2(0.0f, 1.0f * ReversedControlFactor));
 	}
 	if (GameInput->IsKeyDown(AW_KEY_A)) {
-		AddMovementInput(Vector2(-1.0f, 0.0f));
+		AddMovementInput(Vector2(-1.0f * ReversedControlFactor, 0.0f));
 	}
 	if (GameInput->IsKeyDown(AW_KEY_D)) {
-		AddMovementInput(Vector2(1.0f, 0.0f));
+		AddMovementInput(Vector2(1.0f * ReversedControlFactor, 0.0f));
 	}
 
 	if (m_FireTimer <= 0.0f) {
@@ -118,12 +151,8 @@ void Player::OnUpdate(float DeltaTime)
 		m_FireTimer -= DeltaTime;
 	}
 
-	if (m_MoveDirection.Length() > 0.0f) {
-		SetPoweredEngine(true);
-	}
-	else {
-		SetPoweredEngine(false);
-	}
+	SetPoweredEngine(m_MoveDirection.Length() > 0.0f);
+	SetWeapon(!m_AltProjectileSprite, m_FireTimer > 0.0f);
 }
 
 void Player::SetPoweredEngine(bool Powered)
@@ -136,6 +165,21 @@ void Player::SetPoweredEngine(bool Powered)
 	}
 }
 
+void Player::SetWeapon(bool Weapon, bool Firing)
+{
+	if (m_Weapons.size() > 1) {
+		if (m_Weapons[WEAPON_LASER] != nullptr && m_Weapons[WEAPON_ROCKET] != nullptr) {
+			m_Weapons[WEAPON_LASER]->SetActive(Weapon);
+			m_Weapons[WEAPON_ROCKET]->SetActive(!Weapon);
+
+			if (!Firing) {
+				m_Weapons[WEAPON_LASER]->m_Sprite->SetFirstFrame();
+				m_Weapons[WEAPON_ROCKET]->m_Sprite->SetFirstFrame();
+			}
+		}
+	}
+}
+
 void Player::SpawnProjectile(Vector2 MoveDir, bool AltProjectileSprite)
 {
 	// Spawning the game object / projectile
@@ -143,6 +187,10 @@ void Player::SpawnProjectile(Vector2 MoveDir, bool AltProjectileSprite)
 
 	if (m_AltProjectileSprite) {
 		Proj->SetAltSprite();
+	}
+
+	if (m_TripleShotToggle) {
+		Proj->SetRotation((float)atan2(MoveDir.y, MoveDir.x) * 180 / (float)M_PI + 90);
 	}
 
 	// Reposition the projectile
