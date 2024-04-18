@@ -14,6 +14,11 @@ public:
 		m_EnemyFrequency = m_MinEnemyFrequency;
 	}
 
+	// Toggle alt enemies
+	void ToggleAltEnemies() {
+		m_AltEnemy = !m_AltEnemy;
+	}
+
 public:
 	// Reference to the player
 	Player* m_PlayerRef;
@@ -24,9 +29,6 @@ protected:
 	virtual void OnUpdate(float DeltaTime) override;
 
 	void EnemySpawner(float DeltaTime);
-
-	// Get a random float value between 2 floats
-	float GetRandomFloatRange(float min = 0.0f, float max = 1.0f) const;
 
 	// Text update functions
 	void UpdateScore();
@@ -48,4 +50,7 @@ protected:
 	// Timers for enemy spawning
 	float m_MinEnemyFrequency, m_MaxEnemyFrequency;
 	float m_EnemyFrequency, m_EnemySpawnTimer;
+
+	// Flags for alternate sprites
+	bool m_AltEnemy;
 };

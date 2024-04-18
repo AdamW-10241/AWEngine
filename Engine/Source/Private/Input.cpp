@@ -7,6 +7,7 @@
 #include "Menus/WinMenu.h"
 #include "resource.h"
 #include "GameObjects/Player.h"
+#include "GameObjects/Background.h"
 
 void Input::ProcessInput()
 {
@@ -49,7 +50,7 @@ bool Input::IsKeyDown(AW_Key Key)
 	return KeyStates[Key];
 }
 
-bool Input::IsMouseButtonDown(AW_MouseButton Button)
+bool const Input::IsMouseButtonDown(AW_MouseButton Button)
 {
 	if (Button >= AW_NUM_BUTTONS) {
 		return false;
@@ -137,7 +138,7 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 			// Check player is not nullptr
 			if (PlayStateTest->m_PlayerRef) {
 				// Set instant fire
-				PlayStateTest->m_PlayerRef->SetInstantFire();
+				PlayStateTest->m_PlayerRef->ToggleInstantFire();
 
 				Game::GetGame()->GetWinMenu()->ActivatePopup(
 					"Cheats",
@@ -178,7 +179,7 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 			// Check player is not nullptr
 			if (PlayStateTest->m_PlayerRef) {
 				// Set instant fire
-				PlayStateTest->m_PlayerRef->SetTripleShot();
+				PlayStateTest->m_PlayerRef->ToggleTripleShot();
 
 				Game::GetGame()->GetWinMenu()->ActivatePopup(
 					"Cheats",
@@ -192,6 +193,69 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 			"Cheats",
 			"No player exists toggle triple-shot!"
+		);
+		break;
+	case ID_VISUAL_CHANGEPROJECTILE:
+		// Check for playstate
+		if (auto PlayStateTest = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Check player is not nullptr
+			if (PlayStateTest->m_PlayerRef) {
+				// Set alt projectile
+				PlayStateTest->m_PlayerRef->ToggleAltProjectiles();
+
+				Game::GetGame()->GetWinMenu()->ActivatePopup(
+					"Cheats",
+					"Alternate projectile sprite set!"
+				);
+				break;
+			}
+		}
+
+		// Handle not in playstate
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"No player exists to change the projectile sprite for!"
+		);
+		break;
+	case ID_VISUAL_CHANGEENEMY:
+		// Check for playstate
+		if (auto PlayStateTest = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Set alt enemies
+			PlayStateTest->ToggleAltEnemies();
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Alternate enemy sprites set!"
+			);
+			break;
+		}
+
+		// Handle not in playstate
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"Not in game state with spawning enemies!"
+		);
+		break;
+	case ID_CHEATS_INVINCIBLE:
+		// Check for playstate
+		if (auto PlayStateTest = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Check player is not nullptr
+			if (PlayStateTest->m_PlayerRef) {
+				// Set player invincible
+				PlayStateTest->m_PlayerRef->ToggleInvincibility();
+
+				Game::GetGame()->GetWinMenu()->ActivatePopup(
+					"Cheats",
+					"Player set invincible!"
+				);
+				break;
+			}
+		}
+
+		// Handle not in playstate
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"No player exists to set invincible!"
 		);
 		break;
 	default:

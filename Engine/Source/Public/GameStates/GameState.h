@@ -4,10 +4,11 @@
 class Input;
 struct SDL_Renderer;
 class GameObject;
+class Background;
 
 class GameState {
 public:
-	GameState() : m_ShouldDestroy(false) {}
+	GameState() : m_ShouldDestroy(false), m_Background(nullptr) {}
 	virtual ~GameState() = default;
 
 	// Runs when the game state starts
@@ -49,6 +50,9 @@ public:
 	// Check if the game state is to be destroyed
 	bool IsPendingDestroy() const { return m_ShouldDestroy; }
 
+	// Get background
+	Background* GetBackground() { return m_Background; }
+
 	// Get a game object of a specific type
 	//template<class T, std::enable_if_t<std::is_base_of_v<GameObject, T>, T>* = nullptr>
 	//T* GetGameObject() {
@@ -73,6 +77,9 @@ protected:
 	virtual void OnUpdate(float DeltaTime) {}
 
 	virtual void OnGarbageCollection() {}
+
+protected:
+	Background* m_Background;
 
 private:
 	// Store all game objects that need to be spawned on the next loop

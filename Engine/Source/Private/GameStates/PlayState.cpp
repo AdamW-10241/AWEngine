@@ -5,36 +5,48 @@
 #include "GameObjects/Player.h"
 #include "GameObjects/Enemy.h"
 #include "GameObjects/TextObject.h"
+#include "GameObjects/Background.h"
 
 #include <string>
-#include <iomanip>
-#include <random>
 #include <sstream>
+#include <iomanip>
 
 #include "Debug.h"
 
 #define Super GameState
 
-// Initialise a random generator
-std::default_random_engine RandGenerator;
+PlayState::PlayState() {
+	m_ScoreText = nullptr;
+	m_FreqText = nullptr;
+	m_PlayerLivesText = nullptr;
 
-PlayState::PlayState() :
-	m_ScoreText(nullptr),
-	m_FreqText(nullptr),
-	m_PlayerLivesText(nullptr),
-	m_PlayerLives(-1),
-	m_PlayerRef(nullptr),
-	m_EndPlayTimer(3.0f),
-	m_MinEnemyFrequency(0.5f),
-	m_MaxEnemyFrequency(3.0f),
-	m_EnemyFrequency(m_MaxEnemyFrequency),
-	m_EnemySpawnTimer(1.0f) {}
+	m_PlayerLives = -1;
+	m_PlayerRef = nullptr;
+
+	m_EndPlayTimer = 3.0f;
+
+	m_MinEnemyFrequency = 0.5f;
+	m_MaxEnemyFrequency = 3.0f;
+	m_EnemyFrequency = m_MaxEnemyFrequency;
+	m_EnemySpawnTimer = 1.0f;
+
+	m_AltEnemy = false;
+}
+
 
 void PlayState::OnStart()
 {
 	Super::OnStart();
 
 	Game::GetGame()->m_Score = 0;
+
+	m_Background = AddGameObject<Background>();
+	m_Background->SetBackgroundSprite("Content/Background/Blue Nebula/Blue_Nebula_01-1024x1024.png");
+	m_Background->SetPosition({
+		Game::GetGame()->WindowWidthF() / 2.0f, 
+		Game::GetGame()->WindowHeightF() / 2.0f}
+	);
+	m_Background->SetScale({ 1.5f, 1.0f });
 
 	m_PlayerRef = AddGameObject<Player>();
 	m_PlayerRef->SetPosition({
@@ -62,9 +74,6 @@ void PlayState::OnStart()
 	m_FreqText->SetFontSize(25);
 	m_FreqText->SetAligment(AL_TOP_LEFT);
 	UpdateFrequencyText();
-
-	// Set the seed of random to the current calendar time
-	RandGenerator.seed(time(nullptr));
 }
 
 void PlayState::OnUpdate(float DeltaTime)
@@ -127,7 +136,11 @@ void PlayState::EnemySpawner(float DeltaTime)
 	if (m_EnemySpawnTimer <= 0.0f) {
 		Enemy* E = AddGameObject<Enemy>();
 
-		float PosX = GetRandomFloatRange(
+		if (m_AltEnemy) {
+			E->SetAltSprite();
+		}
+
+		float PosX = Game::GetGame()->GetRandomFloatRange(
 			E->ScaledHalfSize(),
 			Game::GetGame()->WindowWidthF() - E->ScaledHalfSize()
 		);
@@ -141,11 +154,4 @@ void PlayState::EnemySpawner(float DeltaTime)
 		
 		UpdateFrequencyText();
 	}
-}
-
-float PlayState::GetRandomFloatRange(float min, float max) const
-{
-	std::uniform_real_distribution<float> RandNum(min, max);
-
-	return RandNum(RandGenerator);
 }

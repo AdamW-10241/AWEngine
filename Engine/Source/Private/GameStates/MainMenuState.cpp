@@ -1,10 +1,20 @@
 #include "GameStates/MainMenuState.h"
-#include "GameObjects/TextObject.h"
+
 #include "Game.h"
 #include "Input.h"
+#include "GameObjects/TextObject.h"
+#include "GameObjects/Background.h"
 
 void MainMenuState::OnStart()
 {
+	m_Background = AddGameObject<Background>();
+	m_Background->SetBackgroundSprite("Content/Background/Starfields/Starfield_07-1024x1024.png");
+	m_Background->SetPosition({
+		Game::GetGame()->WindowWidthF() / 2.0f,
+		Game::GetGame()->WindowHeightF() / 2.0f }
+	);
+	m_Background->SetScale({ 1.5f, 1.0f });
+	
 	m_TitleText = AddGameObject<TextObject>();
 	m_TitleText->SetAligment(AL_CENTER);
 

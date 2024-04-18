@@ -22,6 +22,8 @@ Player::Player()
 
 	m_InstantFireToggle = false;
 	m_TripleShotToggle = false;
+	m_AltProjectileSprite = false;
+	m_InvincibleToggle = false;
 
 	m_BaseRateOfFire = 0.2f;
 	m_RateOfFire = m_BaseRateOfFire;
@@ -134,10 +136,14 @@ void Player::SetPoweredEngine(bool Powered)
 	}
 }
 
-void Player::SpawnProjectile(Vector2 MoveDir)
+void Player::SpawnProjectile(Vector2 MoveDir, bool AltProjectileSprite)
 {
 	// Spawning the game object / projectile
 	PlayerProjectile* Proj = Game::GetGame()->AddGameObject<PlayerProjectile>();
+
+	if (m_AltProjectileSprite) {
+		Proj->SetAltSprite();
+	}
 
 	// Reposition the projectile
 	Vector2 SpawnPos = GetTransform().Position;

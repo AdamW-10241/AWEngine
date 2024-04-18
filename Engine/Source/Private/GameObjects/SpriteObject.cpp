@@ -50,8 +50,6 @@ void SpriteObject::OnPostUpdate(float DeltaTime)
 
 void SpriteObject::SpriteFollowObject(Sprite* SpriteToFollow)
 {
-	
-	
 	// Set the sprites positition to match the sprite object
 	SpriteToFollow->m_Sprite->SetPosition(
 		(int)GetTransform().Position.x + SpriteToFollow->m_Offset.Position.x,

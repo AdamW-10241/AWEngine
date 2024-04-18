@@ -9,6 +9,11 @@
 #include "Graphics/Text.h"
 #include "Menus\WinMenu.h"
 
+#include <random>
+
+// Initialise a random generator
+std::default_random_engine RandGenerator;
+
 Game* Game::GetGame()
 {
 	// Create a Game Singleton
@@ -154,7 +159,7 @@ float Game::WindowHeightF() const
 	return static_cast<float>(WindowHeight());
 }
 
-void Game::RestartGame()
+void Game::RestartGame() const
 {
 	auto NewState = new MainMenuState();
 	GetGameStateMachine()->SetNewGameState(NewState);
@@ -237,6 +242,9 @@ void Game::Start()
 		Cleanup();
 		return;
 	}
+
+	// Set the seed of random to the current calendar time
+	RandGenerator.seed(time(nullptr));
 
 	// Create the game input
 	m_GameInput = new Input();
@@ -390,4 +398,11 @@ void Game::CollectGarbage()
 {
 	// Runs the active game states garbage collection
 	m_GameStateMachine->GarbageCollection();
+}
+
+float Game::GetRandomFloatRange(float min, float max) const
+{
+	std::uniform_real_distribution<float> RandNum(min, max);
+
+	return RandNum(RandGenerator);
 }

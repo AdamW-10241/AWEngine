@@ -5,16 +5,24 @@ class Player : public Character {
 public:
 	Player();
 
-	// Set instant fire
-	void SetInstantFire() {
+	// Toggle instant fire
+	void ToggleInstantFire() {
 		m_InstantFireToggle = !m_InstantFireToggle;
 		m_RateOfFire = (m_InstantFireToggle == false) ? m_BaseRateOfFire : 0.05f;
 	}
 
-	// Set triple shot
-	void SetTripleShot() {
+	// Toggle triple shot
+	void ToggleTripleShot() {
 		m_TripleShotToggle = !m_TripleShotToggle;
 	}
+
+	// Toggle alt projectile sprite
+	void ToggleAltProjectiles() { m_AltProjectileSprite = !m_AltProjectileSprite; }
+
+	// Toggle invinciblity
+	void ToggleInvincibility() { m_InvincibleToggle = !m_InvincibleToggle; }
+	bool GetInvinciblityState() const { return m_InvincibleToggle; }
+
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
 
@@ -23,7 +31,7 @@ protected:
 	// Change the engine effects animations
 	void SetPoweredEngine(bool Powered);
 
-	void SpawnProjectile(Vector2 MoveDir = {0.0f});
+	void SpawnProjectile(Vector2 MoveDir = {0.0f}, bool AltProjectileSprite = false);
 
 	void SpawnTripleShot();
 
@@ -33,8 +41,11 @@ protected:
 	// Store the different effects for the engine effects
 	TArray<Sprite*> m_EngineEffects;
 
-	// Toggles for firing projectiles
-	bool m_InstantFireToggle, m_TripleShotToggle;
+	// Toggles
+	bool m_InstantFireToggle;
+	bool m_TripleShotToggle;
+	bool m_AltProjectileSprite;
+	bool m_InvincibleToggle;
 
 	// Timer values for firing projectiles
 	float m_BaseRateOfFire;

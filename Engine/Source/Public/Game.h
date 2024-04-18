@@ -59,10 +59,13 @@ public:
 	}
 
 	// Restart the game to the default game state
-	void RestartGame();
+	void RestartGame() const;
 
 	// Get the windows menu
 	WinMenu* GetWinMenu() const { return m_WinMenu; }
+
+	// Get a random float value between 2 floats
+	float GetRandomFloatRange(float min = 0.0f, float max = 1.0f) const;
 
 public:
 	// Score for the game

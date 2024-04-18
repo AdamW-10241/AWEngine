@@ -414,7 +414,7 @@ public:
 	// Test if the key is pressed down
 	bool IsKeyDown(AW_Key Key);
     // Test if a mouse button is down
-    bool IsMouseButtonDown(AW_MouseButton Button);
+    bool const IsMouseButtonDown(AW_MouseButton Button);
     // Get the position of the mouse on the window
     Vector2 GetMousePos() const;
 
@@ -425,8 +425,10 @@ private:
     // Listen and react to windows menu events
     void HandleWinMenuEvents(SDL_Event* Event);
 
+    // Cheat Functions
+    void SetPlayStateBackground(const char* PathToFile);
+
 private:
     // State of each button on the mouse
     bool m_MouseState[3] = { false };
-
 };

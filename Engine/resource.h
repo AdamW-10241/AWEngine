@@ -5,15 +5,15 @@
 #define IDR_MENU1                       101
 #define ID_FILE_RESTARTGAME             40001
 #define ID_FILE_EXITAPP                 40002
-#define ID_HELP_                        40003
-#define ID_GAME_CONTROLS                40004
-#define ID_HELP_ABOUTASTRALWAVEENGINE   40005
-#define ID_GAME_CHEATS                  40006
-#define ID_CHEATS_MAXHEAL               40007
-#define ID_CHEATS_INSTANTFIRE           40008
-#define ID_CHEATS_MAXENEMIES            40009
-#define ID_FILE_INSTANTENEMIES          40010
-#define ID_CHEATS_TRIPLES               40011
+#define ID_GAME_CONTROLS                40003
+#define ID_HELP_ABOUTASTRALWAVEENGINE   40004
+#define ID_CHEATS_MAXHEAL               40005
+#define ID_CHEATS_INSTANTFIRE           40006
+#define ID_CHEATS_MAXENEMIES            40007
+#define ID_CHEATS_TRIPLES               40008
+#define ID_VISUAL_CHANGEPROJECTILE      40009
+#define ID_VISUAL_CHANGEENEMY           40010
+#define ID_CHEATS_INVINCIBLE            40011
 
 // Next default values for new objects
 // 
