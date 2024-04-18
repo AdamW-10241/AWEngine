@@ -24,6 +24,9 @@ public:
 	// Get the remaining lives of the character
 	int GetLives() const { return m_Lives; }
 
+	// Reset lives to max lives
+	void ResetLives() { m_Lives = m_MaxLives; }
+
 public:
 	// Dimensions of the character
 	float m_Scale, m_Size;
@@ -44,5 +47,5 @@ protected:
 	Vector2 m_MoveDirection;
 
 	// Lives of the character
-	int m_Lives;
+	int m_MaxLives, m_Lives;
 };

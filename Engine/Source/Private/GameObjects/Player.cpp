@@ -20,9 +20,15 @@ Player::Player()
 	m_Scale = 3.0f;
 	m_Size = 48.0f - 16.0f;
 
-	m_RateOfFire = 0.2f;
+	m_InstantFireToggle = false;
+	m_TripleShotToggle = false;
+
+	m_BaseRateOfFire = 0.2f;
+	m_RateOfFire = m_BaseRateOfFire;
 	m_FireTimer = 0.0f;
-	m_Lives = 3;
+
+	m_MaxLives = 3;
+	m_Lives = m_MaxLives;
 
 	// Add engine sprite
 	AddSprite(
@@ -85,7 +91,13 @@ void Player::OnProcessInput(Input* GameInput)
 
 	if (m_FireTimer <= 0.0f) {
 		if (GameInput->IsKeyDown(AW_KEY_SPACE)) {
-			SpawnProjectile();
+			// Check triple shot
+			if (m_TripleShotToggle) {
+				SpawnTripleShot();
+			}
+			else {
+				SpawnProjectile();
+			}
 
 			m_FireTimer = m_RateOfFire;
 		}
@@ -122,7 +134,7 @@ void Player::SetPoweredEngine(bool Powered)
 	}
 }
 
-void Player::SpawnProjectile()
+void Player::SpawnProjectile(Vector2 MoveDir)
 {
 	// Spawning the game object / projectile
 	PlayerProjectile* Proj = Game::GetGame()->AddGameObject<PlayerProjectile>();
@@ -134,7 +146,14 @@ void Player::SpawnProjectile()
 	Proj->SetPosition(SpawnPos);
 
 	// Firing the projectile
-	Proj->FireProjectile(this);
+	Proj->FireProjectile(this, MoveDir);
+}
+
+void Player::SpawnTripleShot()
+{
+	SpawnProjectile({ -1.0f, -1.0f });
+	SpawnProjectile({ 0.0f, -1.0f });
+	SpawnProjectile({ 1.0f, -1.0f });
 }
 
 void Player::OnDeath(GameObject* DeathCauser)

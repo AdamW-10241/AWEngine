@@ -7,6 +7,7 @@ Character::Character() :
 	m_AccelerationSpeed(2000.0f),
 	m_Scale(1.0f),
 	m_Size(5.0f),
+	m_MaxLives(1),
 	m_Lives(1) {}
 
 void Character::AddMovementInput(Vector2 Direction, float Scale)

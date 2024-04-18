@@ -13,7 +13,8 @@ Enemy::Enemy()
 	m_Scale = 3.0f;
 	m_Size = 48.0f - 16.0f;
 
-	m_Lives = 3;
+	m_MaxLives = 3;
+	m_Lives = m_MaxLives;
 
 	m_ScoreValue = 100.0f;
 	

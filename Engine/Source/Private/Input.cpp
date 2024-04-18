@@ -1,10 +1,12 @@
 #include "Input.h"
+
 #include "SDL2/SDL.h"
 #include "Game.h"
 #include "Math/Vector2.h"
 #include "SDL2/SDL_syswm.h"
 #include "Menus/WinMenu.h"
 #include "resource.h"
+#include "GameObjects/Player.h"
 
 void Input::ProcessInput()
 {
@@ -99,11 +101,97 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 		);
 		break;
 	case ID_CHEATS_MAXHEAL:
-		//Game::GetGame()->GetGameStateMachine()->GetActiveGameState()->GetGameObject
+		// Check for playstate
+		if (auto PlayStateTest = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Check player is not nullptr
+			if (PlayStateTest->m_PlayerRef) {
+				// Check player is already dead
+				if (PlayStateTest->m_PlayerRef->GetLives() <= 0) {
+					Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+						"Cheats",
+						"Player is already dead and can not be healed!"
+					);
+					break;
+				}
+				
+				// Max heal player
+				PlayStateTest->m_PlayerRef->ResetLives();
+
+				Game::GetGame()->GetWinMenu()->ActivatePopup(
+					"Cheats",
+					"Player healed to full!"
+				);
+				break;
+			}
+		}
 		
+		// Handle not in playstate
 		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 			"Cheats",
-			"Player Max Healed!"
+			"No player exists to heal!"
+		);
+		break;
+	case ID_CHEATS_INSTANTFIRE:
+		// Check for playstate
+		if (auto PlayStateTest = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Check player is not nullptr
+			if (PlayStateTest->m_PlayerRef) {
+				// Set instant fire
+				PlayStateTest->m_PlayerRef->SetInstantFire();
+
+				Game::GetGame()->GetWinMenu()->ActivatePopup(
+					"Cheats",
+					"Player instant-firing toggled!"
+				);
+				break;
+			}
+		}
+
+		// Handle not in playstate
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"No player exists toggle instant-firing!"
+		);
+		break;
+	case ID_CHEATS_MAXENEMIES:
+		// Check for playstate
+		if (auto PlayStateTest = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Set instant enemy spawns
+			PlayStateTest->SetMaxEnemies();
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Max enemies set!"
+			);
+			break;
+		}
+
+		// Handle not in playstate
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"No enemies can be spawned!"
+		);
+		break;
+	case ID_CHEATS_TRIPLES:
+		// Check for playstate
+		if (auto PlayStateTest = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Check player is not nullptr
+			if (PlayStateTest->m_PlayerRef) {
+				// Set instant fire
+				PlayStateTest->m_PlayerRef->SetTripleShot();
+
+				Game::GetGame()->GetWinMenu()->ActivatePopup(
+					"Cheats",
+					"Player triple-shot toggled!"
+				);
+				break;
+			}
+		}
+
+		// Handle not in playstate
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"No player exists toggle triple-shot!"
 		);
 		break;
 	default:

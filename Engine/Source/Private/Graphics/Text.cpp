@@ -65,12 +65,15 @@ void Text::Cleanup()
 
 void Text::SetText(const char* NewText)
 {
-	if (NewText == m_Text) {
+	// Compare value and return if same
+	if (strcmp(NewText, m_Text) == 0) {
 		return;
 	}
-	
- 	m_Text = NewText;
 
+	// Copy value to other const char*
+	m_Text = _strdup(NewText);
+
+	// Update font
 	UpdateFont();
 }
 

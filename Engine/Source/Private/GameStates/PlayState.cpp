@@ -25,7 +25,9 @@ PlayState::PlayState() :
 	m_PlayerLives(-1),
 	m_PlayerRef(nullptr),
 	m_EndPlayTimer(3.0f),
-	m_EnemyFrequency(3.0f),
+	m_MinEnemyFrequency(0.5f),
+	m_MaxEnemyFrequency(3.0f),
+	m_EnemyFrequency(m_MaxEnemyFrequency),
 	m_EnemySpawnTimer(1.0f) {}
 
 void PlayState::OnStart()
@@ -135,7 +137,7 @@ void PlayState::EnemySpawner(float DeltaTime)
 		// Reset the timer
 		m_EnemySpawnTimer = m_EnemyFrequency;
 		// Reduce the next spawn frequency
-		m_EnemyFrequency = std::max(0.5f, m_EnemyFrequency - 0.1f);
+		m_EnemyFrequency = std::max(m_MinEnemyFrequency, m_EnemyFrequency - 0.1f);
 		
 		UpdateFrequencyText();
 	}

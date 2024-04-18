@@ -6,7 +6,7 @@ public:
 	Projectile();
 
 	// Launch the projectile
-	void FireProjectile(GameObject* Owner, int OverrideDamage = 0);
+	void FireProjectile(GameObject* Owner, Vector2 MoveDir = {0.0f}, int OverrideDamage = 0);
 
 protected:
 	virtual void OnUpdate(float DeltaTime) override;

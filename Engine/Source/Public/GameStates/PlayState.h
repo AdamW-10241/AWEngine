@@ -8,6 +8,16 @@ class PlayState : public GameState {
 public:
 	PlayState();
 
+	// Set max enemies
+	void SetMaxEnemies() {
+		m_MinEnemyFrequency = 0.05f;
+		m_EnemyFrequency = m_MinEnemyFrequency;
+	}
+
+public:
+	// Reference to the player
+	Player* m_PlayerRef;
+
 protected:
 	virtual void OnStart() override;
 
@@ -24,17 +34,18 @@ protected:
 	void UpdateFrequencyText();
 
 protected:
+	// Text rendering objects
 	TextObject* m_ScoreText;
 	TextObject* m_PlayerLivesText;
 	TextObject* m_FreqText;
-
-	// Reference to the player
-	Player* m_PlayerRef;
 	
+	// Player life counter
 	int m_PlayerLives;
 
+	// Timer to reset game after death
 	float m_EndPlayTimer;
 
 	// Timers for enemy spawning
+	float m_MinEnemyFrequency, m_MaxEnemyFrequency;
 	float m_EnemyFrequency, m_EnemySpawnTimer;
 };

@@ -1,4 +1,5 @@
 #include "GameObjects/Projectile.h"
+#include "Math/Vector2.h"
 
 #define Super Character
 
@@ -18,10 +19,14 @@ Projectile::Projectile()
 	m_Bounds = AddBounds(0.0f, ScaledSize());
 }
 
-void Projectile::FireProjectile(GameObject* Owner, int OverrideDamage)
+void Projectile::FireProjectile(GameObject* Owner, Vector2 MoveDir, int OverrideDamage)
 {
 	if (Owner == nullptr) {
 		return;
+	}
+
+	if (MoveDir != Vector2(0.0f)) {
+		m_Dir = MoveDir;
 	}
 
 	if (OverrideDamage > 0) {
