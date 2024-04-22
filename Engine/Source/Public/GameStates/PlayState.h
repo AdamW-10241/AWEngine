@@ -4,6 +4,8 @@
 class TextObject;
 class Player;
 
+typedef struct _Mix_Music Mix_Music;
+
 class PlayState : public GameState {
 public:
 	PlayState();
@@ -23,6 +25,8 @@ protected:
 
 	virtual void OnUpdate(float DeltaTime) override;
 
+	virtual void OnCleanup() override;
+
 	void EnemySpawner(float DeltaTime);
 
 	// Get a random float value between 2 floats
@@ -38,6 +42,9 @@ protected:
 	TextObject* m_ScoreText;
 	TextObject* m_PlayerLivesText;
 	TextObject* m_FreqText;
+
+	// Music
+	Mix_Music* m_BGM;
 	
 	// Player life counter
 	int m_PlayerLives;

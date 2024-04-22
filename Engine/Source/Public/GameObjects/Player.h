@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObjects/Character.h"
 
+struct Mix_Chunk;
+
 class Player : public Character {
 public:
 	Player();
@@ -15,6 +17,9 @@ public:
 	void SetTripleShot() {
 		m_TripleShotToggle = !m_TripleShotToggle;
 	}
+
+	virtual void Cleanup() override;
+
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
 
@@ -32,6 +37,9 @@ protected:
 protected:
 	// Store the different effects for the engine effects
 	TArray<Sprite*> m_EngineEffects;
+
+	// Store sound effects
+	Mix_Chunk* m_ShootSFX[1] = { nullptr };
 
 	// Toggles for firing projectiles
 	bool m_InstantFireToggle, m_TripleShotToggle;

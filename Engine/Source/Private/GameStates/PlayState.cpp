@@ -5,6 +5,7 @@
 #include "GameObjects/Player.h"
 #include "GameObjects/Enemy.h"
 #include "GameObjects/TextObject.h"
+#include "SDL2/SDL_mixer.h"
 
 #include <string>
 #include <iomanip>
@@ -18,17 +19,21 @@
 // Initialise a random generator
 std::default_random_engine RandGenerator;
 
-PlayState::PlayState() :
-	m_ScoreText(nullptr),
-	m_FreqText(nullptr),
-	m_PlayerLivesText(nullptr),
-	m_PlayerLives(-1),
-	m_PlayerRef(nullptr),
-	m_EndPlayTimer(3.0f),
-	m_MinEnemyFrequency(0.5f),
-	m_MaxEnemyFrequency(3.0f),
-	m_EnemyFrequency(m_MaxEnemyFrequency),
-	m_EnemySpawnTimer(1.0f) {}
+PlayState::PlayState() {
+	m_ScoreText = nullptr;
+	m_FreqText = nullptr;
+	m_PlayerLivesText = nullptr;
+	// https://freesound.org/people/vibritherabjit123/sounds/642504/
+	m_BGM = Mix_LoadMUS("Content/Audio/Play_Music.wav");
+	m_PlayerLives = -1;
+	m_PlayerRef = nullptr;
+	m_EndPlayTimer = 3.0f;
+	m_MinEnemyFrequency = 0.5f;
+	m_MaxEnemyFrequency = 3.0f;
+	m_EnemyFrequency = m_MaxEnemyFrequency;
+	m_EnemySpawnTimer = 1.0f;
+}
+
 
 void PlayState::OnStart()
 {
@@ -65,6 +70,12 @@ void PlayState::OnStart()
 
 	// Set the seed of random to the current calendar time
 	RandGenerator.seed(time(nullptr));
+
+	// Play background music
+	if (m_BGM != nullptr) {
+		Mix_PlayMusic(m_BGM, -1);
+		Mix_VolumeMusic(SDL_MIX_MAXVOLUME);
+	}
 }
 
 void PlayState::OnUpdate(float DeltaTime)
@@ -85,6 +96,11 @@ void PlayState::OnUpdate(float DeltaTime)
 	}
 
 	UpdateLives();
+}
+
+void PlayState::OnCleanup()
+{
+	Mix_FreeMusic(m_BGM);
 }
 
 void PlayState::UpdateScore()

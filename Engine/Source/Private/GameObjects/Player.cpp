@@ -3,6 +3,7 @@
 #include "GameObjects/Enemy.h"
 #include "GameObjects/PlayerProjectile.h"
 #include "Game.h"
+#include "SDL2/SDL_mixer.h"
 
 #include "Debug.h"
 
@@ -66,6 +67,25 @@ Player::Player()
 	Bounds* PlayerBounds = AddBounds(0.0f, ScaledSize());
 	PlayerBounds->m_OriginOffset = -ScaledHalfSize();
 	PlayerBounds->m_Debug = false;
+
+	// Sound effects
+	// https://freesound.org/people/SomeGuy22/sounds/519005/
+	m_ShootSFX[0] = Mix_LoadWAV("Content/Audio/Laser1.wav");
+
+	for (auto item : m_ShootSFX) {
+		if (item != nullptr) {
+			Mix_VolumeChunk(item, 15);
+		}
+	}
+}
+
+void Player::Cleanup()
+{
+	for (auto item : m_ShootSFX) {
+		if (item != nullptr) {
+			Mix_FreeChunk(item);
+		}
+	}
 }
 
 void Player::OnProcessInput(Input* GameInput)
@@ -147,6 +167,12 @@ void Player::SpawnProjectile(Vector2 MoveDir)
 
 	// Firing the projectile
 	Proj->FireProjectile(this, MoveDir);
+
+	int SoundIndex = 0; // rand() % 3;
+
+	if (m_ShootSFX[SoundIndex] != nullptr) {
+		Mix_PlayChannel(-1, m_ShootSFX[SoundIndex], 0);
+	}
 }
 
 void Player::SpawnTripleShot()

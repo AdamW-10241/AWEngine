@@ -8,6 +8,7 @@
 #include "SDL2/SDL_ttf.h"
 #include "Graphics/Text.h"
 #include "Menus\WinMenu.h"
+#include "SDL2/SDL_mixer.h"
 
 Game* Game::GetGame()
 {
@@ -199,6 +200,16 @@ void Game::Initialise()
 		return;
 	}
 
+	// Initialise SDL mixer
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, NULL) != 0) {
+		AW_LOG("Game", "Mixer failed to initalise: " << Mix_GetError());
+		Cleanup();
+		return;
+	}
+
+	// Set the seed for randomisation to the current time
+	srand(time(nullptr));
+
 	AW_LOG("Game", "Game successfully initialised all libraries.");
 
 	Start();
@@ -308,6 +319,7 @@ void Game::Cleanup()
 		SDL_DestroyWindow(m_WindowRef);
 	}
 
+	Mix_CloseAudio();
 	TTF_Quit();
 	SDL_Quit();
 
