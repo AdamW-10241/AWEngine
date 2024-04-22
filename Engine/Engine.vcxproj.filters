@@ -81,6 +81,12 @@
     <ClCompile Include="Source\Private\GameStates\MainMenuState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Private\GameObjects\VisualEffectObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\GameObjects\VFX\VFX_EnemyExplosion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Public\Game.h">
@@ -158,10 +164,21 @@
     <ClInclude Include="Source\Public\GameStates\MainMenuState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\GameObjects\VisualEffectObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_EnemyExplosion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\FireExplode.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -106,6 +106,8 @@
     <ClCompile Include="Source\Private\GameObjects\Projectile.cpp" />
     <ClCompile Include="Source\Private\GameObjects\SpriteObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\TextObject.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\VFX\VFX_EnemyExplosion.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\VisualEffectObject.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameState.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameStateMachine.cpp" />
     <ClCompile Include="Source\Private\GameStates\MainMenuState.cpp" />
@@ -130,6 +132,8 @@
     <ClInclude Include="Source\Public\GameObjects\PlayerProjectile.h" />
     <ClInclude Include="Source\Public\GameObjects\Projectile.h" />
     <ClInclude Include="Source\Public\GameObjects\TextObject.h" />
+    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_EnemyExplosion.h" />
+    <ClInclude Include="Source\Public\GameObjects\VisualEffectObject.h" />
     <ClInclude Include="Source\Public\GameStates\GameStateMachine.h" />
     <ClInclude Include="Source\Public\GameObjects\PhysicsObject.h" />
     <ClInclude Include="Source\Public\GameObjects\Player.h" />
@@ -148,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\FireExplode.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

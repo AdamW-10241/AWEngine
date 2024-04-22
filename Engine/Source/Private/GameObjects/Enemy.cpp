@@ -1,6 +1,7 @@
 #include "GameObjects/Enemy.h"
 #include "GameObjects/Player.h"
 #include "Game.h"
+#include "GameObjects/VFX/VFX_EnemyExplosion.h"
 
 #include "Debug.h"
 
@@ -51,6 +52,10 @@ void Enemy::OnDeath(GameObject* DeathCauser)
 	if (auto PlayerTest = dynamic_cast<Player*>(DeathCauser)) {
 		Game::GetGame()->m_Score += m_ScoreValue;
 	}
+
+	auto VFX = Game::GetGame()->Game::AddGameObject<VFX_EnemyExplosion>();
+	VFX->SetPosition(GetTransform().Position);
+	VFX->SetScale(m_Scale);
 	
 	Super::OnDeath(DeathCauser);
 }

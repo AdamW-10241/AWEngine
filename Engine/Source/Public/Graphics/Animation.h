@@ -43,6 +43,9 @@ public:
 	// Set the visibility of the animation
 	void SetVisible(bool IsVisible);
 
+	// Get sprite anim params
+	AnimationParams* GetAnimParams() { return m_AnimParams; }
+
 private:
 	// Stores the texture to render
 	Texture* m_TextureRef;
