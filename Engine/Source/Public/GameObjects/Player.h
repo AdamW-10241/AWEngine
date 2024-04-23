@@ -10,7 +10,7 @@ public:
 	// Set instant fire
 	void SetInstantFire() {
 		m_InstantFireToggle = !m_InstantFireToggle;
-		m_RateOfFire = (m_InstantFireToggle == false) ? m_BaseRateOfFire : 0.05f;
+		m_RateOfAttack = (m_InstantFireToggle == false) ? m_BaseRateOfAttack : 0.05f;
 	}
 
 	// Set triple shot
@@ -25,11 +25,11 @@ protected:
 
 	virtual void OnUpdate(float DeltaTime) override;
 
-	void SpawnProjectile(Vector2 MousePosition = {0.0f});
-
-	void SpawnTripleShot(Vector2 MousePosition = {0.0f});
-
 	virtual void OnDeath(GameObject* DeathCauser);
+
+	void SpawnProjectile(Vector2 MousePosition = { 0.0f });
+
+	void SpawnTripleShot(Vector2 MousePosition = { 0.0f });
 
 protected:
 	// Store the different effects for the engine effects
@@ -40,9 +40,4 @@ protected:
 
 	// Toggles for firing projectiles
 	bool m_InstantFireToggle, m_TripleShotToggle;
-
-	// Timer values for firing projectiles
-	float m_BaseRateOfFire;
-	float m_RateOfFire;
-	float m_FireTimer;
 };

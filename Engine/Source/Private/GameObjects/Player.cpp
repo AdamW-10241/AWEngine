@@ -2,6 +2,7 @@
 #include "Input.h"
 #include "GameObjects/Enemy.h"
 #include "GameObjects/PlayerProjectile.h"
+#include "GameObjects/Weapons/Sword.h"
 #include "Game.h"
 #include "SDL2/SDL_mixer.h"
 
@@ -14,9 +15,6 @@
 Player::Player()
 {
 	// Set variables
-	m_BaseRateOfFire = 0.2f;
-	m_RateOfFire = m_BaseRateOfFire;
-	m_FireTimer = 0.0f;
 	m_MaxLives = 3;
 	m_Lives = m_MaxLives;
 
@@ -94,6 +92,10 @@ Player::Player()
 	
 	// Set the scale
 	SetScale(m_Scale);
+	
+	// Add sword
+	Sword* sword = Game::GetGame()->AddGameObject<Sword>();
+	AddWeapon(sword);
 
 	// Sound effects
 	// https://freesound.org/people/SomeGuy22/sounds/519005/
@@ -136,17 +138,9 @@ void Player::OnProcessInput(Input* GameInput)
 		AddMovementInput(Vector2(1.0f, 0.0f));
 	}
 
-	if (m_FireTimer <= 0.0f) {
-		if (GameInput->IsKeyDown(AW_KEY_SPACE)) {
-			// Check triple shot
-			if (m_TripleShotToggle) {
-				SpawnTripleShot(GameInput->GetMousePos());
-			}
-			else {
-				SpawnProjectile(GameInput->GetMousePos());
-			}
-
-			m_FireTimer = m_RateOfFire;
+	if (m_AttackTimer <= 0.0f) {
+		if (GameInput->IsMouseButtonDown(AW_MOUSE_LEFT)) {
+			Attack();
 		}
 	}
 }
@@ -159,8 +153,12 @@ void Player::OnUpdate(float DeltaTime)
 	
 	Super::OnUpdate(DeltaTime);
 
-	if (m_FireTimer > 0.0f) {
-		m_FireTimer -= DeltaTime;
+	if (m_AttackTimer > 0.0f) {
+		m_AttackTimer -= DeltaTime;
+	}
+
+	for (const auto Item : m_OwnedWeapons) {
+		Item->SetPosition(GetTransform().Position);
 	}
 
 	// Screen border
@@ -210,4 +208,6 @@ void Player::OnDeath(GameObject* DeathCauser)
 	for (auto Item : GetAllBounds()) {
 		Item->DestroyBounds();
 	}
+
+	Super::OnDeath(DeathCauser);
 }

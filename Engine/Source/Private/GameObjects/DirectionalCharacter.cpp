@@ -1,6 +1,8 @@
 #include "GameObjects/DirectionalCharacter.h"
 #include "Game.h"
 
+#include "Debug.h"
+
 #define Super Character
 
 void DirectionalCharacter::OnProcessInput(Input* GameInput)
@@ -32,6 +34,45 @@ void DirectionalCharacter::OnUpdate(float DeltaTime)
 
 	// Set the directional character animations
 	SetAnimation(m_LastMovementDirection, IdleState);
+}
+
+void DirectionalCharacter::Cleanup()
+{
+	// Destroy weapons
+	for (const auto Item : m_OwnedWeapons) {
+		if (Item != nullptr) {
+			Item->DestroyObject();
+			AW_LOG("DirectionalCharacter", "Cleaned up weapon.");
+		}
+	}
+
+	Super::Cleanup();
+}
+
+void DirectionalCharacter::OnDeath(GameObject* DeathCauser)
+{
+	// Destroy weapons
+	for (const auto Item : m_OwnedWeapons) {
+		if (Item != nullptr) {
+			Item->DestroyObject();
+			AW_LOG("DirectionalCharacter", "Cleaned up weapon.");
+		}
+	}
+
+	Super::OnDeath(DeathCauser);
+}
+
+void DirectionalCharacter::Attack()
+{
+	if (m_OwnedWeapons.empty()) {
+		return;
+	}
+	
+	// Attack with first weapon
+	m_OwnedWeapons.at(0)->Attack();
+
+	// Reset Timer
+	m_AttackTimer = m_RateOfAttack;
 }
 
 void DirectionalCharacter::SetAnimation(uint32_t Direction, bool IdleState)
