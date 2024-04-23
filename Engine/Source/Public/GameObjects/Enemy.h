@@ -1,9 +1,13 @@
 #pragma once
 #include "GameObjects/DirectionalCharacter.h"
 
+class Player;
+
 class Enemy : public DirectionalCharacter {
 public:
 	Enemy();
+
+	void SetPlayerRef(Player* PlayerRef) { m_PlayerRef = PlayerRef; }
 
 protected:
 	virtual void OnUpdate(float DeltaTime) override;

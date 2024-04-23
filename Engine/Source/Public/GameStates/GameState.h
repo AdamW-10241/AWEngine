@@ -1,5 +1,6 @@
 #pragma once
 #include "EngineTypes.h"
+#include "GameObjects/Background.h"
 
 class Input;
 struct SDL_Renderer;
@@ -7,7 +8,7 @@ class GameObject;
 
 class GameState {
 public:
-	GameState() : m_ShouldDestroy(false) {}
+	GameState() : m_ShouldDestroy(false), m_Background(nullptr) {}
 	virtual ~GameState() = default;
 
 	// Runs when the game state starts
@@ -73,6 +74,9 @@ protected:
 	virtual void OnUpdate(float DeltaTime) {}
 
 	virtual void OnGarbageCollection() {}
+
+protected:
+	Background* m_Background;
 
 private:
 	// Store all game objects that need to be spawned on the next loop

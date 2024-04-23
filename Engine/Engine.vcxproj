@@ -97,6 +97,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Private\Game.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\Background.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Character.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Collectable.cpp" />
     <ClCompile Include="Source\Private\GameObjects\DirectionalCharacter.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="Source\Public\Debug.h" />
     <ClInclude Include="Source\Public\EngineTypes.h" />
     <ClInclude Include="Source\Public\Game.h" />
+    <ClInclude Include="Source\Public\GameObjects\Background.h" />
     <ClInclude Include="Source\Public\GameObjects\Character.h" />
     <ClInclude Include="Source\Public\GameObjects\Collectable.h" />
     <ClInclude Include="Source\Public\GameObjects\DirectionalCharacter.h" />

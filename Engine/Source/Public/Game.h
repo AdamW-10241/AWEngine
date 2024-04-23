@@ -67,9 +67,6 @@ public:
 	// Get a random float value between 2 floats
 	float GetRandomFloatRange(float min = 0.0f, float max = 1.0f) const;
 
-	// Get a random int value between 2 ints
-	float GetRandomIntegerRange(int min = 0, int max = 1) const;
-
 public:
 	// Score for the game
 	int m_Score;

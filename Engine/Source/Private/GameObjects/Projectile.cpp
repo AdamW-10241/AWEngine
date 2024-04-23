@@ -8,6 +8,7 @@ Projectile::Projectile()
 	m_MaxSpeed = 1000.0f;
 	m_AccelerationSpeed = 5000.0f;
 	m_Drag = 0.0f;
+	m_Deceleration = 0.0f;
 	m_LifeTime = 1.0f;
 	m_Dir = { 0.0f, -1.0f };
 	m_Owner = nullptr;

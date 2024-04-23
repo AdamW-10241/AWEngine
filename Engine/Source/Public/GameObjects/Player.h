@@ -25,7 +25,7 @@ protected:
 
 	virtual void OnUpdate(float DeltaTime) override;
 
-	void SpawnProjectile(Vector2 MoveDir = {0.0f}, Vector2 MousePosition = { 0.0f });
+	void SpawnProjectile(Vector2 MousePosition = {0.0f});
 
 	void SpawnTripleShot(Vector2 MousePosition = {0.0f});
 

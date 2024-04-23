@@ -20,15 +20,15 @@ Player::Player()
 	m_MaxLives = 3;
 	m_Lives = m_MaxLives;
 
-	m_Scale = 3.0f;
-	m_Size = 48.0f - 16.0f;
+	m_Scale = 3.5f;
+	m_Size = 16.0f;
 
 	m_InstantFireToggle = false;
 	m_TripleShotToggle = false;
 
 	// Default values
-	m_MaxSpeed = 600.0f;
-	m_Deceleration = 5.0f;
+	m_MaxSpeed = 400.0f;
+	m_Deceleration = 7.0f;
 	m_AccelerationSpeed = 5000.0f;
 
 	AnimationParams AnimParams;
@@ -167,14 +167,13 @@ void Player::OnUpdate(float DeltaTime)
 	ScreenBorder(ScaledHalfSize());
 }
 
-void Player::SpawnProjectile(Vector2 MoveDir, Vector2 MousePosition)
+void Player::SpawnProjectile(Vector2 MousePosition)
 {
 	// Spawning the game object / projectile
 	PlayerProjectile* Proj = Game::GetGame()->AddGameObject<PlayerProjectile>();
 
 	// Reposition the projectile
 	Vector2 PlayerPosition = GetTransform().Position;
-	PlayerPosition.y -= ScaledHalfSize();
 
 	Proj->SetPosition(PlayerPosition);
 
@@ -184,7 +183,7 @@ void Player::SpawnProjectile(Vector2 MoveDir, Vector2 MousePosition)
 	);
 
 	// Firing the projectile
-	Proj->FireProjectile(this, MoveDir);
+	Proj->FireProjectile(this, MousePosition - PlayerPosition);
 
 	int SoundIndex = 0; // rand() % 3;
 
@@ -195,9 +194,11 @@ void Player::SpawnProjectile(Vector2 MoveDir, Vector2 MousePosition)
 
 void Player::SpawnTripleShot(Vector2 MousePosition)
 {
-	SpawnProjectile({ -1.0f, -1.0f }, MousePosition);
-	SpawnProjectile({ 0.0f, -1.0f }, MousePosition);
-	SpawnProjectile({ 1.0f, -1.0f }, MousePosition);
+	AW_LOG("Player", "ADD TRIPLE SHOT LATER");
+	SpawnProjectile(MousePosition);
+
+	//SpawnProjectile(MousePosition);
+	//SpawnProjectile(MousePosition);
 }
 
 void Player::OnDeath(GameObject* DeathCauser)

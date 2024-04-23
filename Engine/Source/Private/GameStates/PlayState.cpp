@@ -37,6 +37,15 @@ void PlayState::OnStart()
 
 	Game::GetGame()->m_Score = 0;
 
+	// Add objects
+	m_Background = AddGameObject<Background>();
+	m_Background->SetBackgroundSprite("Content/NinjaAdventure/Custom Background/Background_PlayState.png");
+	m_Background->SetPosition({
+		Game::GetGame()->WindowWidthF() / 2.0f,
+		Game::GetGame()->WindowHeightF() / 2.0f }
+	);
+	m_Background->SetScale(0.9f);
+
 	m_PlayerRef = AddGameObject<Player>();
 	m_PlayerRef->SetPosition({
 		Game::GetGame()->WindowWidthF() / 2.0f,
@@ -135,13 +144,7 @@ void PlayState::EnemySpawner(float DeltaTime)
 	// If the timer reaches 0 then spawn an enemy
 	if (m_EnemySpawnTimer <= 0.0f) {
 		Enemy* E = AddGameObject<Enemy>();
-
-		float PosX = Game::GetGame()->GetRandomFloatRange(
-			E->ScaledHalfSize(),
-			Game::GetGame()->WindowWidthF() - E->ScaledHalfSize()
-		);
-
-		E->SetPosition({ PosX, -E->ScaledHalfSize() });
+		E->SetPlayerRef(m_PlayerRef);
 
 		// Reset the timer
 		m_EnemySpawnTimer = m_EnemyFrequency;

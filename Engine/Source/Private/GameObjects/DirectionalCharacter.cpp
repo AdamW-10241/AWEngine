@@ -1,4 +1,5 @@
 #include "GameObjects/DirectionalCharacter.h"
+#include "Game.h"
 
 #define Super Character
 
@@ -57,38 +58,44 @@ void DirectionalCharacter::SetAnimation(uint32_t Direction, bool IdleState)
 void DirectionalCharacter::ScreenWrap(float HalfSpriteSize)
 {
 	// Screen wrap the directional character
+	float ScreenHeight = Game::GetGame()->WindowHeightF();
+	float ScreenWidth = Game::GetGame()->WindowWidthF();
+
 	// Bottom to top
-	if (GetTransform().Position.y - HalfSpriteSize > 720) {
+	if (GetTransform().Position.y - HalfSpriteSize > ScreenHeight) {
 		SetPosition({ GetTransform().Position.x, -HalfSpriteSize });
 	}
 	// Top to bottom
 	if (GetTransform().Position.y + HalfSpriteSize < -HalfSpriteSize) {
-		SetPosition({ GetTransform().Position.x, 720 + HalfSpriteSize });
+		SetPosition({ GetTransform().Position.x, ScreenHeight + HalfSpriteSize });
 	}
 	// Right to left
-	if (GetTransform().Position.x - HalfSpriteSize > 1280) {
+	if (GetTransform().Position.x - HalfSpriteSize > ScreenWidth) {
 		SetPosition({ -HalfSpriteSize, GetTransform().Position.y });
 	}
 	// Left to right
 	if (GetTransform().Position.x + HalfSpriteSize < -HalfSpriteSize) {
-		SetPosition({ 1280 + HalfSpriteSize, GetTransform().Position.y });
+		SetPosition({ ScreenWidth + HalfSpriteSize, GetTransform().Position.y });
 	}
 }
 
 void DirectionalCharacter::ScreenBorder(float HalfSpriteSize)
 {
 	// Screen border the directional character
+	float ScreenHeight = Game::GetGame()->WindowHeightF();
+	float ScreenWidth = Game::GetGame()->WindowWidthF();
+
 	// Bottom to top
-	if (GetTransform().Position.y + HalfSpriteSize > 720) {
-		SetPosition({ GetTransform().Position.x, 720 - HalfSpriteSize });
+	if (GetTransform().Position.y + HalfSpriteSize > ScreenHeight) {
+		SetPosition({ GetTransform().Position.x, ScreenHeight - HalfSpriteSize });
 	}
 	// Top to bottom
 	if (GetTransform().Position.y - HalfSpriteSize < 0) {
 		SetPosition({ GetTransform().Position.x, HalfSpriteSize });
 	}
 	// Right to left
-	if (GetTransform().Position.x + HalfSpriteSize > 1280) {
-		SetPosition({ 1280 - HalfSpriteSize, GetTransform().Position.y });
+	if (GetTransform().Position.x + HalfSpriteSize > ScreenWidth) {
+		SetPosition({ ScreenWidth - HalfSpriteSize, GetTransform().Position.y });
 	}
 	// Left to right
 	if (GetTransform().Position.x - HalfSpriteSize < 0) {

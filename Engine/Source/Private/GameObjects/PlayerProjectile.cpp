@@ -3,23 +3,28 @@
 PlayerProjectile::PlayerProjectile()
 {
 	m_TargetTag = "ENEMY";
+	m_Size = 23.0f;
+	m_Scale = 1.3f;
 
+	m_MaxSpeed = 750.0f;
+
+	// Main sprite
 	AnimationParams AnimParams;
 	AnimParams.fps = 24;
-	AnimParams.FrameHeight = 32;
-	AnimParams.FrameWidth = 32;
-	AnimParams.EndFrame = 9;
-	AnimParams.MaxFrames = 10;
+	AnimParams.FrameHeight = 23;
+	AnimParams.FrameWidth = 23;
+	AnimParams.EndFrame = 1;
+	AnimParams.MaxFrames = 2;
 
 	m_MainSprite = AddSprite(
-		"Content/Sprites/Main Ship Weapons/PNGs/Main ship weapon - Projectile - Big Space Gun.png",
+		"Content/NinjaAdventure/FX/Projectile/BigShuriken.png",
 		&AnimParams
 	);
 
-	m_Size = 32.0f;
-	m_Scale = 2.0f;
+	// Set the scale
 	SetScale(m_Scale);
 
 	m_Bounds->SetBoundsExtent(ScaledSize());
 	m_Bounds->m_OriginOffset = -ScaledHalfSize();
+	m_Bounds->m_Debug = false;
 }

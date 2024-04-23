@@ -173,13 +173,6 @@ float Game::GetRandomFloatRange(float min, float max) const
 	return RandNum(RandGenerator);
 }
 
-float Game::GetRandomIntegerRange(int min, int max) const
-{
-	std::uniform_real_distribution<int> RandNum(min, max);
-
-	return RandNum(RandGenerator);
-}
-
 Game::Game()
 {
 	printf("Game Created.\n");

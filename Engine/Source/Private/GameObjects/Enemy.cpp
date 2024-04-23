@@ -17,8 +17,8 @@ Enemy::Enemy()
 	m_MaxLives = 3;
 	m_Lives = m_MaxLives;
 
-	m_Scale = 3.0f;
-	m_Size = 48.0f - 16.0f;
+	m_Scale = 3.5f;
+	m_Size = 16.0f;
 
 	// Default values
 	m_MaxSpeed = 200.0f;
@@ -89,11 +89,12 @@ Enemy::Enemy()
 	// Set the scale
 	SetScale(m_Scale);
 
-	// Get player reference
-	m_PlayerRef = PlayState::GetPlayer();
-
 	// Pick random spawn spot
-	SetPosition({ 1255.0f , (float)(rand() % 720) });
+	SetPosition({ 1255.0f ,
+		Game::GetGame()->GetRandomFloatRange(
+			0.0f,
+			Game::GetGame()->WindowHeightF())
+	});
 }
 
 void Enemy::OnUpdate(float DeltaTime)
@@ -106,12 +107,14 @@ void Enemy::OnUpdate(float DeltaTime)
 		}
 
 		// Randomly determine movement direction
-		Vector2 RandomOffset = { (float)((rand() % 3) - 1), (float)((rand() % 3) - 1) };
+		float const RangeConst = 2.0f;
+		Vector2 RandomOffset = { Game::GetGame()->GetRandomFloatRange(-RangeConst, RangeConst),
+			Game::GetGame()->GetRandomFloatRange(-RangeConst, RangeConst) };
 
 		if (rand() % 3 <= 1) {
 			// Toward player with random offset
 			// 2/3 to follow
-			m_MovementChoice = (*m_PlayerRef).GetTransform().Position - GetTransform().Position + (RandomOffset * 50.0f);
+			m_MovementChoice = m_PlayerRef->GetTransform().Position - GetTransform().Position + (RandomOffset * 50.0f);
 		}
 		else {
 			// Random direction
@@ -146,7 +149,7 @@ void Enemy::OnDeath(GameObject* DeathCauser)
 	VFX->SetScale(m_Scale);
 
 	// Randomly spawn a coin collectable
-	if (Game::GetGame()->GetRandomIntegerRange(0, 3) == 0) {
+	if (rand() % 3 == 0) {
 		auto SpawnedCollectable = Game::GetGame()->Game::AddGameObject<Collectable>();
 		SpawnedCollectable->SetPosition(GetTransform().Position);
 	}
