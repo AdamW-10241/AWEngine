@@ -1,9 +1,9 @@
 #pragma once
-#include "GameObjects/Character.h"
+#include "GameObjects/DirectionalCharacter.h"
 
 struct Mix_Chunk;
 
-class Player : public Character {
+class Player : public DirectionalCharacter {
 public:
 	Player();
 
@@ -25,12 +25,9 @@ protected:
 
 	virtual void OnUpdate(float DeltaTime) override;
 
-	// Change the engine effects animations
-	void SetPoweredEngine(bool Powered);
+	void SpawnProjectile(Vector2 MoveDir = {0.0f}, Vector2 MousePosition = { 0.0f });
 
-	void SpawnProjectile(Vector2 MoveDir = {0.0f});
-
-	void SpawnTripleShot();
+	void SpawnTripleShot(Vector2 MousePosition = {0.0f});
 
 	virtual void OnDeath(GameObject* DeathCauser);
 
@@ -46,5 +43,6 @@ protected:
 
 	// Timer values for firing projectiles
 	float m_BaseRateOfFire;
-	float m_RateOfFire, m_FireTimer;
+	float m_RateOfFire;
+	float m_FireTimer;
 };

@@ -7,16 +7,18 @@
 
 #include "Debug.h"
 
-#define Super Character
+#define Super DirectionalCharacter
 
-#define ENGINE_IDLE 0
-#define ENGINE_POWERED 1
+#define PI 3.1415926f
 
 Player::Player()
 {
-	m_MaxSpeed = 600.0f;
-	m_Deceleration = 5.0f;
-	m_AccelerationSpeed = 5000.0f;
+	// Set variables
+	m_BaseRateOfFire = 0.2f;
+	m_RateOfFire = m_BaseRateOfFire;
+	m_FireTimer = 0.0f;
+	m_MaxLives = 3;
+	m_Lives = m_MaxLives;
 
 	m_Scale = 3.0f;
 	m_Size = 48.0f - 16.0f;
@@ -24,49 +26,73 @@ Player::Player()
 	m_InstantFireToggle = false;
 	m_TripleShotToggle = false;
 
-	m_BaseRateOfFire = 0.2f;
-	m_RateOfFire = m_BaseRateOfFire;
-	m_FireTimer = 0.0f;
-
-	m_MaxLives = 3;
-	m_Lives = m_MaxLives;
-
-	// Add engine sprite
-	AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engines/PNGs/Main Ship - Engines - Supercharged Engine.png"
-	);
-
-	// Add ship base sprite
-	m_MainSprite = AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png"
-	);
+	// Default values
+	m_MaxSpeed = 600.0f;
+	m_Deceleration = 5.0f;
+	m_AccelerationSpeed = 5000.0f;
 
 	AnimationParams AnimParams;
-	AnimParams.fps = 24;
-	AnimParams.FrameHeight = 48;
-	AnimParams.FrameWidth = 48;
+	AnimParams.fps = 12;
+	AnimParams.FrameHeight = 16;
+	AnimParams.FrameWidth = 16;
 	AnimParams.EndFrame = 3;
 	AnimParams.MaxFrames = 4;
 
-	// Add the idle engine effect
-	m_EngineEffects.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Idle.png",
+	// Add player sprite: idle, right
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Right.png"
+	));
+
+	// Add player sprite: idle, left
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Left.png"
+	));
+
+	// Add player sprite: idle, up
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Up.png"
+	));
+
+	// Add player sprite: idle, down
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Idle-Down.png"
+	));
+
+	// Add player sprite: moving, right
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Right.png",
 		&AnimParams
 	));
 
-	// Add the powered engine effect
-	m_EngineEffects.push_back(AddSprite(
-		"Content/Sprites/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png",
+	// Add player sprite: moving, left
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Left.png",
 		&AnimParams
 	));
 
-	SetPoweredEngine(false);
-	
-	SetScale(m_Scale);
+	// Add player sprite: moving, up
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Up.png",
+		&AnimParams
+	));
 
+	// Add player sprite: moving, down
+	m_DirectionSprites.push_back(AddSprite(
+		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Down.png",
+		&AnimParams
+	));
+
+	// Set base animation state
+	m_LastMovementDirection = DIRECTION_DOWN;
+	SetAnimation(m_LastMovementDirection, true);
+
+	// Add bounds
 	Bounds* PlayerBounds = AddBounds(0.0f, ScaledSize());
 	PlayerBounds->m_OriginOffset = -ScaledHalfSize();
+	PlayerBounds->m_Tag = "PLAYER";
 	PlayerBounds->m_Debug = false;
+	
+	SetScale(m_Scale);
 
 	// Sound effects
 	// https://freesound.org/people/SomeGuy22/sounds/519005/
@@ -113,10 +139,10 @@ void Player::OnProcessInput(Input* GameInput)
 		if (GameInput->IsKeyDown(AW_KEY_SPACE)) {
 			// Check triple shot
 			if (m_TripleShotToggle) {
-				SpawnTripleShot();
+				SpawnTripleShot(GameInput->GetMousePos());
 			}
 			else {
-				SpawnProjectile();
+				SpawnProjectile(GameInput->GetMousePos());
 			}
 
 			m_FireTimer = m_RateOfFire;
@@ -136,34 +162,25 @@ void Player::OnUpdate(float DeltaTime)
 		m_FireTimer -= DeltaTime;
 	}
 
-	if (m_MoveDirection.Length() > 0.0f) {
-		SetPoweredEngine(true);
-	}
-	else {
-		SetPoweredEngine(false);
-	}
+	// Screen border
+	ScreenBorder(ScaledHalfSize());
 }
 
-void Player::SetPoweredEngine(bool Powered)
-{
-	if (m_EngineEffects.size() > 1) {
-		if (m_EngineEffects[ENGINE_IDLE] != nullptr && m_EngineEffects[ENGINE_POWERED] != nullptr) {
-			m_EngineEffects[ENGINE_IDLE]->SetActive(!Powered);
-			m_EngineEffects[ENGINE_POWERED]->SetActive(Powered);
-		}
-	}
-}
-
-void Player::SpawnProjectile(Vector2 MoveDir)
+void Player::SpawnProjectile(Vector2 MoveDir, Vector2 MousePosition)
 {
 	// Spawning the game object / projectile
 	PlayerProjectile* Proj = Game::GetGame()->AddGameObject<PlayerProjectile>();
 
 	// Reposition the projectile
-	Vector2 SpawnPos = GetTransform().Position;
-	SpawnPos.y -= ScaledHalfSize();
+	Vector2 PlayerPosition = GetTransform().Position;
+	PlayerPosition.y -= ScaledHalfSize();
 
-	Proj->SetPosition(SpawnPos);
+	Proj->SetPosition(PlayerPosition);
+
+	// Rotate projectile based on angle between mouse and player
+	Proj->SetRotation(
+		atan2((MousePosition.y - PlayerPosition.y), (MousePosition.x - PlayerPosition.x)) * 180 / PI
+	);
 
 	// Firing the projectile
 	Proj->FireProjectile(this, MoveDir);
@@ -175,11 +192,11 @@ void Player::SpawnProjectile(Vector2 MoveDir)
 	}
 }
 
-void Player::SpawnTripleShot()
+void Player::SpawnTripleShot(Vector2 MousePosition)
 {
-	SpawnProjectile({ -1.0f, -1.0f });
-	SpawnProjectile({ 0.0f, -1.0f });
-	SpawnProjectile({ 1.0f, -1.0f });
+	SpawnProjectile({ -1.0f, -1.0f }, MousePosition);
+	SpawnProjectile({ 0.0f, -1.0f }, MousePosition);
+	SpawnProjectile({ 1.0f, -1.0f }, MousePosition);
 }
 
 void Player::OnDeath(GameObject* DeathCauser)

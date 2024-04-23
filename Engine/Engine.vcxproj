@@ -98,6 +98,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Private\Game.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Character.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\DirectionalCharacter.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Enemy.cpp" />
     <ClCompile Include="Source\Private\GameObjects\GameObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\PhysicsObject.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="Source\Public\EngineTypes.h" />
     <ClInclude Include="Source\Public\Game.h" />
     <ClInclude Include="Source\Public\GameObjects\Character.h" />
+    <ClInclude Include="Source\Public\GameObjects\DirectionalCharacter.h" />
     <ClInclude Include="Source\Public\GameObjects\Enemy.h" />
     <ClInclude Include="Source\Public\GameObjects\GameObject.h" />
     <ClInclude Include="Source\Public\GameObjects\PlayerProjectile.h" />
@@ -152,9 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\..\Downloads\FireExplode.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
