@@ -10,6 +10,11 @@
 #include "Menus\WinMenu.h"
 #include "SDL2/SDL_mixer.h"
 
+#include <random>
+
+// Initialise a random generator
+std::default_random_engine RandGenerator;
+
 Game* Game::GetGame()
 {
 	// Create a Game Singleton
@@ -161,6 +166,20 @@ void Game::RestartGame()
 	GetGameStateMachine()->SetNewGameState(NewState);
 }
 
+float Game::GetRandomFloatRange(float min, float max) const
+{
+	std::uniform_real_distribution<float> RandNum(min, max);
+
+	return RandNum(RandGenerator);
+}
+
+float Game::GetRandomIntegerRange(int min, int max) const
+{
+	std::uniform_real_distribution<int> RandNum(min, max);
+
+	return RandNum(RandGenerator);
+}
+
 Game::Game()
 {
 	printf("Game Created.\n");
@@ -206,6 +225,9 @@ void Game::Initialise()
 		Cleanup();
 		return;
 	}
+
+	// Set the seed of random to the current calendar time
+	RandGenerator.seed(time(nullptr));
 
 	// Set the seed for randomisation to the current time
 	srand(time(nullptr));

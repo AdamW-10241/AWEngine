@@ -144,9 +144,10 @@ void Enemy::OnDeath(GameObject* DeathCauser)
 	VFX->SetPosition(GetTransform().Position);
 	VFX->SetScale(m_Scale);
 
-	// 1/4 chance to spawn a collectable
-	if (rand() % 4 == 0) {
-		PlayState::SpawnCollectable(GetTransform().Position);
+	// 1/4 chance to spawn a coin
+	if (Game::GetGame()->GetRandomIntegerRange(0, 3) == 0) {
+		//Game::GetGame()->AddGameObject<Coin>();
+		//PlayState::SpawnCollectable(GetTransform().Position);
 	}
 	
 	Super::OnDeath(DeathCauser);

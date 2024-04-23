@@ -29,9 +29,6 @@ protected:
 
 	void EnemySpawner(float DeltaTime);
 
-	// Get a random float value between 2 floats
-	float GetRandomFloatRange(float min = 0.0f, float max = 1.0f) const;
-
 	// Text update functions
 	void UpdateScore();
 	void UpdateLives();

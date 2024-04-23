@@ -16,9 +16,6 @@
 
 #define Super GameState
 
-// Initialise a random generator
-std::default_random_engine RandGenerator;
-
 PlayState::PlayState() {
 	m_ScoreText = nullptr;
 	m_FreqText = nullptr;
@@ -33,7 +30,6 @@ PlayState::PlayState() {
 	m_EnemyFrequency = m_MaxEnemyFrequency;
 	m_EnemySpawnTimer = 1.0f;
 }
-
 
 void PlayState::OnStart()
 {
@@ -67,9 +63,6 @@ void PlayState::OnStart()
 	m_FreqText->SetFontSize(25);
 	m_FreqText->SetAligment(AL_TOP_LEFT);
 	UpdateFrequencyText();
-
-	// Set the seed of random to the current calendar time
-	RandGenerator.seed(time(nullptr));
 
 	// Play background music
 	if (m_BGM != nullptr) {
@@ -143,7 +136,7 @@ void PlayState::EnemySpawner(float DeltaTime)
 	if (m_EnemySpawnTimer <= 0.0f) {
 		Enemy* E = AddGameObject<Enemy>();
 
-		float PosX = GetRandomFloatRange(
+		float PosX = Game::GetGame()->GetRandomFloatRange(
 			E->ScaledHalfSize(),
 			Game::GetGame()->WindowWidthF() - E->ScaledHalfSize()
 		);
@@ -157,11 +150,4 @@ void PlayState::EnemySpawner(float DeltaTime)
 		
 		UpdateFrequencyText();
 	}
-}
-
-float PlayState::GetRandomFloatRange(float min, float max) const
-{
-	std::uniform_real_distribution<float> RandNum(min, max);
-
-	return RandNum(RandGenerator);
 }
