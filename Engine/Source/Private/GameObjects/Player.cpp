@@ -92,6 +92,7 @@ Player::Player()
 	PlayerBounds->m_Tag = "PLAYER";
 	PlayerBounds->m_Debug = false;
 	
+	// Set the scale
 	SetScale(m_Scale);
 
 	// Sound effects

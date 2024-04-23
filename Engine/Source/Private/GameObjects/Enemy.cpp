@@ -1,7 +1,8 @@
 #include "GameObjects/Enemy.h"
 #include "GameObjects/Player.h"
-#include "Game.h"
+#include "GameObjects/Collectable.h"
 #include "GameObjects/VFX/VFX_EnemyExplosion.h"
+#include "Game.h"
 
 #include "Debug.h"
 
@@ -144,10 +145,10 @@ void Enemy::OnDeath(GameObject* DeathCauser)
 	VFX->SetPosition(GetTransform().Position);
 	VFX->SetScale(m_Scale);
 
-	// 1/4 chance to spawn a coin
+	// Randomly spawn a coin collectable
 	if (Game::GetGame()->GetRandomIntegerRange(0, 3) == 0) {
-		//Game::GetGame()->AddGameObject<Coin>();
-		//PlayState::SpawnCollectable(GetTransform().Position);
+		auto SpawnedCollectable = Game::GetGame()->Game::AddGameObject<Collectable>();
+		SpawnedCollectable->SetPosition(GetTransform().Position);
 	}
 	
 	Super::OnDeath(DeathCauser);
