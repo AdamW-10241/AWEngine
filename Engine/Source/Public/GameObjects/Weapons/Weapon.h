@@ -6,7 +6,7 @@ class Bounds;
 
 class Weapon : public Character {
 public:
-	Weapon() : m_Damage(1.0f), m_AnimationCooldown(1.0f), m_AnimationDuration(1.0f), m_AnimationTimer(0.0f) {}
+	Weapon() : m_Bounds(nullptr), m_Damage(1.0f), m_AnimationCooldown(1.0f), m_AnimationDuration(1.0f), m_AnimationTimer(0.0f) {}
 
 	void Attack() { OnAttack(); }
 

@@ -13,7 +13,7 @@ Sword::Sword(float DifficultyScale)
 
 	m_AnimationDuration = 0.35f;
 
-	m_Scale = 3.0f;
+	m_Scale = 4.0f;
 	m_Size = 10.0f;
 
 	// Main sprite
@@ -25,22 +25,29 @@ Sword::Sword(float DifficultyScale)
 	SetScale(m_Scale);
 
 	// Add bounds
-	m_Bounds = AddBounds(0.0f, ScaledSize());
-	m_Bounds->m_OriginOffset = -ScaledHalfSize();
+	float const BoundsScalar = 4.0f;
+
+	m_Bounds = AddBounds(0.0f, ScaledSize() * BoundsScalar);
+	m_Bounds->m_OriginOffset = -ScaledHalfSize() * BoundsScalar;
 	m_Bounds->m_Tag = "WEAPON";
 	m_Bounds->m_Debug = true;
 }
 
 void Sword::SetAnimationPosition(DirectionalCharacter* OwnerRef)
 {
+	SetPosition(OwnerRef->GetTransform().Position);
+	
 	float Radius = OwnerRef->ScaledHalfSize() * 1.75f;
-	float Angle = 2 * PI * (m_AnimationTimer / m_AnimationDuration);
+	float AngleRatio = m_AnimationTimer / m_AnimationDuration;
 
-	Vector2 OffsetPosition = { cosf(Angle) * Radius, sinf(Angle) * Radius };
+	Vector2 OffsetPosition = { cosf(2 * PI * AngleRatio) * Radius, sinf(2 * PI * AngleRatio) * Radius };
 
-	SetPosition(OwnerRef->GetTransform().Position + OffsetPosition);
+	for (Sprite* WeaponSprite : GetAllSprites()) {
+		WeaponSprite->m_Offset.Position = OffsetPosition;
+		WeaponSprite->m_Offset.Rotation = 360 * AngleRatio;
 
-	m_Bounds->SetBoundsExtent({ ScaledSize() + cosf(Angle) * ScaledSize(), ScaledSize() + sinf(Angle) * ScaledSize() });
+		// fix rotation angle
+	}
 }
 
 void Sword::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)

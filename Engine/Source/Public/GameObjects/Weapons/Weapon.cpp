@@ -3,9 +3,16 @@
 
 void Weapon::SetIdlePosition(DirectionalCharacter* OwnerRef)
 {
+	SetPosition(OwnerRef->GetTransform().Position);
+
 	Vector2 SideOffset = OwnerRef->GetLastMovementDirection() * OwnerRef->ScaledHalfSize() * 1.75f;
 
-	SetPosition(OwnerRef->GetTransform().Position + SideOffset);
+	// make rotation change based on the angle from get last movement direction
+
+	for (Sprite* WeaponSprite : GetAllSprites()) {
+		WeaponSprite->m_Offset.Position = SideOffset;
+		WeaponSprite->m_Offset.Rotation = 90;
+	}
 }
 
 void Weapon::OnUpdate(float DeltaTime)
