@@ -10,12 +10,10 @@
 
 #define Super DirectionalCharacter
 
-#define PI 3.1415926f
-
 Player::Player()
 {
 	// Set variables
-	m_MaxLives = 3;
+	m_MaxLives = 1;
 	m_Lives = m_MaxLives;
 
 	m_Scale = 3.5f;
@@ -88,11 +86,11 @@ Player::Player()
 	Bounds* PlayerBounds = AddBounds(0.0f, ScaledSize());
 	PlayerBounds->m_OriginOffset = -ScaledHalfSize();
 	PlayerBounds->m_Tag = "PLAYER";
-	PlayerBounds->m_Debug = false;
+	PlayerBounds->m_Debug = true;
 	
 	// Set the scale
 	SetScale(m_Scale);
-	
+
 	// Add sword
 	Sword* sword = Game::GetGame()->AddGameObject<Sword>();
 	AddWeapon(sword);
@@ -157,10 +155,6 @@ void Player::OnUpdate(float DeltaTime)
 		m_AttackTimer -= DeltaTime;
 	}
 
-	for (const auto Item : m_OwnedWeapons) {
-		Item->SetPosition(GetTransform().Position);
-	}
-
 	// Screen border
 	ScreenBorder(ScaledHalfSize());
 }
@@ -209,5 +203,5 @@ void Player::OnDeath(GameObject* DeathCauser)
 		Item->DestroyBounds();
 	}
 
-	Super::OnDeath(DeathCauser);
+	DestroyWeapons();
 }

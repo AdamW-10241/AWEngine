@@ -235,7 +235,7 @@ void Game::Start()
 	// Launch the game window
 	// Create a window and check if it failed
 	m_WindowRef = SDL_CreateWindow(
-		"AWEngine",					// Window Title
+		"Ruins Of Oblivion",		// Window Title
 		SDL_WINDOWPOS_CENTERED,		// Start X position on the screeen
 		SDL_WINDOWPOS_CENTERED,		// Start Y position on the screeen
 		1280, 720,					// Window resolution

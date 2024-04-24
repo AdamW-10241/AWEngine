@@ -2,6 +2,8 @@
 #include "GameObjects/PhysicsObject.h"
 #include "Math/Bounds.h"
 
+#define PI 3.1415926f
+
 class Character : public PhysicsObject {
 public:
 	Character();

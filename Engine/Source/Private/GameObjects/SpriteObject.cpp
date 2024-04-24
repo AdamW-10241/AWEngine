@@ -48,21 +48,32 @@ void SpriteObject::OnPostUpdate(float DeltaTime)
 	}
 }
 
+void SpriteObject::OnDestroy()
+{
+	// Deactivate sprites
+	for (auto Sprite : GetAllSprites()) {
+		Sprite->SetActive(false);
+	}
+
+	Super::OnDestroy();
+}
+
 void SpriteObject::SpriteFollowObject(Sprite* SpriteToFollow)
 {
-	
-	
 	// Set the sprites positition to match the sprite object
 	SpriteToFollow->m_Sprite->SetPosition(
 		(int)GetTransform().Position.x + SpriteToFollow->m_Offset.Position.x,
-		(int)GetTransform().Position.y + SpriteToFollow->m_Offset.Position.y);
+		(int)GetTransform().Position.y + SpriteToFollow->m_Offset.Position.y
+	);
 
 	// Set the sprites rotation to match the sprite object
 	SpriteToFollow->m_Sprite->SetRotation(
-		GetTransform().Rotation + SpriteToFollow->m_Offset.Rotation);
+		GetTransform().Rotation + SpriteToFollow->m_Offset.Rotation
+	);
 
 	// Set the sprites scale to match the sprite object
 	SpriteToFollow->m_Sprite->SetScale(
 		GetTransform().Scale.x + SpriteToFollow->m_Offset.Scale.x,
-		GetTransform().Scale.y + SpriteToFollow->m_Offset.Scale.y);
+		GetTransform().Scale.y + SpriteToFollow->m_Offset.Scale.y
+	);
 }

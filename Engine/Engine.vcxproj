@@ -123,6 +123,7 @@
     <ClCompile Include="Source\Private\Math\Bounds.cpp" />
     <ClCompile Include="Source\Private\Math\Vector2.cpp" />
     <ClCompile Include="Source\Private\Menus\WinMenu.cpp" />
+    <ClCompile Include="Source\Public\GameObjects\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Source.cpp" />
   </ItemGroup>
   <ItemGroup>

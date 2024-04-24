@@ -36,30 +36,67 @@ void DirectionalCharacter::OnUpdate(float DeltaTime)
 	SetAnimation(m_LastMovementDirection, IdleState);
 }
 
+void DirectionalCharacter::OnPostUpdate(float DeltaTime)
+{
+	Super::OnPostUpdate(DeltaTime);
+
+	// Adjust weapon positions
+	for (const auto Item : m_OwnedWeapons) {
+		if (Item->IsAnimating()) {
+			Item->SetAnimationPosition(this);
+		}
+		else {
+			Item->SetIdlePosition(this);
+		}
+	}
+}
+
 void DirectionalCharacter::Cleanup()
 {
-	// Destroy weapons
-	for (const auto Item : m_OwnedWeapons) {
-		if (Item != nullptr) {
-			Item->DestroyObject();
-			AW_LOG("DirectionalCharacter", "Cleaned up weapon.");
-		}
+	// Erase weapons
+	for (int i = m_OwnedWeapons.size() - 1; i >= 0; --i) {
+		delete m_OwnedWeapons[i];
+		m_OwnedWeapons.erase(m_OwnedWeapons.begin() + i);
 	}
 
 	Super::Cleanup();
 }
 
+void DirectionalCharacter::CollectGarbage()
+{
+	// Erase weapons
+	std::erase_if(m_OwnedWeapons,
+		[](Weapon* W) {
+			if (!W->IsPendingDestroy()) {
+				return false;
+			}
+
+			AW_LOG("DirectionalCharacter", "Erased weapon.");
+
+			return true;
+		}
+	);
+
+	Super::CollectGarbage();
+}
+
 void DirectionalCharacter::OnDeath(GameObject* DeathCauser)
 {
 	// Destroy weapons
-	for (const auto Item : m_OwnedWeapons) {
-		if (Item != nullptr) {
-			Item->DestroyObject();
-			AW_LOG("DirectionalCharacter", "Cleaned up weapon.");
-		}
-	}
+	DestroyWeapons();
 
 	Super::OnDeath(DeathCauser);
+}
+
+void DirectionalCharacter::DestroyWeapons()
+{
+	// Destroy weapons
+	for (const auto Item : m_OwnedWeapons) {
+
+		Item->DestroyObject();
+
+		AW_LOG("DirectionalCharacter", "Destroyed weapon.");
+	}
 }
 
 void DirectionalCharacter::Attack()
@@ -73,6 +110,27 @@ void DirectionalCharacter::Attack()
 
 	// Reset Timer
 	m_AttackTimer = m_RateOfAttack;
+}
+
+Vector2 DirectionalCharacter::GetLastMovementDirection()
+{
+	switch (m_LastMovementDirection) {
+		case DIRECTION_RIGHT:
+			return Vector2(1.0f, 0.0f);
+			break;
+		case DIRECTION_LEFT:
+			return Vector2(-1.0f, 0.0f);
+			break;
+		case DIRECTION_UP:
+			return Vector2(0.0f, -1.0f);
+			break;
+		case DIRECTION_DOWN:
+			return Vector2(0.0f, 1.0f);
+			break;
+		default:
+			AW_LOG("DirectionalCharacter", "No last movement direction.");
+			return Vector2();
+	}
 }
 
 void DirectionalCharacter::SetAnimation(uint32_t Direction, bool IdleState)

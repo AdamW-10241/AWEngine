@@ -25,16 +25,25 @@ public:
 	// Check and screen border the directional character
 	void ScreenBorder(float HalfSpriteSize);
 
+	// Get last movement direction vector
+	Vector2 GetLastMovementDirection();
+
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
 
 	virtual void OnUpdate(float DeltaTime) override;
 
+	virtual void OnPostUpdate(float DeltaTime) override;
+
 	virtual void Cleanup() override;
+
+	virtual void CollectGarbage() override;
 
 	virtual void OnDeath(GameObject* DeathCauser) override;
 
 	void AddWeapon(Weapon* NewWeapon) { m_OwnedWeapons.push_back(NewWeapon); }
+
+	void DestroyWeapons();
 
 	void Attack();
 
