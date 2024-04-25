@@ -34,9 +34,6 @@ protected:
 	// Owner of the projectile
 	DirectionalCharacter* m_Owner;
 
-	// Target tag to hit
-	const char* m_TargetTag;
-
 	// Time before projectile destroys itself
 	float m_LifeTime;
 

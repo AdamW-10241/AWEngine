@@ -17,11 +17,11 @@ Projectile::Projectile()
 	m_Owner = nullptr;
 	m_Size = 5.0f;
 
-	m_TargetTag = "NONE";
 	m_Damage = 1;
 
 	// Add bounds
 	m_Bounds = AddBounds(0.0f, ScaledSize());
+	m_Bounds->m_Tag = "PROJECTILE";
 }
 
 void Projectile::OnUpdate(float DeltaTime)
@@ -48,17 +48,23 @@ void Projectile::OnUpdate(float DeltaTime)
 
 void Projectile::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
-	if (OverlapBounds->GetOwner() != m_Owner || OverlapBounds->m_Tag == HitBounds->m_TargetTag) {
-		if (auto Char = dynamic_cast<DirectionalCharacter*>(OverlapBounds->GetOwner())) {
-			// Damage opponent
-			Char->ApplyDamage(m_Owner, m_Damage);
+	if (OverlapBounds->GetOwner() == m_Owner) {
+		return;
+	}
 
-			// Create Hit VFX
-			CreateHitVFX(Char->GetTransform().Position);
-
-			// Delete projectile
-			DestroyObject();
+	if (auto Char = dynamic_cast<DirectionalCharacter*>(OverlapBounds->GetOwner())) {
+		if (strcmp(Char->GetMainBounds()->m_Tag, HitBounds->m_TargetTag) != 0) {
+			return;
 		}
+
+		// Damage opponent
+		Char->ApplyDamage(m_Owner, m_Damage);
+
+		// Create Hit VFX
+		CreateHitVFX(Char->GetTransform().Position);
+
+		// Delete projectile
+		DestroyObject();
 	}
 }
 
@@ -68,8 +74,8 @@ void Projectile::SetupProjectile(DirectionalCharacter* Owner, int Damage)
 	m_Owner = Owner;
 
 	// Copy target tag
-	if (m_Owner->GetAllBounds().size() > 0) {
-		m_Bounds->m_TargetTag = _strdup(Owner->GetAllBounds().at(0)->m_TargetTag);
+	if (m_Bounds != nullptr) {
+		m_Bounds->m_TargetTag = _strdup(Owner->GetMainBounds()->m_TargetTag);
 	}
 
 	// Set damage

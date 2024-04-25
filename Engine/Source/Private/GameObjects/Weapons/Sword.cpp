@@ -76,22 +76,28 @@ void Sword::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 		return;
 	}
 
-	if (OverlapBounds->GetOwner() != m_Owner || OverlapBounds->m_Tag == HitBounds->m_TargetTag) {
-		if (auto Char = dynamic_cast<DirectionalCharacter*>(OverlapBounds->GetOwner())) {
-			// Damage opponent
-			Char->ApplyDamage(m_Owner, m_Damage);
+	if (OverlapBounds->GetOwner() == m_Owner) {
+		return;
+	}
 
-			// Create slash VFX
-			auto VFX = Game::GetGame()->Game::AddGameObject<VFX_SwordSlash>();
-			VFX->SetPosition(Char->GetTransform().Position);
-			VFX->SetScale(m_Scale);
-
-			// Set cooldown timer
-			m_CooldownTimer = m_CooldownDuration;
-
-			// Deactivate bounds
-			m_Bounds->m_Active = false;
+	if (auto Char = dynamic_cast<DirectionalCharacter*>(OverlapBounds->GetOwner())) {
+		if (strcmp(Char->GetMainBounds()->m_Tag, HitBounds->m_TargetTag) != 0) {
+			return;
 		}
+
+		// Damage opponent
+		Char->ApplyDamage(m_Owner, m_Damage);
+
+		// Create slash VFX
+		auto VFX = Game::GetGame()->Game::AddGameObject<VFX_SwordSlash>();
+		VFX->SetPosition(Char->GetTransform().Position);
+		VFX->SetScale(m_Scale);
+
+		// Set cooldown timer
+		m_CooldownTimer = m_CooldownDuration;
+
+		// Deactivate bounds
+		m_Bounds->m_Active = false;
 	}
 }
 

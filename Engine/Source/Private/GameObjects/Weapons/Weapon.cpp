@@ -22,6 +22,17 @@ Weapon::Weapon(float DifficultyScale)
 	m_AttackTimer = 0.0f;
 }
 
+void Weapon::SetOwner(DirectionalCharacter* Owner)
+{
+	// Set owner
+	m_Owner = Owner;
+
+	// Set target tag
+	if (m_Bounds != nullptr) {
+		m_Bounds->m_TargetTag = _strdup(Owner->GetMainBounds()->m_TargetTag);
+	}
+}
+
 void Weapon::SetActive(bool State)
 {
 	// Set weapon state

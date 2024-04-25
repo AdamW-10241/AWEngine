@@ -8,7 +8,7 @@ class Weapon : public Character {
 public:
 	Weapon(float DifficultyScale = 1.0f);
 
-	void SetOwner(DirectionalCharacter* Owner) { m_Owner = Owner; }
+	void SetOwner(DirectionalCharacter* Owner);
 
 	void SetTargetPosition(Vector2 TargetPosition) { m_TargetPosition = TargetPosition; }
 

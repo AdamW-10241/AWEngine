@@ -15,14 +15,14 @@
 Player::Player()
 {
 	// Set variables
-	m_MaxLives = 1;
+	m_MaxLives = 10;
 	m_Lives = m_MaxLives;
 
 	m_Scale = 3.5f;
 	m_Size = 16.0f;
 
 	// Default values
-	m_MaxSpeed = 400.0f;
+	m_MaxSpeed = 300.0f;
 	m_Deceleration = 7.0f;
 	m_AccelerationSpeed = 5000.0f;
 
@@ -82,11 +82,11 @@ Player::Player()
 	SetAnimation(m_LastMovementDirection, true);
 
 	// Add bounds
-	Bounds* PlayerBounds = AddBounds(0.0f, ScaledSize());
-	PlayerBounds->m_OriginOffset = -ScaledHalfSize();
-	PlayerBounds->m_Tag = "PLAYER";
-	PlayerBounds->m_TargetTag = "ENEMY";
-	PlayerBounds->m_Debug = true;
+	m_Bounds = AddBounds(0.0f, ScaledSize());
+	m_Bounds->m_OriginOffset = -ScaledHalfSize();
+	m_Bounds->m_Tag = "PLAYER";
+	m_Bounds->m_TargetTag = "ENEMY";
+	m_Bounds->m_Debug = true;
 	
 	// Set the scale
 	SetScale(m_Scale);

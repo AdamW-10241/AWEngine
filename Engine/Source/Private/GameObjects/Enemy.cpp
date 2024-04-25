@@ -26,7 +26,7 @@ Enemy::Enemy(float DifficultyScale)
 	m_PlayerRef = nullptr;
 
 	// Default values
-	m_MaxSpeed = 200.0f;
+	m_MaxSpeed = 150.0f;
 	m_Deceleration = 5.0f;
 	m_AccelerationSpeed = 1000.0f;
 
@@ -86,21 +86,21 @@ Enemy::Enemy(float DifficultyScale)
 	SetAnimation(m_LastMovementDirection, true);
 
 	// Add bounds
-	Bounds* EnemyBounds = AddBounds(0.0f, ScaledSize());
-	EnemyBounds->m_OriginOffset = -ScaledHalfSize();
-	EnemyBounds->m_Tag = "ENEMY";
-	EnemyBounds->m_TargetTag = "PLAYER";
-	EnemyBounds->m_Debug = false;
+	m_Bounds = AddBounds(0.0f, ScaledSize());
+	m_Bounds->m_OriginOffset = -ScaledHalfSize();
+	m_Bounds->m_Tag = "ENEMY";
+	m_Bounds->m_TargetTag = "PLAYER";
+	m_Bounds->m_Debug = true;
 
 	// Set the scale
 	SetScale(m_Scale);
 
 	// Add weapons
-	if (rand() % 5 == 0) {
+	if (rand() % 4 == 0) {
 		AddWeapon(Game::GetGame()->AddGameObject<Sword>(m_DifficultyScale));
 	}
 
-	if (rand() % 5 == 0) {
+	if (rand() % 4 == 0) {
 		AddWeapon(Game::GetGame()->AddGameObject<Bow>(m_DifficultyScale));
 	}
 
@@ -135,7 +135,7 @@ void Enemy::OnUpdate(float DeltaTime)
 		Vector2 RandomOffset = { Game::GetGame()->GetRandomFloatRange(-RangeConst, RangeConst),
 			Game::GetGame()->GetRandomFloatRange(-RangeConst, RangeConst) };
 
-		if (rand() % 3 <= 1) {
+		if (rand() % 3 == 0) {
 			// Toward player with random offset
 			// 2/3 to follow
 			m_MovementChoice = m_PlayerRef->GetTransform().Position - GetTransform().Position + (RandomOffset * 50.0f);

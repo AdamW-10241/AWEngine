@@ -9,7 +9,7 @@
 
 class DirectionalCharacter : public Character {
 public:
-	DirectionalCharacter() : m_LastMovementDirection(0), m_UsedWeapon(0), m_DifficultyScale(1.0f) {}
+	DirectionalCharacter() : m_LastMovementDirection(0), m_UsedWeapon(0), m_DifficultyScale(1.0f), m_Bounds(nullptr) {}
 
 	// Change the directional character sprite based on direction and idle state
 	void SetAnimation(uint32_t Direction, bool IdleState);
@@ -25,6 +25,9 @@ public:
 
 	// Update weapon state
 	void UpdateWeaponStates();
+
+	// Get main bounds
+	Bounds* GetMainBounds() const { return m_Bounds; }
 
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
@@ -63,4 +66,7 @@ protected:
 
 	// Difficulty scale
 	float m_DifficultyScale;
+
+	// Main bounds
+	Bounds* m_Bounds;
 };
