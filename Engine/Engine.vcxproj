@@ -138,6 +138,7 @@
     <ClInclude Include="Source\Public\GameObjects\Enemy.h" />
     <ClInclude Include="Source\Public\GameObjects\GameObject.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowHit.h" />
+    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowMiss.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Projectile.h" />
     <ClInclude Include="Source\Public\GameObjects\TextObject.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_EnemyExplosion.h" />

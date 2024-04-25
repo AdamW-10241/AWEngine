@@ -9,7 +9,7 @@
 
 class DirectionalCharacter : public Character {
 public:
-	DirectionalCharacter() : m_LastMovementDirection(0), m_UsedWeapon(0) {}
+	DirectionalCharacter() : m_LastMovementDirection(0), m_UsedWeapon(0), m_DifficultyScale(1.0f) {}
 
 	// Change the directional character sprite based on direction and idle state
 	void SetAnimation(uint32_t Direction, bool IdleState);
@@ -43,6 +43,10 @@ protected:
 
 	void Attack(Vector2 TargetPosition, bool AttackCondition);
 
+	// Switch weapon forward or backward
+	// Forward = True, Backward = False
+	void SwitchWeapon(bool ForwardOrBackward);
+
 protected:
 	// Store the different sprites
 	TArray<Sprite*> m_DirectionSprites;
@@ -56,4 +60,7 @@ protected:
 	// Store the last movement direction as integer
 	// Right - 1, Left - 2, Up - 3, Down - 4
 	uint32_t m_LastMovementDirection;
+
+	// Difficulty scale
+	float m_DifficultyScale;
 };

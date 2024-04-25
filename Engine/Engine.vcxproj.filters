@@ -209,6 +209,9 @@
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowHit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowMiss.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc">

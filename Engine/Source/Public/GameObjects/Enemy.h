@@ -5,9 +5,11 @@ class Player;
 
 class Enemy : public DirectionalCharacter {
 public:
-	Enemy();
+	Enemy(float DifficultyScale);
 
 	void SetPlayerRef(Player* PlayerRef) { m_PlayerRef = PlayerRef; }
+
+	virtual void Cleanup() override;
 
 protected:
 	virtual void OnUpdate(float DeltaTime) override;

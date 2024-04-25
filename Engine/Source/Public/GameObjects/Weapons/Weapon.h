@@ -6,19 +6,7 @@ class Bounds;
 
 class Weapon : public Character {
 public:
-	Weapon() :
-		m_Owner(nullptr),
-		m_Bounds(nullptr),
-		m_TargetPosition(0.0f),
-		m_RotationOffset(0.0f),
-		m_RadiusMultiplier(1.75f),
-		m_Active(false),
-		m_Damage(1.0f),
-		m_CooldownDuration(1.0f), 
-		m_CooldownTimer(0.0f),
-		m_AttackDuration(1.0f), 
-		m_AttackTimer(0.0f)
-	{}
+	Weapon(float DifficultyScale = 1.0f);
 
 	void SetOwner(DirectionalCharacter* Owner) { m_Owner = Owner; }
 

@@ -3,8 +3,30 @@
 
 #define Super Character
 
+Weapon::Weapon(float DifficultyScale)
+{
+	// Set variables
+	m_Owner = nullptr;
+	m_Bounds = nullptr;
+	m_TargetPosition = 0.0f;
+	m_RotationOffset = 0.0f;
+	m_RadiusMultiplier = 1.75f;
+	m_Active = false;
+
+	m_Damage = 1.0;
+	m_Damage *= DifficultyScale;
+
+	m_CooldownDuration = 1.0f;
+	m_CooldownTimer = 0.0f;
+	m_AttackDuration = 1.0f;
+	m_AttackTimer = 0.0f;
+}
+
 void Weapon::SetActive(bool State)
 {
+	// Set weapon state
+	m_Active = State;
+	
 	// Update sprites
 	for (Sprite* Sprites : GetAllSprites()) {
 		Sprites->SetActive(State);
@@ -12,10 +34,13 @@ void Weapon::SetActive(bool State)
 
 	// Update bounds
 	for (Bounds* Bounds : GetAllBounds()) {
+		if (IsCooldown()) {
+			Bounds->m_Active = false;
+			continue;
+		}
+		
 		Bounds->m_Active = State;
 	}
-
-	m_Active = State;
 }
 
 void Weapon::Attack()

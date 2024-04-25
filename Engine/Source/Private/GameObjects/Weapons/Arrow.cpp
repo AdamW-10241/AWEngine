@@ -1,5 +1,6 @@
 #include "GameObjects/Weapons/Arrow.h"
 #include "GameObjects/VFX/VFX_ArrowHit.h"
+#include "GameObjects/VFX/VFX_ArrowMiss.h"
 #include "GameObjects/DirectionalCharacter.h"
 
 #include "Game.h"
@@ -25,12 +26,20 @@ Arrow::Arrow()
 	m_Bounds->m_Debug = true;
 }
 
-void Arrow::CreateVFX(DirectionalCharacter* Char)
+void Arrow::CreateHitVFX(Vector2 Position)
 {
-	// Create arrow VFX
+	// Create arrow Hit VFX
 	auto VFX = Game::GetGame()->Game::AddGameObject<VFX_ArrowHit>();
-	VFX->SetPosition(Char->GetTransform().Position);
-	VFX->SetScale(m_Scale * 1.5f);
+	VFX->SetPosition(Position);
+	VFX->SetScale(m_Scale);
+}
+
+void Arrow::CreateMissVFX(Vector2 Position)
+{
+	// Create arrow Miss VFX
+	auto VFX = Game::GetGame()->Game::AddGameObject<VFX_ArrowMiss>();
+	VFX->SetPosition(Position);
+	VFX->SetScale(m_Scale);
 }
 
 void Arrow::FireProjectile()
@@ -41,5 +50,5 @@ void Arrow::FireProjectile()
 	Vector2 MoveDirection = { cosf(RadianAngle), sinf(RadianAngle) };
 	
 	// Add force
-	AddForce(MoveDirection, 500000.0f);
+	AddForce(MoveDirection, 150000.0f);
 }

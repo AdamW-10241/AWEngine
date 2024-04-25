@@ -18,7 +18,9 @@ protected:
 
 	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;
 
-	virtual void CreateVFX(DirectionalCharacter* Owner) {}
+	virtual void CreateHitVFX(Vector2 Position) {}
+
+	virtual void CreateMissVFX(Vector2 Position) {}
 
 	virtual void FireProjectile() {}
 

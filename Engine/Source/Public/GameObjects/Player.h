@@ -22,7 +22,4 @@ protected:
 
 	// Store sound effects
 	Mix_Chunk* m_ShootSFX[1] = { nullptr };
-
-private:
-	void ScrollSwitchWeapon(Input* GameInput);
 };

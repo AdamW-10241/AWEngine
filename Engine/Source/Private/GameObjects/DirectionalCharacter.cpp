@@ -1,4 +1,6 @@
 #include "GameObjects/DirectionalCharacter.h"
+
+#include "Input.h"
 #include "Game.h"
 
 #include "Debug.h"
@@ -39,8 +41,8 @@ void DirectionalCharacter::OnUpdate(float DeltaTime)
 void DirectionalCharacter::Cleanup()
 {
 	// Erase weapons
-	for (int i = m_OwnedWeapons.size() - 1; i >= 0; --i) {
-		delete m_OwnedWeapons[i];
+	for (int i = m_OwnedWeapons.size() - 1; i >= 0; i--) {
+		m_OwnedWeapons[i]->DestroyObject();
 		m_OwnedWeapons.erase(m_OwnedWeapons.begin() + i);
 	}
 
@@ -103,6 +105,27 @@ void DirectionalCharacter::Attack(Vector2 TargetPosition, bool AttackCondition)
 	if (AttackCondition && !m_OwnedWeapons.at(m_UsedWeapon)->IsAttacking()) {
 		m_OwnedWeapons.at(m_UsedWeapon)->Attack();
 	}
+}
+
+void DirectionalCharacter::SwitchWeapon(bool ForwardOrBackward)
+{
+	// Check weapons array size
+	if (m_OwnedWeapons.empty()) {
+		return;
+	}
+
+	// Scroll switch weapon
+	if (ForwardOrBackward) {
+		// Scroll Forward
+		if (++m_UsedWeapon == m_OwnedWeapons.size()) { m_UsedWeapon = 0; }
+	}
+	else {
+		// Scroll Backward
+		if (--m_UsedWeapon == uint32_t(-1)) { m_UsedWeapon = m_OwnedWeapons.size() - 1; }
+	}
+
+	// Update weapon states
+	UpdateWeaponStates();
 }
 
 void DirectionalCharacter::UpdateWeaponStates()

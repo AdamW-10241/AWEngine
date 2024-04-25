@@ -24,3 +24,8 @@ void MainMenuState::OnProcessInput(Input* GameInput)
 		Game::GetGame()->GetGameStateMachine()->SetNewGameState(NewState);
 	}
 }
+
+void MainMenuState::OnCleanup()
+{
+	m_TitleText->DestroyObject();
+}

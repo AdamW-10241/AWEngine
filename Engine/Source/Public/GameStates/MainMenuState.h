@@ -12,6 +12,8 @@ protected:
 
 	virtual void OnProcessInput(Input* GameInput) override;
 
+	virtual void OnCleanup() override;
+
 private:
 	TextObject* m_TitleText;
 };

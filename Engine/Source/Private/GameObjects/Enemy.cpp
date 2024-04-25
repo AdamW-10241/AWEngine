@@ -2,21 +2,25 @@
 #include "GameObjects/Player.h"
 #include "GameObjects/Collectable.h"
 #include "GameObjects/VFX/VFX_EnemyExplosion.h"
+#include "GameObjects/Weapons/Sword.h"
+#include "GameObjects/Weapons/Bow.h"
+
 #include "Game.h"
 
 #include "Debug.h"
 
 #define Super DirectionalCharacter
 
-Enemy::Enemy()
+Enemy::Enemy(float DifficultyScale)
 {
 	// Set variables
+	m_DifficultyScale = DifficultyScale;
+
 	m_MaxLives = 1;
 	m_Lives = m_MaxLives;
 
 	m_Scale = 3.5f;
 	m_Size = 16.0f;
-
 	m_TimeUntilNextMovementChoice = 0.0f;
 	m_ScoreValue = 100.0f;
 	m_PlayerRef = nullptr;
@@ -91,12 +95,30 @@ Enemy::Enemy()
 	// Set the scale
 	SetScale(m_Scale);
 
+	// Add weapons
+	if (rand() % 5 == 0) {
+		AddWeapon(Game::GetGame()->AddGameObject<Sword>(m_DifficultyScale));
+	}
+
+	if (rand() % 5 == 0) {
+		AddWeapon(Game::GetGame()->AddGameObject<Bow>(m_DifficultyScale));
+	}
+
+	UpdateWeaponStates();
+
 	// Pick random spawn spot
 	SetPosition({ 1255.0f ,
 		Game::GetGame()->GetRandomFloatRange(
 			0.0f,
 			Game::GetGame()->WindowHeightF())
 	});
+}
+
+void Enemy::Cleanup()
+{
+	// SFX
+
+	Super::Cleanup();
 }
 
 void Enemy::OnUpdate(float DeltaTime)
@@ -133,6 +155,14 @@ void Enemy::OnUpdate(float DeltaTime)
 
 	// Add movement
 	AddMovementInput(m_MovementChoice);
+
+	// Attack if condition met
+	Attack(m_PlayerRef->GetTransform().Position, rand() % 100 == 0);
+
+	// Switch weapon if condition met
+	if (m_OwnedWeapons.size() > 1 && rand() % 500 == 0) {
+		SwitchWeapon(rand() % 2 == 0);
+	}
 
 	Super::OnUpdate(DeltaTime);
 

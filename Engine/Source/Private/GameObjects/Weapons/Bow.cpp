@@ -53,6 +53,7 @@ void Bow::SetIdlePosition(float RadiusMultiplier)
 {
 	// Make the bow move closer / futher based on time until next fire
 	float Offset = 0.5f * (m_CooldownTimer / m_CooldownDuration);
+
 	SetAimPosition(RadiusMultiplier - Offset);
 }
 

@@ -62,6 +62,14 @@ void Sword::SetAttackPosition(float RadiusMultiplier)
 	}
 }
 
+void Sword::SetAimPosition(float RadiusMultiplier)
+{
+	// Deactivate bounds
+	m_Bounds->m_Active = false;
+
+	Super::SetAimPosition(RadiusMultiplier);
+}
+
 void Sword::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
 	if (!IsAttacking()) {
@@ -80,6 +88,15 @@ void Sword::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 
 			// Set cooldown timer
 			m_CooldownTimer = m_CooldownDuration;
+
+			// Deactivate bounds
+			m_Bounds->m_Active = false;
 		}
 	}
+}
+
+void Sword::OnAttack()
+{
+	// Activate bounds
+	m_Bounds->m_Active = true;
 }

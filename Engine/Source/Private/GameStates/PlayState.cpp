@@ -103,6 +103,12 @@ void PlayState::OnUpdate(float DeltaTime)
 void PlayState::OnCleanup()
 {
 	Mix_FreeMusic(m_BGM);
+
+	m_Background->DestroyObject();
+	m_PlayerRef->DestroyObject();
+	m_ScoreText->DestroyObject();
+	m_PlayerLivesText->DestroyObject();
+	m_FreqText->DestroyObject();
 }
 
 void PlayState::UpdateScore()
@@ -143,7 +149,9 @@ void PlayState::EnemySpawner(float DeltaTime)
 
 	// If the timer reaches 0 then spawn an enemy
 	if (m_EnemySpawnTimer <= 0.0f) {
-		Enemy* E = AddGameObject<Enemy>();
+		float DifficultyScale = Game::GetGame()->GetRandomFloatRange(1.0f, 3.0f);
+		Enemy* E = AddGameObject<Enemy>(DifficultyScale);
+
 		E->SetPlayerRef(m_PlayerRef);
 
 		// Reset the timer

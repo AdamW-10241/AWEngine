@@ -33,6 +33,9 @@ void Projectile::OnUpdate(float DeltaTime)
 	}
 
 	if (m_LifeTime <= 0.0f) {
+		// Create Miss VFX
+		CreateMissVFX(GetTransform().Position);
+
 		DestroyObject();
 	}
 	
@@ -50,8 +53,8 @@ void Projectile::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 			// Damage opponent
 			Char->ApplyDamage(m_Owner, m_Damage);
 
-			// Create VFX
-			CreateVFX(Char);
+			// Create Hit VFX
+			CreateHitVFX(Char->GetTransform().Position);
 
 			// Delete projectile
 			DestroyObject();

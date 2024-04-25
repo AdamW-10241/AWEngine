@@ -44,6 +44,18 @@ public:
 		return NewObject;
 	}
 
+	// Add a game object to the game with parameter
+	template<class T, std::enable_if_t<std::is_base_of_v<GameObject, T>, T>* = nullptr>
+	T* AddGameObject(auto Param) {
+		// Create the game object
+		T* NewObject = new T(Param);
+
+		// Add the object to our pending spawn array
+		m_GameObjectPendingSpawn.push_back(NewObject);
+
+		return NewObject;
+	}
+
 	// Mark the game state for destroy at the end of the loop
 	void DestroyGameState() { m_ShouldDestroy = true; }
 
