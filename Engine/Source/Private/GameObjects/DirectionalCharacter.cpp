@@ -97,11 +97,23 @@ void DirectionalCharacter::Attack(Vector2 TargetPosition, bool AttackCondition)
 		return;
 	}
 
-	// Attack with first weapon
-	m_OwnedWeapons.at(0)->SetTargetPosition(TargetPosition);
+	// Attack with used weapon
+	m_OwnedWeapons.at(m_UsedWeapon)->SetTargetPosition(TargetPosition);
 
-	if (AttackCondition && !m_OwnedWeapons.at(0)->IsAttacking()) {
-		m_OwnedWeapons.at(0)->Attack();
+	if (AttackCondition && !m_OwnedWeapons.at(m_UsedWeapon)->IsAttacking()) {
+		m_OwnedWeapons.at(m_UsedWeapon)->Attack();
+	}
+}
+
+void DirectionalCharacter::UpdateWeaponStates()
+{
+	if (m_OwnedWeapons.empty()) {
+		return;
+	}
+
+	// Set active if used weapon, else set deactive
+	for (int OwnedWeapon = 0; OwnedWeapon < m_OwnedWeapons.size(); OwnedWeapon++) {
+		m_OwnedWeapons.at(OwnedWeapon)->SetActive(OwnedWeapon == m_UsedWeapon);
 	}
 }
 

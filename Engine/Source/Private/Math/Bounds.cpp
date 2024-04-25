@@ -7,12 +7,19 @@ Bounds::Bounds(GameObject* Owner, Vector2 Origin, Vector2 Extent)
 	m_Owner = Owner;
 	m_CollisionType = CT_OVERLAP;
 	m_Tag = "ALL";
+	m_TargetTag = "ALL";
 	m_ShouldDestroy = false;
+	m_Active = true;
 	m_Debug = false;
 }
 
 bool Bounds::BoundsIntersect(const Bounds& BoundsA, const Bounds& BoundsB)
 {
+	// Exit if inactive bounds
+	if (!BoundsA.m_Active || !BoundsB.m_Active) {
+		return false;
+	}
+	
 	Vector2 BoundsAMin = BoundsA.m_Rect.Min() - BoundsA.m_OriginOffset;
 	Vector2 BoundsAMax = BoundsA.m_Rect.Max() + BoundsA.m_OriginOffset;
 	Vector2 BoundsBMin = BoundsB.m_Rect.Min() - BoundsB.m_OriginOffset;

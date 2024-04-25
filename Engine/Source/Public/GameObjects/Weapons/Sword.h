@@ -5,7 +5,7 @@ class Sword : public Weapon {
 public:
 	Sword(float DifficultyScale = 1.0f);
 
-	virtual void SetAttackPosition() override;
+	virtual void SetAttackPosition(float RadiusMultiplier = 1.0f) override;
 
 protected:
 	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;

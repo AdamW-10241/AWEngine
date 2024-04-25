@@ -11,6 +11,8 @@ public:
 		m_Bounds(nullptr),
 		m_TargetPosition(0.0f),
 		m_RotationOffset(0.0f),
+		m_RadiusMultiplier(1.75f),
+		m_Active(false),
 		m_Damage(1.0f),
 		m_CooldownDuration(1.0f), 
 		m_CooldownTimer(0.0f),
@@ -18,19 +20,17 @@ public:
 		m_AttackTimer(0.0f)
 	{}
 
-	void Attack();
-
 	void SetOwner(DirectionalCharacter* Owner) { m_Owner = Owner; }
+
+	void SetTargetPosition(Vector2 TargetPosition) { m_TargetPosition = TargetPosition; }
+
+	void SetActive(bool State);
+	
+	void Attack();
 
 	bool IsAttacking() const { return m_AttackTimer > 0.0f; }
 
-	virtual void SetAttackPosition() {}
-
-	virtual void SetIdlePosition();
-
-	virtual void SetAimPosition();
-
-	void SetTargetPosition(Vector2 TargetPosition) { m_TargetPosition = TargetPosition; }
+	bool IsCooldown() const { return m_CooldownTimer > 0.0; }
 
 protected:
 	virtual void OnUpdate(float DeltaTime) override;
@@ -38,6 +38,12 @@ protected:
 	virtual void OnPostUpdate(float DeltaTime) override;
 
 	virtual void OnAttack() {}
+
+	virtual void SetIdlePosition(float RadiusMultiplier = 1.0f);
+
+	virtual void SetAimPosition(float RadiusMultiplier = 1.0f);
+
+	virtual void SetAttackPosition(float RadiusMultiplier = 1.0f) { SetAimPosition(m_RadiusMultiplier); }
 
 protected:
 	// Store the owner reference
@@ -49,10 +55,15 @@ protected:
 	// Store the weapon bounds
 	Bounds* m_Bounds;
 
-	// Target position
+	// Positional values
 	Vector2 m_TargetPosition;
 
 	float m_RotationOffset;
+
+	float m_RadiusMultiplier;
+
+	// Weapon state
+	bool m_Active;
 
 	// Weapon stats
 	float m_Damage;

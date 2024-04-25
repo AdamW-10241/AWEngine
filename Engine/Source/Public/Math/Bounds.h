@@ -79,11 +79,17 @@ public:
 	// Name of the collision
 	const char* m_Tag;
 
+	// Name of the target to hit
+	const char* m_TargetTag;
+
 	// Colour of the bounds if debug is active
 	STBoundsColour m_RenderColour;
 
 	// All currently overlapping bounds
 	TArray<Bounds*> m_Overlapped;
+
+	// Bounds active state
+	bool m_Active;
 
 	// Debug visualise bounds
 	bool m_Debug;

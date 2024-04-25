@@ -105,12 +105,12 @@
     <ClCompile Include="Source\Private\GameObjects\GameObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\PhysicsObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Player.cpp" />
-    <ClCompile Include="Source\Private\GameObjects\PlayerProjectile.cpp" />
-    <ClCompile Include="Source\Private\GameObjects\Projectile.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\Weapons\Projectile.cpp" />
     <ClCompile Include="Source\Private\GameObjects\SpriteObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\TextObject.cpp" />
-    <ClCompile Include="Source\Private\GameObjects\VFX\VFX_EnemyExplosion.cpp" />
     <ClCompile Include="Source\Private\GameObjects\VisualEffectObject.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\Weapons\Arrow.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\Weapons\Bow.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Weapons\Sword.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameState.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameStateMachine.cpp" />
@@ -123,7 +123,7 @@
     <ClCompile Include="Source\Private\Math\Bounds.cpp" />
     <ClCompile Include="Source\Private\Math\Vector2.cpp" />
     <ClCompile Include="Source\Private\Menus\WinMenu.cpp" />
-    <ClCompile Include="Source\Public\GameObjects\Weapons\Weapon.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -137,11 +137,14 @@
     <ClInclude Include="Source\Public\GameObjects\DirectionalCharacter.h" />
     <ClInclude Include="Source\Public\GameObjects\Enemy.h" />
     <ClInclude Include="Source\Public\GameObjects\GameObject.h" />
-    <ClInclude Include="Source\Public\GameObjects\PlayerProjectile.h" />
-    <ClInclude Include="Source\Public\GameObjects\Projectile.h" />
+    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowHit.h" />
+    <ClInclude Include="Source\Public\GameObjects\Weapons\Projectile.h" />
     <ClInclude Include="Source\Public\GameObjects\TextObject.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_EnemyExplosion.h" />
+    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_SwordSlash.h" />
     <ClInclude Include="Source\Public\GameObjects\VisualEffectObject.h" />
+    <ClInclude Include="Source\Public\GameObjects\Weapons\Arrow.h" />
+    <ClInclude Include="Source\Public\GameObjects\Weapons\Bow.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Sword.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Weapon.h" />
     <ClInclude Include="Source\Public\GameStates\GameStateMachine.h" />

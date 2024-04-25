@@ -85,6 +85,7 @@ Enemy::Enemy()
 	Bounds* EnemyBounds = AddBounds(0.0f, ScaledSize());
 	EnemyBounds->m_OriginOffset = -ScaledHalfSize();
 	EnemyBounds->m_Tag = "ENEMY";
+	EnemyBounds->m_TargetTag = "PLAYER";
 	EnemyBounds->m_Debug = false;
 
 	// Set the scale

@@ -415,11 +415,13 @@ public:
 	bool IsKeyDown(AW_Key Key);
     // Test if a mouse button is down
     bool IsMouseButtonDown(AW_MouseButton Button);
+    // Get scroll value
+    int GetMouseScroll() const { return m_ScrollAmount; }
     // Get the position of the mouse on the window
     Vector2 GetMousePos() const;
 
 private:
-    // Detect the state of the mouse
+    // Detect the state of the mouse buttons
     void DetectMouseButtonState(unsigned int Event, bool Value);
 
     // Listen and react to windows menu events
@@ -429,4 +431,5 @@ private:
     // State of each button on the mouse
     bool m_MouseState[3] = { false };
 
+    int m_ScrollAmount = 0;
 };

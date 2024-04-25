@@ -1,5 +1,7 @@
 #include "GameObjects/Weapons/Sword.h"
 #include "GameObjects/DirectionalCharacter.h"
+#include "GameObjects/VFX/VFX_SwordSlash.h"
+#include "Game.h"
 
 #include "Debug.h"
 
@@ -36,7 +38,7 @@ Sword::Sword(float DifficultyScale)
 	m_Bounds->m_Debug = true;
 }
 
-void Sword::SetAttackPosition()
+void Sword::SetAttackPosition(float RadiusMultiplier)
 {
 	// Update object position
 	Vector2 PlayerPosition = m_Owner->GetTransform().Position;
@@ -44,12 +46,12 @@ void Sword::SetAttackPosition()
 	SetPosition(PlayerPosition);
 
 	// Update object sprite
-	float AngleRatio = 2 * PI * m_AttackTimer / m_AttackDuration;
+	float AngleRatio = 2 * PI * (m_AttackTimer / m_AttackDuration);
 
 	Vector2 TargetPosition = PlayerPosition + Vector2(cosf(AngleRatio), sinf(AngleRatio));
 
 	float RadianAngle = atan2(TargetPosition.y - PlayerPosition.y, TargetPosition.x - PlayerPosition.x);
-	float Radius = m_Owner->ScaledHalfSize() * 1.75f;
+	float Radius = m_Owner->ScaledHalfSize() * RadiusMultiplier;
 
 	Vector2 OffsetPosition = { cosf(RadianAngle) * Radius, sinf(RadianAngle) * Radius };
 
@@ -66,9 +68,17 @@ void Sword::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 		return;
 	}
 
-	if (OverlapBounds->GetOwner() != m_Owner) {
+	if (OverlapBounds->GetOwner() != m_Owner || OverlapBounds->m_Tag == HitBounds->m_TargetTag) {
 		if (auto Char = dynamic_cast<DirectionalCharacter*>(OverlapBounds->GetOwner())) {
+			// Damage opponent
 			Char->ApplyDamage(m_Owner, m_Damage);
+
+			// Create slash VFX
+			auto VFX = Game::GetGame()->Game::AddGameObject<VFX_SwordSlash>();
+			VFX->SetPosition(Char->GetTransform().Position);
+			VFX->SetScale(m_Scale);
+
+			// Set cooldown timer
 			m_CooldownTimer = m_CooldownDuration;
 		}
 	}

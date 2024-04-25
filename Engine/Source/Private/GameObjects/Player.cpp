@@ -1,10 +1,12 @@
 #include "GameObjects/Player.h"
-#include "Input.h"
 #include "GameObjects/Enemy.h"
-#include "GameObjects/PlayerProjectile.h"
 #include "GameObjects/Weapons/Sword.h"
+#include "GameObjects/Weapons/Bow.h"
+
+#include "Input.h"
 #include "Game.h"
 #include "SDL2/SDL_mixer.h"
+#include <cmath>
 
 #include "Debug.h"
 
@@ -18,9 +20,6 @@ Player::Player()
 
 	m_Scale = 3.5f;
 	m_Size = 16.0f;
-
-	m_InstantFireToggle = false;
-	m_TripleShotToggle = false;
 
 	// Default values
 	m_MaxSpeed = 400.0f;
@@ -86,14 +85,20 @@ Player::Player()
 	Bounds* PlayerBounds = AddBounds(0.0f, ScaledSize());
 	PlayerBounds->m_OriginOffset = -ScaledHalfSize();
 	PlayerBounds->m_Tag = "PLAYER";
+	PlayerBounds->m_TargetTag = "ENEMY";
 	PlayerBounds->m_Debug = true;
 	
 	// Set the scale
 	SetScale(m_Scale);
 
-	// Add sword
+	// Add weapons
 	Sword* PlayerSword = Game::GetGame()->AddGameObject<Sword>();
 	AddWeapon(PlayerSword);
+
+	Bow* PlayerBow = Game::GetGame()->AddGameObject<Bow>();
+	AddWeapon(PlayerBow);
+
+	UpdateWeaponStates();
 
 	// Sound effects
 	// https://freesound.org/people/SomeGuy22/sounds/519005/
@@ -135,8 +140,14 @@ void Player::OnProcessInput(Input* GameInput)
 	if (GameInput->IsKeyDown(AW_KEY_D)) {
 		AddMovementInput(Vector2(1.0f, 0.0f));
 	}
+	if (GameInput->IsKeyDown(AW_KEY_D)) {
+		AddMovementInput(Vector2(1.0f, 0.0f));
+	}
 
-	// Attack if requirement met
+	// Scroll weapon if condition met
+	ScrollSwitchWeapon(GameInput);
+
+	// Attack if condition met
 	Attack(GameInput->GetMousePos(), GameInput->IsMouseButtonDown(AW_MOUSE_LEFT));
 }
 
@@ -152,40 +163,6 @@ void Player::OnUpdate(float DeltaTime)
 	ScreenBorder(ScaledHalfSize());
 }
 
-void Player::SpawnProjectile(Vector2 MousePosition)
-{
-	// Spawning the game object / projectile
-	PlayerProjectile* Proj = Game::GetGame()->AddGameObject<PlayerProjectile>();
-
-	// Reposition the projectile
-	Vector2 PlayerPosition = GetTransform().Position;
-
-	Proj->SetPosition(PlayerPosition);
-
-	// Rotate projectile based on angle between mouse and player
-	Proj->SetRotation(
-		atan2((MousePosition.y - PlayerPosition.y), (MousePosition.x - PlayerPosition.x)) * 180 / PI
-	);
-
-	// Firing the projectile
-	Proj->FireProjectile(this, MousePosition - PlayerPosition);
-
-	int SoundIndex = 0; // rand() % 3;
-
-	if (m_ShootSFX[SoundIndex] != nullptr) {
-		Mix_PlayChannel(-1, m_ShootSFX[SoundIndex], 0);
-	}
-}
-
-void Player::SpawnTripleShot(Vector2 MousePosition)
-{
-	AW_LOG("Player", "ADD TRIPLE SHOT LATER");
-	SpawnProjectile(MousePosition);
-
-	//SpawnProjectile(MousePosition);
-	//SpawnProjectile(MousePosition);
-}
-
 void Player::OnDeath(GameObject* DeathCauser)
 {
 	for (auto Item : GetAllSprites()) {
@@ -197,4 +174,30 @@ void Player::OnDeath(GameObject* DeathCauser)
 	}
 
 	DestroyWeapons();
+}
+
+void Player::ScrollSwitchWeapon(Input* GameInput)
+{
+	// Check weapons array size
+	if (m_OwnedWeapons.empty()) {
+		return;
+	}
+
+	// Scroll switch weapon
+	if (int ScrollAmount = GameInput->GetMouseScroll(); ScrollAmount != 0) {
+		// Check scroll sign
+		if (!std::signbit((float)ScrollAmount)) {
+			// Scroll Up
+			if (++m_UsedWeapon == m_OwnedWeapons.size()) { m_UsedWeapon = 0; }
+		}
+		else {
+			// Scroll Down
+			if (--m_UsedWeapon == uint32_t(-1)) { m_UsedWeapon = m_OwnedWeapons.size() - 1; }
+		}
+
+		// Update weapon states
+		UpdateWeaponStates();
+		
+		AW_LOG("Player", "Scrolled weapon.");
+	}
 }

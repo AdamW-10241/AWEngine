@@ -9,7 +9,7 @@
 
 class DirectionalCharacter : public Character {
 public:
-	DirectionalCharacter() : m_LastMovementDirection(0) {}
+	DirectionalCharacter() : m_LastMovementDirection(0), m_UsedWeapon(0) {}
 
 	// Change the directional character sprite based on direction and idle state
 	void SetAnimation(uint32_t Direction, bool IdleState);
@@ -22,6 +22,9 @@ public:
 
 	// Get last movement direction vector
 	Vector2 GetLastMovementDirection();
+
+	// Update weapon state
+	void UpdateWeaponStates();
 
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
@@ -44,8 +47,11 @@ protected:
 	// Store the different sprites
 	TArray<Sprite*> m_DirectionSprites;
 
-	// Store the different weapons'
+	// Store the different weapons
 	TArray<Weapon*> m_OwnedWeapons;
+
+	// Store the index of the used weapon
+	uint32_t m_UsedWeapon;
 
 	// Store the last movement direction as integer
 	// Right - 1, Left - 2, Up - 3, Down - 4

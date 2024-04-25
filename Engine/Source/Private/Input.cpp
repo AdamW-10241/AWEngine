@@ -13,6 +13,9 @@ void Input::ProcessInput()
 	// Data type that reads SDL window input events
 	SDL_Event InputEvent;
 
+	// Reset scroll amount
+	m_ScrollAmount = 0;
+
 	// Run through each input each frame
 	while (SDL_PollEvent(&InputEvent)) {
 		// Was the input that was pressed a mouse button
@@ -24,6 +27,10 @@ void Input::ProcessInput()
 		// and was it released
 		if (InputEvent.type == SDL_MOUSEBUTTONUP) {
 			DetectMouseButtonState(InputEvent.button.button, false);
+		}
+
+		if (InputEvent.type == SDL_MOUSEWHEEL) {
+			m_ScrollAmount = InputEvent.wheel.y;
 		}
 
 		// If the window cross is pressed, close the app
@@ -137,7 +144,7 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 			// Check player is not nullptr
 			if (PlayStateTest->m_PlayerRef) {
 				// Set instant fire
-				PlayStateTest->m_PlayerRef->SetInstantFire();
+				// PlayStateTest->m_PlayerRef->SetInstantFire();
 
 				Game::GetGame()->GetWinMenu()->ActivatePopup(
 					"Cheats",
@@ -178,7 +185,7 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 			// Check player is not nullptr
 			if (PlayStateTest->m_PlayerRef) {
 				// Set instant fire
-				PlayStateTest->m_PlayerRef->SetTripleShot();
+				// PlayStateTest->m_PlayerRef->SetTripleShot();
 
 				Game::GetGame()->GetWinMenu()->ActivatePopup(
 					"Cheats",
