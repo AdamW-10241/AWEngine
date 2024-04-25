@@ -10,7 +10,6 @@ public:
 	// Set instant fire
 	void SetInstantFire() {
 		m_InstantFireToggle = !m_InstantFireToggle;
-		m_RateOfAttack = (m_InstantFireToggle == false) ? m_BaseRateOfAttack : 0.05f;
 	}
 
 	// Set triple shot

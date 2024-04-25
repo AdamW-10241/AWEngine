@@ -36,21 +36,6 @@ void DirectionalCharacter::OnUpdate(float DeltaTime)
 	SetAnimation(m_LastMovementDirection, IdleState);
 }
 
-void DirectionalCharacter::OnPostUpdate(float DeltaTime)
-{
-	Super::OnPostUpdate(DeltaTime);
-
-	// Adjust weapon positions
-	for (const auto Item : m_OwnedWeapons) {
-		if (Item->IsAnimating()) {
-			Item->SetAnimationPosition(this);
-		}
-		else {
-			Item->SetIdlePosition(this);
-		}
-	}
-}
-
 void DirectionalCharacter::Cleanup()
 {
 	// Erase weapons
@@ -88,6 +73,13 @@ void DirectionalCharacter::OnDeath(GameObject* DeathCauser)
 	Super::OnDeath(DeathCauser);
 }
 
+void DirectionalCharacter::AddWeapon(Weapon* NewWeapon)
+{
+	NewWeapon->SetOwner(this);
+
+	m_OwnedWeapons.push_back(NewWeapon);
+}
+
 void DirectionalCharacter::DestroyWeapons()
 {
 	// Destroy weapons
@@ -99,17 +91,18 @@ void DirectionalCharacter::DestroyWeapons()
 	}
 }
 
-void DirectionalCharacter::Attack()
+void DirectionalCharacter::Attack(Vector2 TargetPosition, bool AttackCondition)
 {
 	if (m_OwnedWeapons.empty()) {
 		return;
 	}
-	
-	// Attack with first weapon
-	m_OwnedWeapons.at(0)->Attack();
 
-	// Reset Timer
-	m_AttackTimer = m_RateOfAttack;
+	// Attack with first weapon
+	m_OwnedWeapons.at(0)->SetTargetPosition(TargetPosition);
+
+	if (AttackCondition && !m_OwnedWeapons.at(0)->IsAttacking()) {
+		m_OwnedWeapons.at(0)->Attack();
+	}
 }
 
 Vector2 DirectionalCharacter::GetLastMovementDirection()

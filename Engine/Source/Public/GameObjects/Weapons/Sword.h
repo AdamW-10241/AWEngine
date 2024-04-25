@@ -5,7 +5,7 @@ class Sword : public Weapon {
 public:
 	Sword(float DifficultyScale = 1.0f);
 
-	virtual void SetAnimationPosition(DirectionalCharacter* OwnerRef) override;
+	virtual void SetAttackPosition() override;
 
 protected:
 	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;

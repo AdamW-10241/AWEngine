@@ -11,14 +11,15 @@
 Enemy::Enemy()
 {
 	// Set variables
-	m_TimeUntilNextMovementChoice = 0.0f;
-	m_ScoreValue = 100.0f;
-	m_PlayerRef = nullptr;
-	m_MaxLives = 3;
+	m_MaxLives = 1;
 	m_Lives = m_MaxLives;
 
 	m_Scale = 3.5f;
 	m_Size = 16.0f;
+
+	m_TimeUntilNextMovementChoice = 0.0f;
+	m_ScoreValue = 100.0f;
+	m_PlayerRef = nullptr;
 
 	// Default values
 	m_MaxSpeed = 200.0f;

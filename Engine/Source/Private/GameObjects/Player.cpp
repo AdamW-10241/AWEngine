@@ -92,8 +92,8 @@ Player::Player()
 	SetScale(m_Scale);
 
 	// Add sword
-	Sword* sword = Game::GetGame()->AddGameObject<Sword>();
-	AddWeapon(sword);
+	Sword* PlayerSword = Game::GetGame()->AddGameObject<Sword>();
+	AddWeapon(PlayerSword);
 
 	// Sound effects
 	// https://freesound.org/people/SomeGuy22/sounds/519005/
@@ -136,11 +136,8 @@ void Player::OnProcessInput(Input* GameInput)
 		AddMovementInput(Vector2(1.0f, 0.0f));
 	}
 
-	if (m_AttackTimer <= 0.0f) {
-		if (GameInput->IsMouseButtonDown(AW_MOUSE_LEFT)) {
-			Attack();
-		}
-	}
+	// Attack if requirement met
+	Attack(GameInput->GetMousePos(), GameInput->IsMouseButtonDown(AW_MOUSE_LEFT));
 }
 
 void Player::OnUpdate(float DeltaTime)
@@ -150,10 +147,6 @@ void Player::OnUpdate(float DeltaTime)
 	}
 	
 	Super::OnUpdate(DeltaTime);
-
-	if (m_AttackTimer > 0.0f) {
-		m_AttackTimer -= DeltaTime;
-	}
 
 	// Screen border
 	ScreenBorder(ScaledHalfSize());

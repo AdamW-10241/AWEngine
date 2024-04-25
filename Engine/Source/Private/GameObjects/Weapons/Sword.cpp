@@ -11,7 +11,10 @@ Sword::Sword(float DifficultyScale)
 	m_Damage = 1.0f;
 	m_Damage *= DifficultyScale;
 
-	m_AnimationDuration = 0.35f;
+	m_CooldownDuration = 1.5f;
+	m_AttackDuration = 0.3f;
+
+	m_RotationOffset = 90.0f;
 
 	m_Scale = 4.0f;
 	m_Size = 10.0f;
@@ -33,26 +36,40 @@ Sword::Sword(float DifficultyScale)
 	m_Bounds->m_Debug = true;
 }
 
-void Sword::SetAnimationPosition(DirectionalCharacter* OwnerRef)
+void Sword::SetAttackPosition()
 {
-	SetPosition(OwnerRef->GetTransform().Position);
-	
-	float Radius = OwnerRef->ScaledHalfSize() * 1.75f;
-	float AngleRatio = m_AnimationTimer / m_AnimationDuration;
+	// Update object position
+	Vector2 PlayerPosition = m_Owner->GetTransform().Position;
 
-	Vector2 OffsetPosition = { cosf(2 * PI * AngleRatio) * Radius, sinf(2 * PI * AngleRatio) * Radius };
+	SetPosition(PlayerPosition);
 
+	// Update object sprite
+	float AngleRatio = 2 * PI * m_AttackTimer / m_AttackDuration;
+
+	Vector2 TargetPosition = PlayerPosition + Vector2(cosf(AngleRatio), sinf(AngleRatio));
+
+	float RadianAngle = atan2(TargetPosition.y - PlayerPosition.y, TargetPosition.x - PlayerPosition.x);
+	float Radius = m_Owner->ScaledHalfSize() * 1.75f;
+
+	Vector2 OffsetPosition = { cosf(RadianAngle) * Radius, sinf(RadianAngle) * Radius };
+
+	// Apply values to sprite
 	for (Sprite* WeaponSprite : GetAllSprites()) {
 		WeaponSprite->m_Offset.Position = OffsetPosition;
-		WeaponSprite->m_Offset.Rotation = 360 * AngleRatio;
-
-		// fix rotation angle
+		WeaponSprite->m_Offset.Rotation = (RadianAngle * 180 / PI) + m_RotationOffset;
 	}
 }
 
 void Sword::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
-	if (IsPendingDestroy()) {
+	if (!IsAttacking()) {
 		return;
+	}
+
+	if (OverlapBounds->GetOwner() != m_Owner) {
+		if (auto Char = dynamic_cast<DirectionalCharacter*>(OverlapBounds->GetOwner())) {
+			Char->ApplyDamage(m_Owner, m_Damage);
+			m_CooldownTimer = m_CooldownDuration;
+		}
 	}
 }

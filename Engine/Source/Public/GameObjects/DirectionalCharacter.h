@@ -9,12 +9,7 @@
 
 class DirectionalCharacter : public Character {
 public:
-	DirectionalCharacter() {
-		m_LastMovementDirection = 0;
-		m_BaseRateOfAttack = 1.0f;
-		m_RateOfAttack = m_BaseRateOfAttack;
-		m_AttackTimer = 0.0f;
-	}
+	DirectionalCharacter() : m_LastMovementDirection(0) {}
 
 	// Change the directional character sprite based on direction and idle state
 	void SetAnimation(uint32_t Direction, bool IdleState);
@@ -33,19 +28,17 @@ protected:
 
 	virtual void OnUpdate(float DeltaTime) override;
 
-	virtual void OnPostUpdate(float DeltaTime) override;
-
 	virtual void Cleanup() override;
 
 	virtual void CollectGarbage() override;
 
 	virtual void OnDeath(GameObject* DeathCauser) override;
 
-	void AddWeapon(Weapon* NewWeapon) { m_OwnedWeapons.push_back(NewWeapon); }
+	void AddWeapon(Weapon* NewWeapon);
 
 	void DestroyWeapons();
 
-	void Attack();
+	void Attack(Vector2 TargetPosition, bool AttackCondition);
 
 protected:
 	// Store the different sprites
@@ -57,7 +50,4 @@ protected:
 	// Store the last movement direction as integer
 	// Right - 1, Left - 2, Up - 3, Down - 4
 	uint32_t m_LastMovementDirection;
-
-	// Timer values for firing projectiles
-	float m_BaseRateOfAttack, m_RateOfAttack, m_AttackTimer;
 };
