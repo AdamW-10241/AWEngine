@@ -8,11 +8,6 @@ class PlayState : public GameState {
 public:
 	PlayState();
 
-	// Set max enemies
-	void SetMaxEnemies() {
-		m_EnemyFrequency = 0.2f;
-	}
-
 public:
 	// Reference to the player
 	Player* m_PlayerRef;
@@ -24,17 +19,38 @@ protected:
 
 	virtual void OnCleanup() override;
 
+	// Add objects
+	void AddBackground(Vector2 Position, float Scale, const char* PathToFile);
+
+	void AddPlayer(Vector2 Position, float Scale);
+
 	void EnemySpawner(float DeltaTime);
+
+	// Check player dead (to end game)
+	// Must be used with UpdateHealth() to update the stored player health
+	void CheckEndGame(float DeltaTime);
+
+	// Reset score
+	void ResetScore();
+
+	// HUD
+	void CreateHUD();
+
+	void UpdateHUD();
 
 	// Text update functions
 	void UpdateScore();
+
 	void UpdateHealth();
+
 	void UpdateFrequencyText();
 
 protected:
 	// Text rendering objects
 	TextObject* m_ScoreText;
+
 	TextObject* m_PlayerHealthText;
+
 	TextObject* m_FreqText;
 	
 	// Player health counter

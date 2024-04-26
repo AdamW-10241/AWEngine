@@ -3,7 +3,7 @@
 
 class Player : public DirectionalCharacter {
 public:
-	Player();
+	Player(float Scale);
 
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;

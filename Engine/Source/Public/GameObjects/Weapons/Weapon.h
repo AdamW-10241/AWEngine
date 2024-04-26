@@ -41,6 +41,8 @@ public:
 	virtual void Cleanup();
 
 protected:
+	virtual void OnStart() override;
+
 	virtual void OnUpdate(float DeltaTime) override;
 
 	virtual void OnPostUpdate(float DeltaTime) override;
@@ -56,6 +58,8 @@ protected:
 	virtual void CreateHitVFX(Vector2 Position) {}
 
 	virtual void CreateMissVFX(Vector2 Position) {}
+
+	virtual void AddWeaponBounds() {};
 
 protected:
 	// Store the owner reference

@@ -49,11 +49,23 @@ public:
 		return NewObject;
 	}
 
-	// Add a game object to the game with parameter
+	// Add a game object to the game with 1 parameter
 	template<class T, std::enable_if_t<std::is_base_of_v<GameObject, T>, T>* = nullptr>
-	T* AddGameObject(auto Param) {
+	T* AddGameObject(auto Param1) {
 		// Create the game object
-		T* NewObject = new T(Param);
+		T* NewObject = new T(Param1);
+
+		// Add the object to our pending spawn array
+		m_GameObjectPendingSpawn.push_back(NewObject);
+
+		return NewObject;
+	}
+
+	// Add a game object to the game with 2 parameters
+	template<class T, std::enable_if_t<std::is_base_of_v<GameObject, T>, T>* = nullptr>
+	T* AddGameObject(auto Param1, auto Param2) {
+		// Create the game object
+		T* NewObject = new T(Param1, Param2);
 
 		// Add the object to our pending spawn array
 		m_GameObjectPendingSpawn.push_back(NewObject);

@@ -5,7 +5,7 @@ class Player;
 
 class Enemy : public DirectionalCharacter {
 public:
-	Enemy(float DifficultyScale);
+	Enemy(float DifficultyScale, float Scale);
 
 	void SetPlayerRef(Player* PlayerRef) { m_PlayerRef = PlayerRef; }
 

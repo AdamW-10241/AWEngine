@@ -8,6 +8,7 @@
 #include "GameStates/PauseState.h"
 #include "GameStates/SplashScreenState.h"
 #include "GameStates/Levels/PlayState.h"
+#include "GameStates/Levels/LevelStateIntro.h"
 #include "GameStates/Levels/LevelStateFirst.h"
 #include "GameStates/Levels/LevelStateSecond.h"
 #include "GameStates/Levels/LevelStateThird.h"

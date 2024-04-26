@@ -66,7 +66,7 @@ void Bow::SetIdlePosition(float RadiusMultiplier)
 void Bow::SpawnArrow()
 {
 	// Spawning the game object / projectile
-	Arrow* SpawnedArrow = Game::GetGame()->AddGameObject<Arrow>();
+	Arrow* SpawnedArrow = Game::GetGame()->AddGameObject<Arrow>(m_Scale);
 
 	// Adjust the arrow
 	SpawnedArrow->SetupProjectile(this, m_Damage);

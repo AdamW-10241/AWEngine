@@ -12,7 +12,7 @@
 
 #define Super DirectionalCharacter
 
-Enemy::Enemy(float DifficultyScale)
+Enemy::Enemy(float DifficultyScale, float Scale)
 {
 	// Set variables
 	m_DifficultyScale = DifficultyScale;
@@ -20,11 +20,15 @@ Enemy::Enemy(float DifficultyScale)
 	m_MaxHealth = m_DifficultyScale;
 	m_Health = m_MaxHealth;
 
-	m_Scale = 3.5f;
+	m_Scale = Scale; // 3.5f
 	m_Size = 16.0f;
+
 	m_TimeUntilNextMovementChoice = 0.0f;
 	m_ScoreValue = 100.0f;
+
 	m_PlayerRef = nullptr;
+	m_Tag = "ENEMY";
+	m_TargetTag = "PLAYER";
 
 	// Default values
 	m_MaxSpeed = 150.0f;
@@ -86,16 +90,6 @@ Enemy::Enemy(float DifficultyScale)
 	m_LastMovementDirection = DIRECTION_DOWN;
 	SetAnimation(m_LastMovementDirection, true);
 
-	// Add bounds
-	m_Bounds = AddBounds(0.0f, ScaledSize());
-	m_Bounds->m_OriginOffset = -ScaledHalfSize();
-	m_Bounds->m_Tag = "ENEMY";
-	m_Bounds->m_TargetTag = "PLAYER";
-	m_Bounds->m_Debug = true;
-
-	// Set the scale
-	SetScale(m_Scale);
-
 	// Add weapons
 	if (rand() % 4 == 0) {
 		AddWeapon(Game::GetGame()->AddGameObject<Sword>(m_DifficultyScale));
@@ -108,11 +102,12 @@ Enemy::Enemy(float DifficultyScale)
 	UpdateWeaponStates();
 
 	// Pick random spawn spot
-	SetPosition({ 1255.0f ,
+	// FIX LATER
+	SetPosition({ 1255.0f,
 		Game::GetGame()->GetRandomFloatRange(
 			0.0f,
 			Game::GetGame()->WindowHeightF())
-	});
+		});
 }
 
 void Enemy::OnUpdate(float DeltaTime)

@@ -12,14 +12,17 @@
 
 #define Super DirectionalCharacter
 
-Player::Player()
+Player::Player(float Scale)
 {
 	// Set variables
 	m_MaxHealth = 10;
 	m_Health = m_MaxHealth;
 
-	m_Scale = 3.5f;
+	m_Scale = Scale; // 3.5f
 	m_Size = 16.0f;
+
+	m_Tag = "PLAYER";
+	m_TargetTag = "ENEMY";
 
 	// Default values
 	m_MaxSpeed = 300.0f;
@@ -80,16 +83,6 @@ Player::Player()
 	// Set base animation state
 	m_LastMovementDirection = DIRECTION_DOWN;
 	SetAnimation(m_LastMovementDirection, true);
-
-	// Add bounds
-	m_Bounds = AddBounds(0.0f, ScaledSize());
-	m_Bounds->m_OriginOffset = -ScaledHalfSize();
-	m_Bounds->m_Tag = "PLAYER";
-	m_Bounds->m_TargetTag = "ENEMY";
-	m_Bounds->m_Debug = true;
-	
-	// Set the scale
-	SetScale(m_Scale);
 
 	// Add weapons
 	AddWeapon(Game::GetGame()->AddGameObject<Sword>());

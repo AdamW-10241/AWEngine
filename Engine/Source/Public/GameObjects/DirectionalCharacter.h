@@ -33,7 +33,14 @@ public:
 	// Update weapon state
 	void UpdateWeaponStates();
 
+	// Get tags
+	const char* GetTag() const { return _strdup(m_Tag); }
+
+	const char* GetTargetTag() const { return _strdup(m_TargetTag); }
+
 protected:
+	virtual void OnStart() override;
+
 	virtual void OnProcessInput(Input* GameInput) override;
 
 	virtual void OnUpdate(float DeltaTime) override;
@@ -73,4 +80,9 @@ protected:
 
 	// Difficulty scale
 	float m_DifficultyScale;
+
+	// Tags
+	const char* m_Tag;
+
+	const char* m_TargetTag;
 };

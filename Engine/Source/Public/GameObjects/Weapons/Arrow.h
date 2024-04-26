@@ -3,7 +3,7 @@
 
 class Arrow : public Projectile {
 public:
-	Arrow();
+	Arrow(float Scale);
 
 	virtual void FireProjectile() override;
 

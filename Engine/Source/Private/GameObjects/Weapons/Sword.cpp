@@ -28,17 +28,6 @@ Sword::Sword(float DifficultyScale)
 		"Content/NinjaAdventure/Items/Weapons/Sword2/Sprite.png"
 	);
 
-	// Set the scale
-	SetScale(m_Scale);
-
-	// Add bounds
-	float const BoundsScalar = 4.0f;
-
-	m_Bounds = AddBounds(0.0f, ScaledSize() * BoundsScalar);
-	m_Bounds->m_OriginOffset = -ScaledHalfSize() * BoundsScalar;
-	m_Bounds->m_Tag = "WEAPON";
-	m_Bounds->m_Debug = true;
-
 	// Load sound effects
 	m_W_SFX[W_SFX_HIT] = Mix_LoadWAV("Content/Audio/HIT_SFX_Sword.wav");
 
@@ -109,6 +98,21 @@ void Sword::CreateHitVFX(Vector2 Position)
 	auto VFX = Game::GetGame()->Game::AddGameObject<VFX_SwordSlash>();
 	VFX->SetPosition(Position);
 	VFX->SetScale(m_Scale);
+}
+
+void Sword::AddWeaponBounds()
+{
+	// Set the scale
+	SetScale(m_Scale);
+	
+	// Add bounds
+	float const BoundsScalar = 4.0f;
+
+	m_Bounds = AddBounds(0.0f, ScaledSize() * BoundsScalar);
+	m_Bounds->m_OriginOffset = -ScaledHalfSize() * BoundsScalar;
+	m_Bounds->m_Tag = "WEAPON";
+	m_Bounds->m_TargetTag = m_Owner->GetTargetTag();
+	m_Bounds->m_Debug = true;
 }
 
 void Sword::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)

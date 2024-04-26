@@ -5,13 +5,13 @@
 
 #include "Game.h"
 
-Arrow::Arrow()
+Arrow::Arrow(float Scale)
 {
 	// Set variables
-	m_MaxSpeed = 1000.0f;
-
-	m_Scale = 3.0f;
+	m_Scale = Scale;
 	m_Size = 15.0f;
+
+	m_MaxSpeed = 1000.0f;
 
 	// Main sprite
 	m_MainSprite = AddSprite(
@@ -50,5 +50,5 @@ void Arrow::FireProjectile()
 	Vector2 MoveDirection = { cosf(RadianAngle), sinf(RadianAngle) };
 	
 	// Add force
-	AddForce(MoveDirection, 100000.0f);
+	AddForce(MoveDirection, 30000.0f * m_Scale);
 }

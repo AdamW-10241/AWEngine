@@ -30,73 +30,54 @@ PlayState::PlayState() {
 
 void PlayState::OnStart()
 {
-	Super::OnStart();
-
-	Game::GetGame()->m_Score = 0;
-
-	// Add objects
-	m_Background = AddGameObject<Background>();
-	m_Background->SetBackgroundSprite("Content/NinjaAdventure/Custom Background/Background_PlayState.png");
-	m_Background->SetPosition({
-		Game::GetGame()->WindowWidthF() / 2.0f,
-		Game::GetGame()->WindowHeightF() / 2.0f }
-	);
-	m_Background->SetScale(0.9f);
-
-	m_PlayerRef = AddGameObject<Player>();
-	m_PlayerRef->SetPosition({
-		Game::GetGame()->WindowWidthF() / 2.0f,
-		 Game::GetGame()->WindowHeightF() - m_PlayerRef->ScaledHalfSize()
-	});
-
-	m_ScoreText = AddGameObject<TextObject>();
-	m_ScoreText->SetPosition({ 10.0f, 10.0f });
-	m_ScoreText->SetFontSize(35);
-	m_ScoreText->SetAligment(AL_TOP_LEFT);
-	UpdateScore();
-
-	m_PlayerHealthText = AddGameObject<TextObject>();
-	m_PlayerHealthText->SetPosition({
-		10.0f,
-		Game::GetGame()->WindowHeightF() - 10.0f
-	});
-	m_PlayerHealthText->SetFontSize(35);
-	m_PlayerHealthText->SetAligment(AL_BOTTOM_LEFT);
-	UpdateHealth();
-
-	m_FreqText = AddGameObject<TextObject>();
-	m_FreqText->SetPosition({ 10.0f, 55.0f });
-	m_FreqText->SetFontSize(25);
-	m_FreqText->SetAligment(AL_TOP_LEFT);
-	UpdateFrequencyText();
+	CreateHUD();
 }
 
 void PlayState::OnUpdate(float DeltaTime)
 {
-	Super::OnUpdate(DeltaTime);
-
-	EnemySpawner(DeltaTime);
-
-	UpdateScore();
-
-	if (m_PlayerHealth <= 0.0f) {
-		m_EndPlayTimer -= DeltaTime;
-
-		if (m_EndPlayTimer <= 0.0f) {
-			// Change to game over state
-			Game::GetGame()->GetGameStateMachine()->SetNewGameState(new GameOverState());
-		}
-	}
-
-	UpdateHealth();
+	UpdateHUD();
+	
+	CheckEndGame(DeltaTime);
 }
 
 void PlayState::OnCleanup()
 {
+	// Cleanup
 	m_PlayerRef->DestroyObject();
 	m_ScoreText->DestroyObject();
 	m_PlayerHealthText->DestroyObject();
 	m_FreqText->DestroyObject();
+}
+
+void PlayState::AddBackground(Vector2 Position, float Scale, const char* PathToFile)
+{
+	// Add background
+	m_Background = AddGameObject<Background>();
+	m_Background->SetBackgroundSprite(PathToFile);
+	m_Background->SetPosition(Position);
+	m_Background->m_Scale = Scale;
+}
+
+void PlayState::AddPlayer(Vector2 Position, float Scale)
+{
+	// Add player
+	m_PlayerRef = AddGameObject<Player>(Scale);
+	m_PlayerRef->SetPosition(Position);
+	m_PlayerRef->m_Scale = Scale;
+}
+
+void PlayState::CheckEndGame(float DeltaTime)
+{
+	// Check player health
+	if (m_PlayerHealth <= 0.0f) {
+		// If dead then decrease timer
+		m_EndPlayTimer -= DeltaTime;
+
+		// Change to game over state at end of timer
+		if (m_EndPlayTimer <= 0.0f) {
+			Game::GetGame()->GetGameStateMachine()->SetNewGameState(new GameOverState());
+		}
+	}
 }
 
 void PlayState::UpdateScore()
@@ -143,7 +124,7 @@ void PlayState::EnemySpawner(float DeltaTime)
 	if (m_EnemySpawnTimer <= 0.0f) {
 		// Spawn Enemy
 		float DifficultyScale = Game::GetGame()->GetRandomFloatRange(1.0f, 2.0f);
-		Enemy* E = AddGameObject<Enemy>(DifficultyScale);
+		Enemy* E = AddGameObject<Enemy>(DifficultyScale, 3.5f);
 
 		E->SetPlayerRef(m_PlayerRef);
 
@@ -152,4 +133,43 @@ void PlayState::EnemySpawner(float DeltaTime)
 		
 		UpdateFrequencyText();
 	}
+}
+
+void PlayState::ResetScore()
+{
+	Game::GetGame()->m_Score = 0;
+}
+
+void PlayState::CreateHUD()
+{
+	// Create HUD objects
+	m_ScoreText = AddGameObject<TextObject>();
+	m_ScoreText->SetPosition({ 10.0f, 10.0f });
+	m_ScoreText->SetFontSize(35);
+	m_ScoreText->SetAligment(AL_TOP_LEFT);
+
+	m_PlayerHealthText = AddGameObject<TextObject>();
+	m_PlayerHealthText->SetPosition({
+		10.0f,
+		Game::GetGame()->WindowHeightF() - 10.0f
+	});
+	m_PlayerHealthText->SetFontSize(35);
+	m_PlayerHealthText->SetAligment(AL_BOTTOM_LEFT);
+
+	m_FreqText = AddGameObject<TextObject>();
+	m_FreqText->SetPosition({ 10.0f, 55.0f });
+	m_FreqText->SetFontSize(25);
+	m_FreqText->SetAligment(AL_TOP_LEFT);
+
+	UpdateHUD();
+}
+
+void PlayState::UpdateHUD()
+{
+	// Update HUD
+	UpdateScore();
+
+	UpdateHealth();
+
+	UpdateFrequencyText();
 }

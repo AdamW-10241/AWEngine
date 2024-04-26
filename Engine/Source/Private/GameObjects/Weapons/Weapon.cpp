@@ -31,8 +31,11 @@ void Weapon::SetOwner(DirectionalCharacter* Owner)
 
 	// Set target tag
 	if (m_Bounds != nullptr) {
-		m_Bounds->m_TargetTag = _strdup(Owner->GetMainBounds()->m_TargetTag);
+		m_Bounds->m_TargetTag = m_Owner->GetTargetTag();
 	}
+
+	// Set scale
+	m_Scale = Owner->m_Scale;
 }
 
 void Weapon::SetActive(bool State)
@@ -120,6 +123,17 @@ void Weapon::Cleanup()
 	}
 
 	Super::Cleanup();
+}
+
+void Weapon::OnStart()
+{
+	// Set the scale
+	SetScale(m_Scale);
+
+	// Add bounds
+	AddWeaponBounds();
+
+	Super::OnStart();
 }
 
 void Weapon::OnUpdate(float DeltaTime)

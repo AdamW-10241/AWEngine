@@ -16,6 +16,9 @@ DirectionalCharacter::DirectionalCharacter()
 	m_DifficultyScale = 1.0f;
 	m_Bounds = nullptr;
 
+	m_Tag = "ALL";
+	m_TargetTag = "ALL";
+
 	// Load sound effects
 	m_DC_SFX[DC_SFX_DEATH] = Mix_LoadWAV("Content/Audio/DEATH_SFX_DC.wav");
 
@@ -24,6 +27,22 @@ DirectionalCharacter::DirectionalCharacter()
 			Mix_VolumeChunk(SFX, 15);
 		}
 	}
+}
+
+void DirectionalCharacter::OnStart()
+{
+	// Set the scale
+	SetScale(m_Scale);
+
+	// Add bounds
+	m_Bounds = AddBounds(0.0f, ScaledSize());
+	m_Bounds->m_OriginOffset = -ScaledHalfSize();
+	m_Bounds->m_Tag = GetTag();
+	m_Bounds->m_TargetTag = GetTargetTag();
+	m_Bounds->m_Debug = true;
+
+	// Set the speed
+	m_MaxSpeed * m_Scale;
 }
 
 void DirectionalCharacter::OnProcessInput(Input* GameInput)

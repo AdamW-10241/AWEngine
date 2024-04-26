@@ -13,6 +13,8 @@ public:
 
 	virtual void CreateHitVFX(Vector2 Position);
 
+	virtual void AddWeaponBounds();
+
 protected:
 	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;
 
