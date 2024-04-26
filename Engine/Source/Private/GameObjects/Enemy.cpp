@@ -180,8 +180,8 @@ void Enemy::OnDeath(GameObject* DeathCauser)
 		SpawnedCoin->SetPosition(GetTransform().Position);
 	}
 
-	const auto SpawnedKey = Game::GetGame()->Game::AddGameObject<Key>();
-	SpawnedKey->SetPosition(GetTransform().Position);
+	//const auto SpawnedKey = Game::GetGame()->Game::AddGameObject<Key>();
+	//SpawnedKey->SetPosition(GetTransform().Position);
 	
 	Super::OnDeath(DeathCauser);
 }

@@ -6,8 +6,10 @@
 Key::Key()
 {
 	// Set variables
-	m_Scale = 3.5f;
+	m_Scale = 5.0f;
 	m_Size = 10.0f;
+
+	m_ScoreValue = 2000.0f;
 
 	// Main sprite
 	m_MainSprite = AddSprite(

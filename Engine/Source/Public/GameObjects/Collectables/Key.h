@@ -7,5 +7,5 @@ public:
 	Key();
 
 protected:
-	virtual void PlayFX() override { OnPlayFX<VFX_CollectKey>(); }
+	virtual void PlayFX() override { OnPlayFX<VFX_CollectKey>(m_Scale); }
 };

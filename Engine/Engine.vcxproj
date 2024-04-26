@@ -113,10 +113,16 @@
     <ClCompile Include="Source\Private\GameObjects\Weapons\Arrow.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Weapons\Bow.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Weapons\Sword.cpp" />
+    <ClCompile Include="Source\Private\GameStates\ControlsInfoState.cpp" />
+    <ClCompile Include="Source\Private\GameStates\GameOverState.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameState.cpp" />
     <ClCompile Include="Source\Private\GameStates\GameStateMachine.cpp" />
+    <ClCompile Include="Source\Private\GameStates\Levels\LevelStateSecond.cpp" />
+    <ClCompile Include="Source\Private\GameStates\Levels\LevelStateThird.cpp" />
     <ClCompile Include="Source\Private\GameStates\MainMenuState.cpp" />
-    <ClCompile Include="Source\Private\GameStates\PlayState.cpp" />
+    <ClCompile Include="Source\Private\GameStates\PauseState.cpp" />
+    <ClCompile Include="Source\Private\GameStates\Levels\PlayState.cpp" />
+    <ClCompile Include="Source\Private\GameStates\SplashScreenState.cpp" />
     <ClCompile Include="Source\Private\Graphics\Animation.cpp" />
     <ClCompile Include="Source\Private\Graphics\Text.cpp" />
     <ClCompile Include="Source\Private\Graphics\Texture.cpp" />
@@ -127,6 +133,7 @@
     <ClCompile Include="Source\Private\GameObjects\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Collectables\Coin.cpp" />
     <ClCompile Include="Source\Public\GameObjects\VFX\VFX_CollectCoin.h" />
+    <ClCompile Include="Source\Private\GameStates\Levels\LevelStateFirst.cpp" />
     <ClCompile Include="Source\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,13 +161,20 @@
     <ClInclude Include="Source\Public\GameObjects\Weapons\Bow.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Sword.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Weapon.h" />
+    <ClInclude Include="Source\Public\GameStates\ControlsInfoState.h" />
+    <ClInclude Include="Source\Public\GameStates\GameOverState.h" />
     <ClInclude Include="Source\Public\GameStates\GameStateMachine.h" />
     <ClInclude Include="Source\Public\GameObjects\PhysicsObject.h" />
     <ClInclude Include="Source\Public\GameObjects\Player.h" />
     <ClInclude Include="Source\Public\GameObjects\SpriteObject.h" />
     <ClInclude Include="Source\Public\GameStates\GameState.h" />
+    <ClInclude Include="Source\Public\GameStates\Levels\LevelStateFirst.h" />
+    <ClInclude Include="Source\Public\GameStates\Levels\LevelStateSecond.h" />
+    <ClInclude Include="Source\Public\GameStates\Levels\LevelStateThird.h" />
     <ClInclude Include="Source\Public\GameStates\MainMenuState.h" />
-    <ClInclude Include="Source\Public\GameStates\PlayState.h" />
+    <ClInclude Include="Source\Public\GameStates\PauseState.h" />
+    <ClInclude Include="Source\Public\GameStates\Levels\PlayState.h" />
+    <ClInclude Include="Source\Public\GameStates\SplashScreenState.h" />
     <ClInclude Include="Source\Public\Graphics\Animation.h" />
     <ClInclude Include="Source\Public\Graphics\Text.h" />
     <ClInclude Include="Source\Public\Graphics\Texture.h" />

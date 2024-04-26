@@ -18,10 +18,10 @@ protected:
 	virtual void PlayFX() {};
 
 	template<class T, std::enable_if_t<std::is_base_of_v<VisualEffectObject, T>, T>* = nullptr>
-	void OnPlayFX() {
+	void OnPlayFX(float Scale = 1.0f) {
 		const auto VFX = Game::GetGame()->Game::AddGameObject<T>();
 		VFX->SetPosition(GetTransform().Position);
-		VFX->SetScale(m_Scale * 0.5f);
+		VFX->SetScale(Scale);
 	}
 
 protected:

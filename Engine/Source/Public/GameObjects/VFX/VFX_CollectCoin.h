@@ -17,5 +17,6 @@ public:
 		);
 
 		m_VFX_SFX = Mix_LoadWAV("Content/Audio/SFX_Coin.wav");
+		m_SFX_Volume = 50;
 	}
 };

@@ -33,7 +33,7 @@ void VisualEffectObject::OnStart()
 
 	// Play sound effect
 	if (m_VFX_SFX != nullptr) {
-		Mix_VolumeChunk(m_VFX_SFX, 100);
+		Mix_VolumeChunk(m_VFX_SFX, m_SFX_Volume);
 		Mix_PlayChannel(-1, m_VFX_SFX, 0);
 	}
 

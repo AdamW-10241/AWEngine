@@ -17,6 +17,6 @@ public:
 		);
 
 		m_VFX_SFX = Mix_LoadWAV("Content/Audio/SFX_Key.wav");
-		m_SFX_Volume = 150;
+		m_SFX_Volume = 128;
 	}
 };

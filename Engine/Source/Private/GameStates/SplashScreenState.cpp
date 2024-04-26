@@ -1,11 +1,13 @@
-#include "GameStates/MainMenuState.h"
+#include "GameStates/SplashScreenState.h"
 
 #include "GameObjects/TextObject.h"
 
 #include "Game.h"
 #include "Input.h"
 
-void MainMenuState::OnStart()
+// REDO ALL
+
+void SplashScreenState::OnStart()
 {
 	m_TitleText = AddGameObject<TextObject>();
 	m_TitleText->SetAligment(AL_CENTER);
@@ -19,7 +21,7 @@ void MainMenuState::OnStart()
 	m_TitleText->SetText("Press Enter/Return to Start Game");
 }
 
-void MainMenuState::OnProcessInput(Input* GameInput)
+void SplashScreenState::OnProcessInput(Input* GameInput)
 {
 	if (GameInput->IsKeyDown(AW_KEY_RETURN)) {
 		auto NewState = new PlayState();
@@ -27,7 +29,7 @@ void MainMenuState::OnProcessInput(Input* GameInput)
 	}
 }
 
-void MainMenuState::OnCleanup()
+void SplashScreenState::OnCleanup()
 {
 	m_TitleText->DestroyObject();
 }

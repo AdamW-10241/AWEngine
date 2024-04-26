@@ -13,13 +13,6 @@ public:
 		m_VFX_SFX(nullptr),
 		m_SFX_Volume(100) {}
 
-	VisualEffectObject(Mix_Chunk* SFX, uint32_t SFX_Volume) :
-		m_Length(0.0f),
-		m_Loops(0),
-		m_LifeTimer(0.0f),
-		m_VFX_SFX(SFX),
-		m_SFX_Volume(SFX_Volume) {}
-
 	~VisualEffectObject() = default;
 
 	int m_Loops;
