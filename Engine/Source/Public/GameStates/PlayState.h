@@ -12,8 +12,7 @@ public:
 
 	// Set max enemies
 	void SetMaxEnemies() {
-		m_MinEnemyFrequency = 0.05f;
-		m_EnemyFrequency = m_MinEnemyFrequency;
+		m_EnemyFrequency = 0.2f;
 	}
 
 public:
@@ -31,25 +30,24 @@ protected:
 
 	// Text update functions
 	void UpdateScore();
-	void UpdateLives();
+	void UpdateHealth();
 	void UpdateFrequencyText();
 
 protected:
 	// Text rendering objects
 	TextObject* m_ScoreText;
-	TextObject* m_PlayerLivesText;
+	TextObject* m_PlayerHealthText;
 	TextObject* m_FreqText;
 
 	// Music
 	Mix_Music* m_BGM;
 	
-	// Player life counter
-	int m_PlayerLives;
+	// Player health counter
+	float m_PlayerHealth;
 
 	// Timer to reset game after death
 	float m_EndPlayTimer;
 
 	// Timers for enemy spawning
-	float m_MinEnemyFrequency, m_MaxEnemyFrequency;
 	float m_EnemyFrequency, m_EnemySpawnTimer;
 };

@@ -9,6 +9,10 @@ public:
 
 	virtual void SetAimPosition(float RadiusMultiplier = 1.0f) override;
 
+	virtual void AttackHit(Character* Char, bool DoDamage) override;
+
+	virtual void CreateHitVFX(Vector2 Position);
+
 protected:
 	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;
 

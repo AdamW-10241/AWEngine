@@ -99,7 +99,8 @@
     <ClCompile Include="Source\Private\Game.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Background.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Character.cpp" />
-    <ClCompile Include="Source\Private\GameObjects\Collectable.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\Collectables\Collectable.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\Collectables\Key.cpp" />
     <ClCompile Include="Source\Private\GameObjects\DirectionalCharacter.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Enemy.cpp" />
     <ClCompile Include="Source\Private\GameObjects\GameObject.cpp" />
@@ -124,6 +125,7 @@
     <ClCompile Include="Source\Private\Math\Vector2.cpp" />
     <ClCompile Include="Source\Private\Menus\WinMenu.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Weapons\Weapon.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\Collectables\Coin.cpp" />
     <ClCompile Include="Source\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -133,12 +135,15 @@
     <ClInclude Include="Source\Public\Game.h" />
     <ClInclude Include="Source\Public\GameObjects\Background.h" />
     <ClInclude Include="Source\Public\GameObjects\Character.h" />
-    <ClInclude Include="Source\Public\GameObjects\Collectable.h" />
+    <ClInclude Include="Source\Public\GameObjects\Collectables\Coin.h" />
+    <ClInclude Include="Source\Public\GameObjects\Collectables\Collectable.h" />
+    <ClInclude Include="Source\Public\GameObjects\Collectables\Key.h" />
     <ClInclude Include="Source\Public\GameObjects\DirectionalCharacter.h" />
     <ClInclude Include="Source\Public\GameObjects\Enemy.h" />
     <ClInclude Include="Source\Public\GameObjects\GameObject.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowHit.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowMiss.h" />
+    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_CollectableCollect.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Projectile.h" />
     <ClInclude Include="Source\Public\GameObjects\TextObject.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_EnemyExplosion.h" />

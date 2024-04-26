@@ -3,6 +3,7 @@
 #include "GameObjects/Weapons/Arrow.h"
 
 #include "Game.h"
+#include "SDL2/SDL_mixer.h"
 
 #include "Debug.h"
 
@@ -31,6 +32,18 @@ Bow::Bow(float DifficultyScale)
 
 	// Set the scale
 	SetScale(m_Scale);
+
+	// Load sound effects
+	// Arrow hit sound
+	m_W_SFX[W_SFX_HIT] = Mix_LoadWAV("Content/Audio/HIT_SFX_Bow.wav");
+	// Arrow miss sound
+	m_W_SFX[W_SFX_MISS] = Mix_LoadWAV("Content/Audio/MISS_SFX_Bow.wav");
+
+	for (auto SFX : m_W_SFX) {
+		if (SFX != nullptr) {
+			Mix_VolumeChunk(SFX, 100);
+		}
+	}
 }
 
 void Bow::OnAttack()
@@ -38,15 +51,8 @@ void Bow::OnAttack()
 	// Spawn Arrow
 	SpawnArrow();
 
-	// Set cooldown timer
-	m_CooldownTimer = m_CooldownDuration;
-
-	// Play sound effect ???
-	//int SoundIndex = 0; // rand() % 3;
-
-	//if (m_ShootSFX[SoundIndex] != nullptr) {
-	//	Mix_PlayChannel(-1, m_ShootSFX[SoundIndex], 0);
-	//}
+	// Set the cooldown timer
+	Cooldown();
 }
 
 void Bow::SetIdlePosition(float RadiusMultiplier)
@@ -63,7 +69,7 @@ void Bow::SpawnArrow()
 	Arrow* SpawnedArrow = Game::GetGame()->AddGameObject<Arrow>();
 
 	// Adjust the arrow
-	SpawnedArrow->SetupProjectile(m_Owner, m_Damage);
+	SpawnedArrow->SetupProjectile(this, m_Damage);
 	SpawnedArrow->SetPosition(GetTransform().Position + m_MainSprite->m_Offset.Position);
 	SpawnedArrow->SetRotation(m_MainSprite->m_Offset.Rotation - m_RotationOffset);
 

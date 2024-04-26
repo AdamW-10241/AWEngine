@@ -1,6 +1,6 @@
 #include "GameObjects/Enemy.h"
 #include "GameObjects/Player.h"
-#include "GameObjects/Collectable.h"
+#include "GameObjects/Collectables/Coin.h"
 #include "GameObjects/VFX/VFX_EnemyExplosion.h"
 #include "GameObjects/Weapons/Sword.h"
 #include "GameObjects/Weapons/Bow.h"
@@ -16,8 +16,8 @@ Enemy::Enemy(float DifficultyScale)
 	// Set variables
 	m_DifficultyScale = DifficultyScale;
 
-	m_MaxLives = 1;
-	m_Lives = m_MaxLives;
+	m_MaxHealth = m_DifficultyScale;
+	m_Health = m_MaxHealth;
 
 	m_Scale = 3.5f;
 	m_Size = 16.0f;
@@ -114,13 +114,6 @@ Enemy::Enemy(float DifficultyScale)
 	});
 }
 
-void Enemy::Cleanup()
-{
-	// SFX
-
-	Super::Cleanup();
-}
-
 void Enemy::OnUpdate(float DeltaTime)
 {
 	// Randomly choose movement
@@ -180,10 +173,10 @@ void Enemy::OnDeath(GameObject* DeathCauser)
 	VFX->SetPosition(GetTransform().Position);
 	VFX->SetScale(m_Scale);
 
-	// Randomly spawn a coin collectable
-	if (rand() % 3 == 0) {
-		auto SpawnedCollectable = Game::GetGame()->Game::AddGameObject<Collectable>();
-		SpawnedCollectable->SetPosition(GetTransform().Position);
+	// Randomly spawn a coin
+	if (rand() % 1 == 0) {
+		auto SpawnedCoin = Game::GetGame()->Game::AddGameObject<Coin>();
+		SpawnedCoin->SetPosition(GetTransform().Position);
 	}
 	
 	Super::OnDeath(DeathCauser);
@@ -194,6 +187,6 @@ void Enemy::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 	// Is the owner of the bounds we overlapped with a player
 	if (auto PlayerRef = dynamic_cast<Player*>(OverlapBounds->GetOwner())) {
 		PlayerRef->ApplyDamage(this, 1);
-		DestroyObject();
+		ApplyDamage(PlayerRef, 1);
 	}
 }

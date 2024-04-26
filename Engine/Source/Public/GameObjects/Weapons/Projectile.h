@@ -1,17 +1,20 @@
 #pragma once
 #include "GameObjects/Character.h"
 
-class DirectionalCharacter;
+class Weapon;
 
 class Projectile : public Character {
 public:
 	Projectile();
 
 	// Set projectile owner
-	void SetupProjectile(DirectionalCharacter* Owner, int Damage);
+	void SetupProjectile(Weapon* Owner, float Damage);
 
 	// Set damage
 	void SetDamage(int Damage) { m_Damage = Damage; }
+
+	// Get owner
+	Weapon* GetOwner() const { return m_Owner; }
 
 protected:
 	virtual void OnUpdate(float DeltaTime) override;
@@ -24,6 +27,10 @@ protected:
 
 	virtual void FireProjectile() {}
 
+	virtual void AttackHit(Character* Char, bool DoDamage);
+
+	virtual void AttackMiss();
+
 protected:
 	// Main projectile bounds
 	Bounds* m_Bounds;
@@ -32,11 +39,11 @@ protected:
 	Vector2 m_MoveDirection;
 
 	// Owner of the projectile
-	DirectionalCharacter* m_Owner;
+	Weapon* m_Owner;
 
 	// Time before projectile destroys itself
 	float m_LifeTime;
 
 	// Damage
-	int m_Damage;
+	float m_Damage;
 };

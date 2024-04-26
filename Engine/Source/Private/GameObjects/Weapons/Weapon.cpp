@@ -1,6 +1,8 @@
 #include "GameObjects/Weapons/Weapon.h"
 #include "GameObjects/DirectionalCharacter.h"
 
+#include "SDL2/SDL_mixer.h"
+
 #define Super Character
 
 Weapon::Weapon(float DifficultyScale)
@@ -106,6 +108,18 @@ void Weapon::SetAimPosition(float RadiusMultiplier)
 		WeaponSprite->m_Offset.Position = OffsetPosition;
 		WeaponSprite->m_Offset.Rotation = (RadianAngle * 180 / PI) + m_RotationOffset;
 	}
+}
+
+void Weapon::Cleanup()
+{
+	// Cleanup weapon SFX
+	for (auto Item : m_W_SFX) {
+		if (Item != nullptr) {
+			Mix_FreeChunk(Item);
+		}
+	}
+
+	Super::Cleanup();
 }
 
 void Weapon::OnUpdate(float DeltaTime)

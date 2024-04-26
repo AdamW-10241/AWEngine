@@ -15,8 +15,8 @@
 Player::Player()
 {
 	// Set variables
-	m_MaxLives = 10;
-	m_Lives = m_MaxLives;
+	m_MaxHealth = 10;
+	m_Health = m_MaxHealth;
 
 	m_Scale = 3.5f;
 	m_Size = 16.0f;
@@ -96,32 +96,11 @@ Player::Player()
 	AddWeapon(Game::GetGame()->AddGameObject<Bow>());
 
 	UpdateWeaponStates();
-
-	// Sound effects
-	// https://freesound.org/people/SomeGuy22/sounds/519005/
-	m_ShootSFX[0] = Mix_LoadWAV("Content/Audio/Laser1.wav");
-
-	for (auto item : m_ShootSFX) {
-		if (item != nullptr) {
-			Mix_VolumeChunk(item, 15);
-		}
-	}
-}
-
-void Player::Cleanup()
-{
-	for (auto Item : m_ShootSFX) {
-		if (Item != nullptr) {
-			Mix_FreeChunk(Item);
-		}
-	}
-
-	Super::Cleanup();
 }
 
 void Player::OnProcessInput(Input* GameInput)
 {
-	if (m_Lives <= 0) {
+	if (m_Health <= 0) {
 		return;
 	}
 
@@ -156,7 +135,7 @@ void Player::OnProcessInput(Input* GameInput)
 
 void Player::OnUpdate(float DeltaTime)
 {
-	if (m_Lives <= 0) {
+	if (m_Health <= 0) {
 		return;
 	}
 	

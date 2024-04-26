@@ -113,7 +113,7 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 			// Check player is not nullptr
 			if (PlayStateTest->m_PlayerRef) {
 				// Check player is already dead
-				if (PlayStateTest->m_PlayerRef->GetLives() <= 0) {
+				if (PlayStateTest->m_PlayerRef->GetHealth() <= 0.0f) {
 					Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 						"Cheats",
 						"Player is already dead and can not be healed!"
@@ -122,7 +122,7 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 				}
 				
 				// Max heal player
-				PlayStateTest->m_PlayerRef->ResetLives();
+				PlayStateTest->m_PlayerRef->ResetHealth();
 
 				Game::GetGame()->GetWinMenu()->ActivatePopup(
 					"Cheats",

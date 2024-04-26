@@ -9,8 +9,6 @@ public:
 
 	void SetPlayerRef(Player* PlayerRef) { m_PlayerRef = PlayerRef; }
 
-	virtual void Cleanup() override;
-
 protected:
 	virtual void OnUpdate(float DeltaTime) override;
 

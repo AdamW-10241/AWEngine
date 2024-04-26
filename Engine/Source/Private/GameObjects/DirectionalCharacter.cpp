@@ -2,10 +2,29 @@
 
 #include "Input.h"
 #include "Game.h"
+#include "SDL2/SDL_mixer.h"
 
 #include "Debug.h"
 
 #define Super Character
+
+DirectionalCharacter::DirectionalCharacter()
+{
+	// Set variables
+	m_LastMovementDirection = 0;
+	m_UsedWeapon = 0;
+	m_DifficultyScale = 1.0f;
+	m_Bounds = nullptr;
+
+	// Load sound effects
+	m_DC_SFX[DC_SFX_DEATH] = Mix_LoadWAV("Content/Audio/DEATH_SFX_DC.wav");
+
+	for (auto SFX : m_DC_SFX) {
+		if (SFX != nullptr) {
+			Mix_VolumeChunk(SFX, 15);
+		}
+	}
+}
 
 void DirectionalCharacter::OnProcessInput(Input* GameInput)
 {
@@ -43,7 +62,14 @@ void DirectionalCharacter::Cleanup()
 	// Erase weapons
 	for (int i = m_OwnedWeapons.size() - 1; i >= 0; i--) {
 		m_OwnedWeapons[i]->DestroyObject();
-		m_OwnedWeapons.erase(m_OwnedWeapons.begin() + i);
+	}
+	m_OwnedWeapons.clear();
+
+	// Cleanup SFX
+	for (auto Item : m_DC_SFX) {
+		if (Item != nullptr) {
+			Mix_FreeChunk(Item);
+		}
 	}
 
 	Super::Cleanup();
@@ -71,6 +97,11 @@ void DirectionalCharacter::OnDeath(GameObject* DeathCauser)
 {
 	// Destroy weapons
 	DestroyWeapons();
+
+	// Play death sfx
+	if (m_DC_SFX[DC_SFX_DEATH] != nullptr) {
+		Mix_PlayChannel(-1, m_DC_SFX[DC_SFX_DEATH], 0);
+	}
 
 	Super::OnDeath(DeathCauser);
 }

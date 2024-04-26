@@ -28,7 +28,7 @@ Arrow::Arrow()
 
 void Arrow::CreateHitVFX(Vector2 Position)
 {
-	// Create arrow Hit VFX
+	// Create arrow hit VFX
 	auto VFX = Game::GetGame()->Game::AddGameObject<VFX_ArrowHit>();
 	VFX->SetPosition(Position);
 	VFX->SetScale(m_Scale);
@@ -36,10 +36,10 @@ void Arrow::CreateHitVFX(Vector2 Position)
 
 void Arrow::CreateMissVFX(Vector2 Position)
 {
-	// Create arrow Miss VFX
+	// Create arrow miss VFX
 	auto VFX = Game::GetGame()->Game::AddGameObject<VFX_ArrowMiss>();
 	VFX->SetPosition(Position);
-	VFX->SetScale(m_Scale);
+	VFX->SetScale(m_Scale * 0.5f);
 }
 
 void Arrow::FireProjectile()
@@ -50,5 +50,5 @@ void Arrow::FireProjectile()
 	Vector2 MoveDirection = { cosf(RadianAngle), sinf(RadianAngle) };
 	
 	// Add force
-	AddForce(MoveDirection, 150000.0f);
+	AddForce(MoveDirection, 100000.0f);
 }

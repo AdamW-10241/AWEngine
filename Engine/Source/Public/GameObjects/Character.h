@@ -6,7 +6,15 @@
 
 class Character : public PhysicsObject {
 public:
-	Character();
+	Character() :
+		m_MainSprite(nullptr),
+		m_AccelerationSpeed(2000.0f),
+		m_Scale(1.0f),
+		m_Size(5.0f),
+		m_MaxHealth(1.0f),
+		m_Health(1.0f),
+		m_Bounds(nullptr) 
+	{}
 
 	// Move the character in this direction based on the acceleration speed and max speed
 	void AddMovementInput(Vector2 Direction, float Scale = 1.0f);
@@ -20,14 +28,17 @@ public:
 	// Get sized multiplied by the scale
 	float ScaledSize() const { return m_Size * m_Scale; }
 
-	// Reduce lives based on damage
-	int ApplyDamage(GameObject* DamageCauser, int Damage);
+	// Reduce health based on damage
+	float ApplyDamage(GameObject* DamageCauser, float Damage);
 
-	// Get the remaining lives of the character
-	int GetLives() const { return m_Lives; }
+	// Get the remaining health of the character
+	float GetHealth() const { return m_Health; }
 
-	// Reset lives to max lives
-	void ResetLives() { m_Lives = m_MaxLives; }
+	// Reset health to max health
+	void ResetHealth() { m_Health = m_MaxHealth; }
+
+	// Get main bounds
+	Bounds* GetMainBounds() const { return m_Bounds; }
 
 public:
 	// Dimensions of the character
@@ -42,12 +53,15 @@ protected:
 	// Main sprite that represents the character
 	Sprite* m_MainSprite;
 
+	// Main bounds
+	Bounds* m_Bounds;
+
 	// Speed the character will move to max speed
 	float m_AccelerationSpeed;
 
 	// The direction to move the character in
 	Vector2 m_MoveDirection;
 
-	// Lives of the character
-	int m_MaxLives, m_Lives;
+	// Health of the character
+	float m_MaxHealth, m_Health;
 };

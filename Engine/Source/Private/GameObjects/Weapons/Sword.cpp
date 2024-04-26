@@ -1,7 +1,9 @@
 #include "GameObjects/Weapons/Sword.h"
 #include "GameObjects/DirectionalCharacter.h"
 #include "GameObjects/VFX/VFX_SwordSlash.h"
+
 #include "Game.h"
+#include "SDL2/SDL_mixer.h"
 
 #include "Debug.h"
 
@@ -13,7 +15,7 @@ Sword::Sword(float DifficultyScale)
 	m_Damage = 1.0f;
 	m_Damage *= DifficultyScale;
 
-	m_CooldownDuration = 1.5f;
+	m_CooldownDuration = 1.0f;
 	m_AttackDuration = 0.3f;
 
 	m_RotationOffset = 90.0f;
@@ -36,6 +38,15 @@ Sword::Sword(float DifficultyScale)
 	m_Bounds->m_OriginOffset = -ScaledHalfSize() * BoundsScalar;
 	m_Bounds->m_Tag = "WEAPON";
 	m_Bounds->m_Debug = true;
+
+	// Load sound effects
+	m_W_SFX[W_SFX_HIT] = Mix_LoadWAV("Content/Audio/HIT_SFX_Sword.wav");
+
+	for (auto SFX : m_W_SFX) {
+		if (SFX != nullptr) {
+			Mix_VolumeChunk(SFX, 15);
+		}
+	}
 }
 
 void Sword::SetAttackPosition(float RadiusMultiplier)
@@ -70,6 +81,36 @@ void Sword::SetAimPosition(float RadiusMultiplier)
 	Super::SetAimPosition(RadiusMultiplier);
 }
 
+void Sword::AttackHit(Character* Char, bool DoDamage)
+{
+	// Damage opponent if set
+	if (DoDamage) {
+		Char->ApplyDamage(m_Owner, m_Damage);
+	}
+	
+	// Create hit VFX
+	CreateHitVFX((Char->GetTransform().Position + GetTransform().Position) / 2.0f);
+
+	// Play hit SFX
+	if (m_W_SFX[W_SFX_HIT] != nullptr) {
+		Mix_PlayChannel(-1, m_W_SFX[W_SFX_HIT], 0);
+	}
+
+	// Set cooldown timer
+	Cooldown();
+
+	// Deactivate bounds
+	m_Bounds->m_Active = false;
+}
+
+void Sword::CreateHitVFX(Vector2 Position)
+{
+	// Create hit VFX
+	auto VFX = Game::GetGame()->Game::AddGameObject<VFX_SwordSlash>();
+	VFX->SetPosition(Position);
+	VFX->SetScale(m_Scale);
+}
+
 void Sword::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 {
 	if (!IsAttacking()) {
@@ -80,24 +121,28 @@ void Sword::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 		return;
 	}
 
+	// Hit other weapon
+	if (auto const OtherWeapon = dynamic_cast<Weapon*>(OverlapBounds->GetOwner())) {
+		if (strcmp(OtherWeapon->GetOwner()->GetMainBounds()->m_Tag, HitBounds->m_TargetTag) != 0) {
+			return;
+		}
+
+		// Make other weapon attack land
+		OtherWeapon->AttackHit(this, false);
+
+		// Make this weapon attack land
+		AttackHit(OtherWeapon, false);
+		return;
+	}
+
+	// Hit player / enemy
 	if (auto Char = dynamic_cast<DirectionalCharacter*>(OverlapBounds->GetOwner())) {
 		if (strcmp(Char->GetMainBounds()->m_Tag, HitBounds->m_TargetTag) != 0) {
 			return;
 		}
 
-		// Damage opponent
-		Char->ApplyDamage(m_Owner, m_Damage);
-
-		// Create slash VFX
-		auto VFX = Game::GetGame()->Game::AddGameObject<VFX_SwordSlash>();
-		VFX->SetPosition(Char->GetTransform().Position);
-		VFX->SetScale(m_Scale);
-
-		// Set cooldown timer
-		m_CooldownTimer = m_CooldownDuration;
-
-		// Deactivate bounds
-		m_Bounds->m_Active = false;
+		// Handle attack hit
+		AttackHit(Char, true);
 	}
 }
 

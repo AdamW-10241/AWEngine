@@ -7,9 +7,16 @@
 #define DIRECTION_UP 2
 #define DIRECTION_DOWN 3
 
+enum DC_SFX{
+	DC_SFX_DEATH = 0,
+
+	// Not a sound effect, just the number of SFX
+	DC_SFX_NUM
+};
+
 class DirectionalCharacter : public Character {
 public:
-	DirectionalCharacter() : m_LastMovementDirection(0), m_UsedWeapon(0), m_DifficultyScale(1.0f), m_Bounds(nullptr) {}
+	DirectionalCharacter();
 
 	// Change the directional character sprite based on direction and idle state
 	void SetAnimation(uint32_t Direction, bool IdleState);
@@ -25,9 +32,6 @@ public:
 
 	// Update weapon state
 	void UpdateWeaponStates();
-
-	// Get main bounds
-	Bounds* GetMainBounds() const { return m_Bounds; }
 
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
@@ -60,13 +64,13 @@ protected:
 	// Store the index of the used weapon
 	uint32_t m_UsedWeapon;
 
+	// Store sound effects
+	Mix_Chunk* m_DC_SFX[DC_SFX_NUM] = { nullptr };
+
 	// Store the last movement direction as integer
 	// Right - 1, Left - 2, Up - 3, Down - 4
 	uint32_t m_LastMovementDirection;
 
 	// Difficulty scale
 	float m_DifficultyScale;
-
-	// Main bounds
-	Bounds* m_Bounds;
 };

@@ -19,15 +19,13 @@
 PlayState::PlayState() {
 	m_ScoreText = nullptr;
 	m_FreqText = nullptr;
-	m_PlayerLivesText = nullptr;
-	// https://freesound.org/people/vibritherabjit123/sounds/642504/
-	m_BGM = Mix_LoadMUS("Content/Audio/Play_Music.wav");
-	m_PlayerLives = -1;
+	m_PlayerHealthText = nullptr;
+	m_BGM = Mix_LoadMUS("Content/Audio/MUSIC_Play.wav");
+	m_PlayerHealth = -1.0f;
 	m_PlayerRef = nullptr;
 	m_EndPlayTimer = 3.0f;
-	m_MinEnemyFrequency = 0.5f;
-	m_MaxEnemyFrequency = 3.0f;
-	m_EnemyFrequency = m_MaxEnemyFrequency;
+
+	m_EnemyFrequency = 3.0f;
 	m_EnemySpawnTimer = 1.0f;
 }
 
@@ -58,14 +56,14 @@ void PlayState::OnStart()
 	m_ScoreText->SetAligment(AL_TOP_LEFT);
 	UpdateScore();
 
-	m_PlayerLivesText = AddGameObject<TextObject>();
-	m_PlayerLivesText->SetPosition({
+	m_PlayerHealthText = AddGameObject<TextObject>();
+	m_PlayerHealthText->SetPosition({
 		10.0f,
 		Game::GetGame()->WindowHeightF() - 10.0f
 	});
-	m_PlayerLivesText->SetFontSize(35);
-	m_PlayerLivesText->SetAligment(AL_BOTTOM_LEFT);
-	UpdateLives();
+	m_PlayerHealthText->SetFontSize(35);
+	m_PlayerHealthText->SetAligment(AL_BOTTOM_LEFT);
+	UpdateHealth();
 
 	m_FreqText = AddGameObject<TextObject>();
 	m_FreqText->SetPosition({ 10.0f, 55.0f });
@@ -76,7 +74,7 @@ void PlayState::OnStart()
 	// Play background music
 	if (m_BGM != nullptr) {
 		Mix_PlayMusic(m_BGM, -1);
-		Mix_VolumeMusic(SDL_MIX_MAXVOLUME);
+		Mix_VolumeMusic(80);
 	}
 }
 
@@ -88,7 +86,7 @@ void PlayState::OnUpdate(float DeltaTime)
 
 	UpdateScore();
 
-	if (m_PlayerLives <= 0) {
+	if (m_PlayerHealth <= 0.0f) {
 		m_EndPlayTimer -= DeltaTime;
 
 		if (m_EndPlayTimer <= 0.0f) {
@@ -97,7 +95,7 @@ void PlayState::OnUpdate(float DeltaTime)
 		}
 	}
 
-	UpdateLives();
+	UpdateHealth();
 }
 
 void PlayState::OnCleanup()
@@ -107,7 +105,7 @@ void PlayState::OnCleanup()
 	m_Background->DestroyObject();
 	m_PlayerRef->DestroyObject();
 	m_ScoreText->DestroyObject();
-	m_PlayerLivesText->DestroyObject();
+	m_PlayerHealthText->DestroyObject();
 	m_FreqText->DestroyObject();
 }
 
@@ -119,22 +117,26 @@ void PlayState::UpdateScore()
 	m_ScoreText->SetText(ScoreString.c_str());
 }
 
-void PlayState::UpdateLives()
+void PlayState::UpdateHealth()
 {
-	int Lives = m_PlayerRef->GetLives();
+	float Health = m_PlayerRef->GetHealth();
 
-	if (Lives != m_PlayerLives) {
-		m_PlayerLives = Lives;
+	if (Health != m_PlayerHealth) {
+		// Update health
+		m_PlayerHealth = Health;
 
-		std::string LivesString = "Lives: " + std::to_string(m_PlayerLives);
-		m_PlayerLivesText->SetText(LivesString.c_str());
+		// Use a stream to set float text precision
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(1) << m_PlayerHealth;
+
+		std::string HealthString = "Health: " + stream.str();
+		m_PlayerHealthText->SetText(HealthString.c_str());
 	}
 }
 
 void PlayState::UpdateFrequencyText()
 {
-	// Create a string stream that converts a float into a less precise version
-	// Set precision is the number of decimal places to see
+	// Use a stream to set float text precision
 	std::stringstream stream;
 	stream << std::fixed << std::setprecision(1) << m_EnemyFrequency;
 
@@ -144,20 +146,19 @@ void PlayState::UpdateFrequencyText()
 
 void PlayState::EnemySpawner(float DeltaTime)
 {
-	// Countdown timer
+	// Countdown spawn timer
 	m_EnemySpawnTimer -= DeltaTime;
 
-	// If the timer reaches 0 then spawn an enemy
+	// Check timer
 	if (m_EnemySpawnTimer <= 0.0f) {
-		float DifficultyScale = Game::GetGame()->GetRandomFloatRange(1.0f, 3.0f);
+		// Spawn Enemy
+		float DifficultyScale = Game::GetGame()->GetRandomFloatRange(1.0f, 2.0f);
 		Enemy* E = AddGameObject<Enemy>(DifficultyScale);
 
 		E->SetPlayerRef(m_PlayerRef);
 
 		// Reset the timer
 		m_EnemySpawnTimer = m_EnemyFrequency;
-		// Reduce the next spawn frequency
-		m_EnemyFrequency = std::max(m_MinEnemyFrequency, m_EnemyFrequency - 0.1f);
 		
 		UpdateFrequencyText();
 	}

@@ -1,7 +1,11 @@
 #include "GameObjects/Weapons/Projectile.h"
+#include "GameObjects/Weapons/Weapon.h"
 #include "GameObjects/DirectionalCharacter.h"
 
+#include "SDL2/SDL_mixer.h"
 #include "Math/Vector2.h"
+
+#include "Debug.h"
 
 #define Super Character
 
@@ -17,7 +21,7 @@ Projectile::Projectile()
 	m_Owner = nullptr;
 	m_Size = 5.0f;
 
-	m_Damage = 1;
+	m_Damage = 1.0f;
 
 	// Add bounds
 	m_Bounds = AddBounds(0.0f, ScaledSize());
@@ -33,10 +37,7 @@ void Projectile::OnUpdate(float DeltaTime)
 	}
 
 	if (m_LifeTime <= 0.0f) {
-		// Create Miss VFX
-		CreateMissVFX(GetTransform().Position);
-
-		DestroyObject();
+		AttackMiss();
 	}
 	
 	if (m_Owner == nullptr) {
@@ -52,30 +53,88 @@ void Projectile::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 		return;
 	}
 
-	if (auto Char = dynamic_cast<DirectionalCharacter*>(OverlapBounds->GetOwner())) {
+	// Hit player / enemy
+	if (auto const Char = dynamic_cast<DirectionalCharacter*>(OverlapBounds->GetOwner())) {
 		if (strcmp(Char->GetMainBounds()->m_Tag, HitBounds->m_TargetTag) != 0) {
 			return;
 		}
 
-		// Damage opponent
-		Char->ApplyDamage(m_Owner, m_Damage);
+		// Do attack hit
+		AttackHit(Char, true);
 
-		// Create Hit VFX
-		CreateHitVFX(Char->GetTransform().Position);
+		return;
+	}
 
-		// Delete projectile
-		DestroyObject();
+	// Hit weapon
+	if (auto const OtherWeapon = dynamic_cast<Weapon*>(OverlapBounds->GetOwner())) {
+		if (strcmp(OtherWeapon->GetOwner()->GetMainBounds()->m_Tag, HitBounds->m_TargetTag) != 0) {
+			return;
+		}
+		
+		// Make other weapon attack land
+		OtherWeapon->AttackHit(this, false);
+
+		// Do attack hit
+		AttackHit(OtherWeapon, false);
+		return;
+	}
+
+	// Hit projectile
+	if (auto const OtherProjectile = dynamic_cast<Projectile*>(OverlapBounds->GetOwner())) {
+		if (strcmp(OtherProjectile->GetOwner()->GetOwner()->GetMainBounds()->m_Tag, HitBounds->m_TargetTag) != 0) {
+			return;
+		}
+
+		// Make other projectile attack land
+		OtherProjectile->AttackHit(this, false);
+
+		// Do attack hit
+		AttackHit(OtherProjectile, false);
+		return;
 	}
 }
 
-void Projectile::SetupProjectile(DirectionalCharacter* Owner, int Damage)
+void Projectile::AttackHit(Character* Char, bool DoDamage)
+{
+	// Damage opponent if set
+	if (DoDamage) {
+		Char->ApplyDamage(m_Owner, m_Damage);
+	}
+	
+	// Create hit VFX
+	CreateHitVFX((Char->GetTransform().Position + GetTransform().Position) / 2.0f);
+
+	// Play hit SFX
+	if (m_Owner->GetSFX(W_SFX_HIT) != nullptr) {
+		Mix_PlayChannel(-1, m_Owner->GetSFX(W_SFX_HIT), 0);
+	}
+
+	// Destroy projectile
+	DestroyObject();
+}
+
+void Projectile::AttackMiss()
+{
+	// Create miss VFX
+	CreateMissVFX(GetTransform().Position);
+
+	// Play miss SFX
+	if (m_Owner->GetSFX(W_SFX_MISS) != nullptr) {
+		Mix_PlayChannel(-1, m_Owner->GetSFX(W_SFX_MISS), 0);
+	}
+
+	// Destroy projectile
+	DestroyObject();
+}
+
+void Projectile::SetupProjectile(Weapon* Owner, float Damage)
 {
 	// Set owner
 	m_Owner = Owner;
 
 	// Copy target tag
 	if (m_Bounds != nullptr) {
-		m_Bounds->m_TargetTag = _strdup(Owner->GetMainBounds()->m_TargetTag);
+		m_Bounds->m_TargetTag = _strdup(Owner->GetOwner()->GetMainBounds()->m_TargetTag);
 	}
 
 	// Set damage

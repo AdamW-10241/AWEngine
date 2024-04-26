@@ -2,33 +2,25 @@
 
 #define Super PhysicsObject
 
-Character::Character() : 
-	m_MainSprite(nullptr),
-	m_AccelerationSpeed(2000.0f),
-	m_Scale(1.0f),
-	m_Size(5.0f),
-	m_MaxLives(1),
-	m_Lives(1) {}
-
 void Character::AddMovementInput(Vector2 Direction, float Scale)
 {
 	// Increase our movement direction based on a direction and scale
 	m_MoveDirection += Direction.Normalise() * Scale;
 }
 
-int Character::ApplyDamage(GameObject* DamageCauser, int Damage)
+float Character::ApplyDamage(GameObject* DamageCauser, float Damage)
 {
-	if (m_Lives <= 0 || IsPendingDestroy()) {
-		return m_Lives;
+	if (m_Health <= 0 || IsPendingDestroy()) {
+		return m_Health;
 	}
 
-	m_Lives = std::max(0, m_Lives - Damage);
+	m_Health = std::fmax(0.0f, m_Health - Damage);
 
-	if (m_Lives <= 0) {
+	if (m_Health <= 0) {
 		OnDeath(DamageCauser);
 	}
 
-	return m_Lives;
+	return m_Health;
 }
 
 void Character::OnPostUpdate(float DeltaTime)

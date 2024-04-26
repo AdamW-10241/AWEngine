@@ -84,7 +84,7 @@
     <ClCompile Include="Source\Private\GameObjects\Background.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Private\GameObjects\Collectable.cpp">
+    <ClCompile Include="Source\Private\GameObjects\Collectables\Collectable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\GameObjects\DirectionalCharacter.cpp">
@@ -100,6 +100,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\GameObjects\Weapons\Arrow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\GameObjects\Collectables\Coin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\GameObjects\Collectables\Key.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,7 +191,7 @@
     <ClInclude Include="Source\Public\GameObjects\Background.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Public\GameObjects\Collectable.h">
+    <ClInclude Include="Source\Public\GameObjects\Collectables\Collectable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Public\GameObjects\DirectionalCharacter.h">
@@ -210,6 +216,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowMiss.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\GameObjects\Collectables\Coin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\GameObjects\Collectables\Key.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_CollectableCollect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
