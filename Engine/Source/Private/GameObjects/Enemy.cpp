@@ -1,6 +1,7 @@
 #include "GameObjects/Enemy.h"
 #include "GameObjects/Player.h"
 #include "GameObjects/Collectables/Coin.h"
+#include "GameObjects/Collectables/Key.h"
 #include "GameObjects/VFX/VFX_EnemyExplosion.h"
 #include "GameObjects/Weapons/Sword.h"
 #include "GameObjects/Weapons/Bow.h"
@@ -174,10 +175,13 @@ void Enemy::OnDeath(GameObject* DeathCauser)
 	VFX->SetScale(m_Scale);
 
 	// Randomly spawn a coin
-	if (rand() % 1 == 0) {
-		auto SpawnedCoin = Game::GetGame()->Game::AddGameObject<Coin>();
+	if (rand() % 3 == 0) {
+		const auto SpawnedCoin = Game::GetGame()->Game::AddGameObject<Coin>();
 		SpawnedCoin->SetPosition(GetTransform().Position);
 	}
+
+	const auto SpawnedKey = Game::GetGame()->Game::AddGameObject<Key>();
+	SpawnedKey->SetPosition(GetTransform().Position);
 	
 	Super::OnDeath(DeathCauser);
 }

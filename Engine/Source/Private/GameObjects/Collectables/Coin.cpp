@@ -24,12 +24,4 @@ Coin::Coin()
 
 	// Set the scale
 	SetScale(m_Scale);
-
-	// Load sound effect
-	m_C_SFX = Mix_LoadWAV("Content/Audio/SFX_Coin.wav");
-
-	if (m_C_SFX != nullptr) {
-		Mix_VolumeChunk(m_C_SFX, MIX_MAX_VOLUME);
-		// Not working
-	}
 }

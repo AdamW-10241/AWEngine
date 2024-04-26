@@ -1,7 +1,8 @@
 #pragma once
 #include "GameObjects/Character.h"
+#include "GameObjects/Weapons/Weapon.h"
 
-class Weapon;
+struct Mix_Chunk;
 
 class Projectile : public Character {
 public:
@@ -32,14 +33,14 @@ protected:
 	virtual void AttackMiss();
 
 protected:
-	// Main projectile bounds
-	Bounds* m_Bounds;
-
 	// Constant move direction
 	Vector2 m_MoveDirection;
 
 	// Owner of the projectile
 	Weapon* m_Owner;
+
+	// Store sound effects
+	Mix_Chunk* m_P_SFX[W_SFX_NUM] = { nullptr };
 
 	// Time before projectile destroys itself
 	float m_LifeTime;

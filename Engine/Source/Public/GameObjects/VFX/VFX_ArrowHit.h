@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObjects/VisualEffectObject.h"
+#include "GameObjects/VFX/VisualEffectObject.h"
 
 class VFX_ArrowHit : public VisualEffectObject {
 public:

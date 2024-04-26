@@ -109,7 +109,7 @@
     <ClCompile Include="Source\Private\GameObjects\Weapons\Projectile.cpp" />
     <ClCompile Include="Source\Private\GameObjects\SpriteObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\TextObject.cpp" />
-    <ClCompile Include="Source\Private\GameObjects\VisualEffectObject.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\VFX\VisualEffectObject.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Weapons\Arrow.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Weapons\Bow.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Weapons\Sword.cpp" />
@@ -126,6 +126,7 @@
     <ClCompile Include="Source\Private\Menus\WinMenu.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Collectables\Coin.cpp" />
+    <ClCompile Include="Source\Public\GameObjects\VFX\VFX_CollectCoin.h" />
     <ClCompile Include="Source\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,12 +144,12 @@
     <ClInclude Include="Source\Public\GameObjects\GameObject.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowHit.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowMiss.h" />
-    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_CollectableCollect.h" />
+    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_CollectKey.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Projectile.h" />
     <ClInclude Include="Source\Public\GameObjects\TextObject.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_EnemyExplosion.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_SwordSlash.h" />
-    <ClInclude Include="Source\Public\GameObjects\VisualEffectObject.h" />
+    <ClInclude Include="Source\Public\GameObjects\VFX\VisualEffectObject.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Arrow.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Bow.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Sword.h" />

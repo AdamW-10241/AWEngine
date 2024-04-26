@@ -25,6 +25,10 @@ Death:
 https://freesound.org/people/Mateusz_Chenc/sounds/547600/
 ---------------------
 
-Coin
+Collectables
 ====
+Coin:
 https://freesound.org/people/Mateusz_Chenc/sounds/512216/
+
+Key:
+https://freesound.org/people/ThyNguyen92/sounds/448861/

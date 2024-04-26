@@ -1,18 +1,24 @@
-#include "GameObjects/VisualEffectObject.h"
+#include "GameObjects/VFX/VisualEffectObject.h"
+
+#include "SDL2/SDL_mixer.h"
 
 #define Super SpriteObject
 
-VisualEffectObject::VisualEffectObject()
+void VisualEffectObject::Cleanup()
 {
-	m_Length = 0.0f;
-	m_Loops = 0;
-	m_LifeTimer = 0.0f;
+	// Cleanup weapon SFX
+	if (m_VFX_SFX != nullptr) {
+		Mix_FreeChunk(m_VFX_SFX);
+	}
+
+	Super::Cleanup();
 }
 
 void VisualEffectObject::OnStart()
 {
 	Super::OnStart();
 	
+	// Get animation time
 	for (auto Item : GetAllSprites()) {
 		float Frames = static_cast<float>(
 			std::max(Item->m_Sprite->GetAnimParams()->EndFrame - Item->m_Sprite->GetAnimParams()->StartFrame, 0U)
@@ -25,6 +31,13 @@ void VisualEffectObject::OnStart()
 		}
 	}
 
+	// Play sound effect
+	if (m_VFX_SFX != nullptr) {
+		Mix_VolumeChunk(m_VFX_SFX, 100);
+		Mix_PlayChannel(-1, m_VFX_SFX, 0);
+	}
+
+	// Set life timer
 	m_LifeTimer = m_Length;
 }
 
@@ -37,8 +50,10 @@ void VisualEffectObject::OnUpdate(float DeltaTime)
 
 void VisualEffectObject::LifeTimer(float DeltaTime)
 {
+	// Countdown timer
 	m_LifeTimer -= DeltaTime;
-
+	
+	// Loop and destroy if timer is over
 	if (m_LifeTimer <= 0.0f) {
 		if (m_Loops > 0) {
 			m_Loops--;

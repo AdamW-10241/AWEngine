@@ -119,8 +119,8 @@ void Projectile::AttackMiss()
 	CreateMissVFX(GetTransform().Position);
 
 	// Play miss SFX
-	if (m_Owner->GetSFX(W_SFX_MISS) != nullptr) {
-		Mix_PlayChannel(-1, m_Owner->GetSFX(W_SFX_MISS), 0);
+	if (m_P_SFX[W_SFX_MISS] != nullptr) {
+		Mix_PlayChannel(-1, m_P_SFX[W_SFX_MISS], 0);
 	}
 
 	// Destroy projectile
@@ -139,4 +139,9 @@ void Projectile::SetupProjectile(Weapon* Owner, float Damage)
 
 	// Set damage
 	m_Damage = Damage;
+
+	// Copy sounds
+	for (int Sound = 0; Sound < W_SFX::W_SFX_NUM; Sound++) {
+		m_P_SFX[Sound] = Owner->GetSFX((W_SFX)Sound);
+	}
 }

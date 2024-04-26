@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObjects/VisualEffectObject.h"
+#include "GameObjects/VFX/VisualEffectObject.h"
 
 class VFX_SwordSlash : public VisualEffectObject {
 public:

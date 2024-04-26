@@ -1,11 +1,11 @@
 #pragma once
-#include "GameObjects/VisualEffectObject.h"
+#include "GameObjects/VFX/VisualEffectObject.h"
 
-class VFX_CollectableCollect : public VisualEffectObject {
+class VFX_CollectCoin : public VisualEffectObject {
 public:
-	VFX_CollectableCollect() {
+	VFX_CollectCoin() {
 		AnimationParams AnimParams;
-		AnimParams.fps = 24;
+		AnimParams.fps = 12;
 		AnimParams.EndFrame = 4;
 		AnimParams.MaxFrames = 5;
 		AnimParams.FrameWidth = 32;
@@ -15,5 +15,7 @@ public:
 			"Content/NinjaAdventure/FX/Magic/Spark/SpriteSheet.png",
 			&AnimParams
 		);
+
+		m_VFX_SFX = Mix_LoadWAV("Content/Audio/SFX_Coin.wav");
 	}
 };
