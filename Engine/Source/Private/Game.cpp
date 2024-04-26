@@ -162,8 +162,8 @@ float Game::WindowHeightF() const
 
 void Game::RestartGame()
 {
-	auto NewState = new MainMenuState();
-	GetGameStateMachine()->SetNewGameState(NewState);
+	// Set initial state
+	GetGameStateMachine()->SetNewGameState(new SplashScreenState());
 }
 
 float Game::GetRandomFloatRange(float min, float max) const
@@ -275,9 +275,8 @@ void Game::Start()
 		return;
 	}
 
-	// Create the game state machine
-	auto Default = new MainMenuState();
-	m_GameStateMachine = new GameStateMachine(Default);
+	// Create the game state machine and set the initial state
+	m_GameStateMachine = new GameStateMachine(new SplashScreenState);
 
 	GameLoop();
 }

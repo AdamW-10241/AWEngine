@@ -7,7 +7,7 @@ class Text;
 
 class TextObject : public GameObject {
 public:
-	TextObject(const char* PathToFile = "Content/Fonts/Pixelify/PixelifySans-Regular.ttf");
+	TextObject(const char* PathToFile = "Content/Fonts/Press_Start_2P/PressStart2P-Regular.ttf");
 
 	// Change the text of the text
 	void SetText(const char* NewText);

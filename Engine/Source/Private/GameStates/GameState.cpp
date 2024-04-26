@@ -4,13 +4,24 @@
 #include "SDL2/SDL_render.h"
 
 void GameState::Start()
-{
+{	
+	// Play background music
+	if (m_BGM != nullptr) {
+		Mix_PlayMusic(m_BGM, -1);
+		Mix_VolumeMusic(80);
+	}
+	
 	OnStart();
 }
 
 void GameState::Cleanup()
 {
 	OnCleanup();
+
+	// Free music
+	if (m_BGM != nullptr) {
+		Mix_FreeMusic(m_BGM);
+	}
 
 	// Destroy any objects pending spawn
 	for (auto GO : m_GameObjectPendingSpawn) {

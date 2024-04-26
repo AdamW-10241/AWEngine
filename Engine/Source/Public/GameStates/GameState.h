@@ -1,6 +1,7 @@
 #pragma once
 #include "EngineTypes.h"
 #include "GameObjects/Background.h"
+#include "SDL2/SDL_mixer.h"
 
 class Input;
 struct SDL_Renderer;
@@ -8,7 +9,11 @@ class GameObject;
 
 class GameState {
 public:
-	GameState() : m_ShouldDestroy(false), m_Background(nullptr) {}
+	GameState() : 
+		m_ShouldDestroy(false), 
+		m_Background(nullptr), 
+		m_BGM(nullptr) {}
+
 	virtual ~GameState() = default;
 
 	// Runs when the game state starts
@@ -62,18 +67,6 @@ public:
 	// Check if the game state is to be destroyed
 	bool IsPendingDestroy() const { return m_ShouldDestroy; }
 
-	// Get a game object of a specific type
-	//template<class T, std::enable_if_t<std::is_base_of_v<GameObject, T>, T>* = nullptr>
-	//T* GetGameObject() {
-	//	// Get the game object
-	//	for (const auto GO : m_GameObjectStack) {
-	//		if (typeid(GO).name() == typeid(T).name() || !GO->IsPendingDestroy()) {
-	//			// Found the game object
-	//			return GO;
-	//		}
-	//	}
-	//}
-
 protected:
 	virtual void OnStart() {}
 
@@ -88,7 +81,11 @@ protected:
 	virtual void OnGarbageCollection() {}
 
 protected:
+	// Background
 	Background* m_Background;
+
+	// Music
+	Mix_Music* m_BGM;
 
 private:
 	// Store all game objects that need to be spawned on the next loop

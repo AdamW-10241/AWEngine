@@ -5,7 +5,6 @@
 #include "GameObjects/Player.h"
 #include "GameObjects/Enemy.h"
 #include "GameObjects/TextObject.h"
-#include "SDL2/SDL_mixer.h"
 
 #include <string>
 #include <iomanip>
@@ -70,12 +69,6 @@ void PlayState::OnStart()
 	m_FreqText->SetFontSize(25);
 	m_FreqText->SetAligment(AL_TOP_LEFT);
 	UpdateFrequencyText();
-
-	// Play background music
-	if (m_BGM != nullptr) {
-		Mix_PlayMusic(m_BGM, -1);
-		Mix_VolumeMusic(80);
-	}
 }
 
 void PlayState::OnUpdate(float DeltaTime)
@@ -90,8 +83,8 @@ void PlayState::OnUpdate(float DeltaTime)
 		m_EndPlayTimer -= DeltaTime;
 
 		if (m_EndPlayTimer <= 0.0f) {
-			auto NewState = new MainMenuState();
-			Game::GetGame()->GetGameStateMachine()->SetNewGameState(NewState);
+			// Change to game over state
+			Game::GetGame()->GetGameStateMachine()->SetNewGameState(new GameOverState());
 		}
 	}
 
@@ -100,8 +93,6 @@ void PlayState::OnUpdate(float DeltaTime)
 
 void PlayState::OnCleanup()
 {
-	Mix_FreeMusic(m_BGM);
-
 	m_Background->DestroyObject();
 	m_PlayerRef->DestroyObject();
 	m_ScoreText->DestroyObject();

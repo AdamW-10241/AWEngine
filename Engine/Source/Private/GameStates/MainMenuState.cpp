@@ -7,15 +7,14 @@
 
 void MainMenuState::OnStart()
 {
-	m_TitleText = AddGameObject<TextObject>();
-	m_TitleText->SetAligment(AL_CENTER);
-
+	// Add objects
 	float HalfWidth = Game::GetGame()->WindowWidthF() / 2.0f;
 	float HalfHeight = Game::GetGame()->WindowHeightF() / 2.0f;
 
+	m_TitleText = AddGameObject<TextObject>();
+	m_TitleText->SetAligment(AL_CENTER);
 	m_TitleText->SetPosition(Vector2(HalfWidth, HalfHeight));
-	m_TitleText->SetFontSize(40);
-
+	m_TitleText->SetFontSize(30);
 	m_TitleText->SetText("Press Enter/Return to Start Game");
 }
 

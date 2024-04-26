@@ -55,7 +55,7 @@ protected:
 
 	// Surface data for the original image
 	SDL_Surface* m_SurfaceData;
-
+	
 	// Path to original image
 	const char* m_Path;
 
