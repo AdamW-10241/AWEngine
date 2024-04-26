@@ -5,7 +5,11 @@ class TextObject;
 
 class MainMenuState : public GameState {
 public:
-	MainMenuState() : m_TitleText(nullptr) {}
+	MainMenuState() : 
+		m_TitleText(nullptr),
+		m_StartText(nullptr),
+		m_InfoText(nullptr),
+		m_QuitText(nullptr) {}
 
 protected:
 	virtual void OnStart() override;
@@ -16,4 +20,10 @@ protected:
 
 private:
 	TextObject* m_TitleText;
+
+	TextObject* m_StartText;
+
+	TextObject* m_InfoText;
+
+	TextObject* m_QuitText;
 };

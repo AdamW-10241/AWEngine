@@ -13,9 +13,9 @@ SplashScreenState::SplashScreenState()
 	m_TitleText = nullptr;
 	m_BaseWaitTimer = 2.0f;
 	m_WaitTimer = m_BaseWaitTimer;
-	m_BaseTextTimer = 2.5f;
+	m_BaseTextTimer = 3.5f;
 	m_TextTimer = m_BaseTextTimer;
-	m_BaseScreenTimer = 1.5f;
+	m_BaseScreenTimer = 0.5f;
 	m_ScreenTimer = m_BaseScreenTimer;
 }
 
@@ -25,7 +25,7 @@ void SplashScreenState::OnStart()
 	m_Background = AddGameObject<Background>();
 	m_Background->SetBackgroundSprite("Content/NinjaAdventure/Custom Background/Background_GameOverState.png");
 	m_Background->SetPosition({ 640.0f, 360.0f });
-	m_Background->SetScale(0.9f);
+	m_Background->SetScale(1.1f);
 	
 	float HalfWidth = Game::GetGame()->WindowWidthF() / 2.0f;
 	float HalfHeight = Game::GetGame()->WindowHeightF() / 2.0f;

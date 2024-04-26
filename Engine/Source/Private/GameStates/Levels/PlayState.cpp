@@ -93,7 +93,6 @@ void PlayState::OnUpdate(float DeltaTime)
 
 void PlayState::OnCleanup()
 {
-	m_Background->DestroyObject();
 	m_PlayerRef->DestroyObject();
 	m_ScoreText->DestroyObject();
 	m_PlayerHealthText->DestroyObject();
