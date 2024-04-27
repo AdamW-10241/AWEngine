@@ -112,7 +112,7 @@ void Enemy::OnUpdate(float DeltaTime)
 	AddMovementInput(m_MovementChoice);
 
 	// Attack if condition met
-	Attack(m_PlayerRef->GetTransform().Position, rand() % 100 == 0);
+	Attack(m_PlayerRef->GetTransform().Position, rand() % 175 == 0);
 
 	Super::OnUpdate(DeltaTime);
 
