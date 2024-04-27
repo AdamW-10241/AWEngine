@@ -98,7 +98,7 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 	case ID_GAME_CONTROLS:
 		Game::GetGame()->GetWinMenu()->ActivatePopup(
 			"Game Controls",
-			"WASD - Move Ship\nSpace - Fire Weapon"
+			"WASD - Move Player\nLeft Click - Attack\nScroll Wheel - Change Weapon\nLeft Shift - Dash\nP Key - Pause\n\nSee additional info in the INFORMATION menu page!"
 		);
 		break;
 	case ID_HELP_ABOUTASTRALWAVEENGINE:
@@ -109,11 +109,11 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 		break;
 	case ID_CHEATS_MAXHEAL:
 		// Check for playstate
-		if (auto PlayStateTest = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
 			// Check player is not nullptr
-			if (PlayStateTest->m_PlayerRef) {
+			if (PS->m_PlayerRef) {
 				// Check player is already dead
-				if (PlayStateTest->m_PlayerRef->GetHealth() <= 0.0f) {
+				if (PS->m_PlayerRef->GetHealth() <= 0.0f) {
 					Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 						"Cheats",
 						"Player is already dead and can not be healed!"
@@ -122,7 +122,7 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 				}
 				
 				// Max heal player
-				PlayStateTest->m_PlayerRef->ResetHealth();
+				PS->m_PlayerRef->ResetHealth();
 
 				Game::GetGame()->GetWinMenu()->ActivatePopup(
 					"Cheats",
@@ -140,9 +140,9 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 		break;
 	case ID_CHEATS_INSTANTFIRE:
 		// Check for playstate
-		if (auto PlayStateTest = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
 			// Check player is not nullptr
-			if (PlayStateTest->m_PlayerRef) {
+			if (PS->m_PlayerRef) {
 				// Set instant fire
 				// PlayStateTest->m_PlayerRef->SetInstantFire();
 

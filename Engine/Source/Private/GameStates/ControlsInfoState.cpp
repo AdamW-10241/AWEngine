@@ -26,18 +26,36 @@ void ControlsInfoState::OnStart()
 	m_TitleText->SetFontSize(60);
 	m_TitleText->SetText("RUINS OF OBLIVION");
 
-	float SubTitleOffset = HalfHeight / 3.0f;
+	float SubTitleOffset = HalfHeight / 5.0f;
 	float BaseOffset = HalfHeight * 1.25f;
 
-	m_InfoText = AddGameObject<TextObject>();
-	m_InfoText->SetAligment(AL_CENTER);
-	m_InfoText->SetPosition(Vector2(HalfWidth, BaseOffset - SubTitleOffset));
-	m_InfoText->SetFontSize(25);
-	m_InfoText->SetText("PLACE INFO HERE");
+	TextObject* Text1 = AddGameObject<TextObject>();
+	Text1->SetAligment(AL_CENTER);
+	Text1->SetPosition(Vector2(HalfWidth, BaseOffset - SubTitleOffset * 3));
+	Text1->SetFontSize(25);
+	Text1->SetText("SEE THE CONTROLS IN THE FILE VIEWER!");
+
+	TextObject* Text2 = AddGameObject<TextObject>();
+	Text2->SetAligment(AL_CENTER);
+	Text2->SetPosition(Vector2(HalfWidth, BaseOffset - SubTitleOffset));
+	Text2->SetFontSize(25);
+	Text2->SetText("KEEP KILLING ENEMIES YOU FIND A KEY!");
+
+	TextObject* Text3 = AddGameObject<TextObject>();
+	Text3->SetAligment(AL_CENTER);
+	Text3->SetPosition(Vector2(HalfWidth, BaseOffset));
+	Text3->SetFontSize(25);
+	Text3->SetText("AFTER COLLECTING IT, EXIT THROUGH THE CAVE!");
+
+	TextObject* Text4 = AddGameObject<TextObject>();
+	Text4->SetAligment(AL_CENTER);
+	Text4->SetPosition(Vector2(HalfWidth, BaseOffset + SubTitleOffset));
+	Text4->SetFontSize(25);
+	Text4->SetText("YOU CAN BLOCK ENEMY ATTACKS WITH YOUR OWN!");
 
 	m_QuitText = AddGameObject<TextObject>();
 	m_QuitText->SetAligment(AL_CENTER);
-	m_QuitText->SetPosition(Vector2(HalfWidth, BaseOffset + SubTitleOffset));
+	m_QuitText->SetPosition(Vector2(HalfWidth, BaseOffset + SubTitleOffset * 3));
 	m_QuitText->SetFontSize(45);
 	m_QuitText->SetText("MENU - M");
 }
@@ -45,13 +63,14 @@ void ControlsInfoState::OnStart()
 void ControlsInfoState::OnProcessInput(Input* GameInput)
 {
 	if (GameInput->IsKeyDown(AW_KEY_M)) {
-		Game::GetGame()->GetGameStateMachine()->SetNewGameState(new MainMenuState);
+		if (m_PauseTimer <= 0.0f) {
+			Game::GetGame()->GetGameStateMachine()->SetNewGameState(new MainMenuState);
+		}
 	}
 }
 
 void ControlsInfoState::OnCleanup()
 {
 	m_TitleText->DestroyObject();
-	m_InfoText->DestroyObject();
 	m_QuitText->DestroyObject();
 }

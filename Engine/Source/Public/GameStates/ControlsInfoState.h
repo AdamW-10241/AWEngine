@@ -7,7 +7,6 @@ class ControlsInfoState : public GameState {
 public:
 	ControlsInfoState() :
 		m_TitleText(nullptr),
-		m_InfoText(nullptr),
 		m_QuitText(nullptr) {}
 
 protected:
@@ -19,8 +18,6 @@ protected:
 
 private:
 	TextObject* m_TitleText;
-
-	TextObject* m_InfoText;
 
 	TextObject* m_QuitText;
 };

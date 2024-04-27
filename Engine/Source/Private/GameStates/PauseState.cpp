@@ -34,21 +34,23 @@ void PauseState::OnStart()
 
 	m_PauseText = AddGameObject<TextObject>();
 	m_PauseText->SetAligment(AL_CENTER);
-	m_PauseText->SetPosition(Vector2(HalfWidth, BaseOffset - SubTitleOffset));
-	m_PauseText->SetFontSize(45);
-	m_PauseText->SetText("PAUSED - P");
+	m_PauseText->SetPosition(Vector2(HalfWidth, BaseOffset));
+	m_PauseText->SetFontSize(50);
+	m_PauseText->SetText("UNPAUSE - P");
 
 	m_MenuText = AddGameObject<TextObject>();
 	m_MenuText->SetAligment(AL_CENTER);
 	m_MenuText->SetPosition(Vector2(HalfWidth, BaseOffset + SubTitleOffset));
-	m_MenuText->SetFontSize(45);
+	m_MenuText->SetFontSize(50);
 	m_MenuText->SetText("MENU - M");
 }
 
 void PauseState::OnProcessInput(Input* GameInput)
 {	
 	if (GameInput->IsKeyDown(AW_KEY_M)) {
-		Game::GetGame()->GetGameStateMachine()->SetNewGameState(new MainMenuState);
+		if (m_PauseTimer <= 0.0f) {
+			Game::GetGame()->GetGameStateMachine()->SetNewGameState(new MainMenuState);
+		}
 		return;
 	}
 

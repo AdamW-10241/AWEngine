@@ -51,11 +51,15 @@ void MainMenuState::OnStart()
 void MainMenuState::OnProcessInput(Input* GameInput)
 {
 	if (GameInput->IsKeyDown(AW_KEY_S)) {
-		Game::GetGame()->GetGameStateMachine()->SetNewGameState(new LevelStateIntro);
+		if (m_PauseTimer <= 0.0f) {
+			Game::GetGame()->GetGameStateMachine()->SetNewGameState(new LevelStateIntro);
+		}
 	}
 
 	if (GameInput->IsKeyDown(AW_KEY_I)) {
-		Game::GetGame()->GetGameStateMachine()->SetNewGameState(new ControlsInfoState);
+		if (m_PauseTimer <= 0.0f) {
+			Game::GetGame()->GetGameStateMachine()->SetNewGameState(new ControlsInfoState);
+		}
 	}
 
 	if (GameInput->IsKeyDown(AW_KEY_Q)) {

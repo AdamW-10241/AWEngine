@@ -13,7 +13,7 @@ GameState::GameState()
 	m_Background = nullptr;
 	m_BGM = nullptr;
 	m_CanPause = false;
-	m_BasePauseTimer = 1.0f;
+	m_BasePauseTimer = 0.5f;
 	m_PauseTimer = m_BasePauseTimer;
 }
 
