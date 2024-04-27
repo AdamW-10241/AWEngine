@@ -1,7 +1,21 @@
 #include "GameStates/GameState.h"
+
 #include "GameObjects/GameObject.h"
+
+#include "Input.h"
 #include "Math/Bounds.h"
 #include "SDL2/SDL_render.h"
+#include "Game.h"
+
+GameState::GameState()
+{
+	m_ShouldDestroy = false;
+	m_Background = nullptr;
+	m_BGM = nullptr;
+	m_CanPause = false;
+	m_BasePauseTimer = 1.0f;
+	m_PauseTimer = m_BasePauseTimer;
+}
 
 void GameState::Start()
 {	
@@ -84,6 +98,8 @@ void GameState::Update(float DeltaTime)
 	}
 	
 	OnUpdate(DeltaTime);
+
+	UpdatePauseTimer(DeltaTime);
 }
 
 void GameState::Render(SDL_Renderer* Renderer)
@@ -148,5 +164,25 @@ void GameState::GarbageCollection()
 
 		// Remove from and resize the array
 		m_GameObjectStack.erase(m_GameObjectStack.begin() + i);
+	}
+}
+
+void GameState::OnProcessInput(Input* GameInput)
+{
+	if (GameInput->IsKeyDown(AW_KEY_P) && m_CanPause) {
+		if (m_PauseTimer <= 0.0f) {
+			OnPause();
+
+			Game::GetGame()->GetGameStateMachine()->SetNewGameState(new PauseState, true);
+
+			m_PauseTimer = m_BasePauseTimer;
+		}
+	}
+}
+
+void GameState::UpdatePauseTimer(float DeltaTime)
+{
+	if (m_PauseTimer > 0.0f) {
+		m_PauseTimer -= DeltaTime;
 	}
 }

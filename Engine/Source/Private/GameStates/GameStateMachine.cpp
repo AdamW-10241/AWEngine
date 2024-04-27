@@ -10,6 +10,15 @@ GameState* GameStateMachine::GetActiveGameState() const
 	return m_ActiveGameStateStack.back();
 }
 
+GameState* GameStateMachine::GetInactiveGameState() const
+{
+	if (m_ActiveGameStateStack.size() > 1) {
+		return m_ActiveGameStateStack.front();
+	}
+	
+	return nullptr;
+}
+
 void GameStateMachine::Cleanup()
 {
 	// Delete all pending game states
@@ -26,6 +35,11 @@ void GameStateMachine::Cleanup()
 
 void GameStateMachine::SetNewGameState(GameState* NewGameState, bool IsAdditive)
 {
+	if (NewGameState != nullptr) {
+		// Adding it to be spawned on the next loop
+		m_PendingGameStateStack.push_back(NewGameState);
+	}
+	
 	if (IsAdditive) {
 		return;
 	}
@@ -33,11 +47,6 @@ void GameStateMachine::SetNewGameState(GameState* NewGameState, bool IsAdditive)
 	// Clear all of the current game states
 	for (const auto GS : m_ActiveGameStateStack) {
 		GS->DestroyGameState();
-	}
-
-	if (NewGameState != nullptr) {
-		// Adding it to be spawned on the next loop
-		m_PendingGameStateStack.push_back(NewGameState);
 	}
 }
 

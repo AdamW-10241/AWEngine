@@ -21,6 +21,9 @@ public:
 	// Return the current active game state
 	GameState* GetActiveGameState() const;
 
+	// Return the inactive active game state
+	GameState* GetInactiveGameState() const;
+
 	// Cleanup the game state machine and remove all game states
 	void Cleanup();
 

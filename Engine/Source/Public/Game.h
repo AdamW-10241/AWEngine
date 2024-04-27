@@ -52,6 +52,9 @@ public:
 	// Return the height of the window as a float
 	float WindowHeightF() const;
 
+	// Return the screen center
+	Vector2 GetScreenCenter() const { return Vector2(WindowWidthF() / 2.0f, WindowHeightF() / 2.0f); }
+
 	// Add a game object to the game
 	template<class T, std::enable_if_t<std::is_base_of_v<GameObject, T>, T>* = nullptr>
 	T* AddGameObject() {

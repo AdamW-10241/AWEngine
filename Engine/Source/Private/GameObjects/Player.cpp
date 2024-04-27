@@ -24,8 +24,15 @@ Player::Player(float Scale)
 	m_Tag = "PLAYER";
 	m_TargetTag = "ENEMY";
 
+	m_BaseDashTimer = 2.0f;
+	m_DashTimer = 0.0f;
+
+	m_DashMultiplier = 3.0f;
+
 	// Default values
-	m_MaxSpeed = 300.0f;
+	m_BaseMaxSpeed = 300.0f;
+	m_MaxSpeed = m_BaseMaxSpeed;
+
 	m_Deceleration = 7.0f;
 	m_AccelerationSpeed = 5000.0f;
 
@@ -115,6 +122,15 @@ void Player::OnProcessInput(Input* GameInput)
 		AddMovementInput(Vector2(1.0f, 0.0f));
 	}
 
+	// Dash
+	if (GameInput->IsKeyDown(AW_KEY_LSHIFT)) {
+		if (m_DashTimer <= 0.0f) {
+			m_MaxSpeed = m_BaseMaxSpeed * m_DashMultiplier;
+
+			m_DashTimer = m_BaseDashTimer;
+		}
+	}
+
 	// Scroll weapon if condition met
 	if (int ScrollAmount = GameInput->GetMouseScroll(); ScrollAmount != 0) {
 		// Check sign of scroll to determine forward or backward scrolling
@@ -132,7 +148,18 @@ void Player::OnUpdate(float DeltaTime)
 		return;
 	}
 	
+	if (m_MaxSpeed > m_BaseMaxSpeed) {
+		m_MaxSpeed -= DeltaTime * m_BaseMaxSpeed * 5.0f;
+	}
+	else {
+		m_MaxSpeed = m_BaseMaxSpeed;
+	}
+
 	Super::OnUpdate(DeltaTime);
+
+	if (m_DashTimer > 0.0f) {
+		m_DashTimer -= DeltaTime;
+	}
 
 	// Screen border
 	ScreenBorder(ScaledHalfSize());

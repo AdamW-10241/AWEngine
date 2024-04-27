@@ -114,17 +114,17 @@ void Enemy::OnUpdate(float DeltaTime)
 		Vector2 RandomOffset = { Game::GetGame()->GetRandomFloatRange(-RangeConst, RangeConst),
 			Game::GetGame()->GetRandomFloatRange(-RangeConst, RangeConst) };
 
-		if (rand() % 3 == 0) {
+		if (rand() % 10 == 0) {
+			// Toward Screen Center
+			m_MovementChoice = GetTransform().Position - Game::GetGame()->GetScreenCenter();
+		}
+		else {
 			// Toward player with random offset
 			m_MovementChoice = m_PlayerRef->GetTransform().Position - GetTransform().Position + (RandomOffset * 50.0f);
 		}
-		else {
-			// Toward random spot
-			m_MovementChoice = GetTransform().Position + (RandomOffset * 50.0f);
-		}
 
 		// Randomly get time until next choice
-		m_TimeUntilNextMovementChoice = rand() % 2;
+		m_TimeUntilNextMovementChoice = rand() % 5;
 	}
 
 	// Reduce time until choice

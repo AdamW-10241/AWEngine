@@ -2,8 +2,8 @@
 #include "GameStates/GameState.h"
 
 #include "GameObjects/Collectables/LoadTrigger.h"
+#include "GameObjects/HUD.h"
 
-class TextObject;
 class Player;
 
 class PlayState : public GameState {
@@ -16,6 +16,9 @@ public:
 	// Set key collected
 	void SetKeyCollected() { m_KeyCollected = true; }
 
+	// Get HUD
+	HUD* GetHUD() const { return m_HUD; }
+
 public:
 	// Reference to the player
 	Player* m_PlayerRef;
@@ -26,6 +29,8 @@ protected:
 	virtual void OnUpdate(float DeltaTime) override;
 
 	virtual void OnCleanup() override;
+
+	virtual void OnPause() { m_HUD->SetVisibleText(false); }
 
 	// Add objects
 	void AddBackground(Vector2 Position, float Scale, const char* PathToFile);
@@ -38,8 +43,7 @@ protected:
 
 	void AddLoadTrigger();
 
-	// Check player dead (to end game)
-	// Must be used with UpdateHealth() to update the stored player health
+	// Check if player is dead to end game
 	void CheckEndGame(float DeltaTime);
 
 	void CheckKeySpawn();
@@ -55,21 +59,9 @@ protected:
 	// HUD
 	void CreateHUD();
 
-	void UpdateHUD();
-
-	// Text update functions
-	void UpdateScore();
-
-	void UpdateHealth();
-
 protected:
 	// Text rendering objects
-	TextObject* m_ScoreText;
-
-	TextObject* m_PlayerHealthText;
-	
-	// Player health counter
-	float m_PlayerHealth;
+	HUD* m_HUD;
 
 	// Timer to reset game after death
 	float m_EndPlayTimer;

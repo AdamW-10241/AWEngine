@@ -134,6 +134,7 @@
     <ClCompile Include="Source\Private\Menus\WinMenu.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Collectables\Coin.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\HUD.cpp" />
     <ClCompile Include="Source\Public\GameObjects\VFX\VFX_CollectCoin.h" />
     <ClCompile Include="Source\Private\GameStates\Levels\LevelStateFirst.cpp" />
     <ClCompile Include="Source\Source.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Source\Public\GameObjects\DirectionalCharacter.h" />
     <ClInclude Include="Source\Public\GameObjects\Enemy.h" />
     <ClInclude Include="Source\Public\GameObjects\GameObject.h" />
+    <ClInclude Include="Source\Public\GameObjects\HUD.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowHit.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_ArrowMiss.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_CollectKey.h" />

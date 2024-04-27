@@ -34,6 +34,9 @@ public:
 	// Get the remaining health of the character
 	float GetHealth() const { return m_Health; }
 
+	// Get max health
+	float GetMaxHealth() const { return m_MaxHealth; }
+
 	// Reset health to max health
 	void ResetHealth() { m_Health = m_MaxHealth; }
 

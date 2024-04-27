@@ -45,7 +45,6 @@ void ControlsInfoState::OnStart()
 void ControlsInfoState::OnProcessInput(Input* GameInput)
 {
 	if (GameInput->IsKeyDown(AW_KEY_M)) {
-		// Make Intro Level
 		Game::GetGame()->GetGameStateMachine()->SetNewGameState(new MainMenuState);
 	}
 }

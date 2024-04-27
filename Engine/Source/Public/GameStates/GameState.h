@@ -9,10 +9,7 @@ class GameObject;
 
 class GameState {
 public:
-	GameState() : 
-		m_ShouldDestroy(false), 
-		m_Background(nullptr), 
-		m_BGM(nullptr) {}
+	GameState();
 
 	virtual ~GameState() = default;
 
@@ -98,13 +95,17 @@ protected:
 
 	virtual void OnPreLoop() {}
 
-	virtual void OnProcessInput(Input* GameInput) {}
+	virtual void OnProcessInput(Input* GameInput);
 
 	virtual void OnUpdate(float DeltaTime) {}
 
 	virtual void OnGarbageCollection() {}
 
+	virtual void OnPause() {}
+
 	void LoadMusic(const char* PathToFile) { m_BGM = Mix_LoadMUS(PathToFile); }
+
+	void UpdatePauseTimer(float DeltaTime);
 
 protected:
 	// Background
@@ -112,6 +113,13 @@ protected:
 
 	// Music
 	Mix_Music* m_BGM;
+
+	// Pause timers
+	float m_PauseTimer;
+		
+	float m_BasePauseTimer;
+
+	bool m_CanPause;
 
 private:
 	// Store all game objects that need to be spawned on the next loop
