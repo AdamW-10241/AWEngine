@@ -36,7 +36,7 @@ protected:
 
 	void AddKey(Vector2 Position);
 
-	void AddLoadTrigger(Vector2 Position);
+	void AddLoadTrigger();
 
 	// Check player dead (to end game)
 	// Must be used with UpdateHealth() to update the stored player health
@@ -45,6 +45,9 @@ protected:
 	void CheckKeySpawn();
 
 	void CheckTriggerSpawn();
+
+	// Scale difficulty
+	void ScaleDifficulty();
 
 	// Reset score
 	void ResetScore();
@@ -96,7 +99,11 @@ protected:
 	int m_NextLevelValue;
 
 	// Load trigger
+	LoadTrigger* m_LoadTrigger;
+
 	Vector2 m_LoadTriggerPosition;
 
-	bool m_TriggerSpawned;
+	float m_LoadTriggerScale;
+
+	bool m_TriggerActive;
 };

@@ -70,6 +70,12 @@ public:
 		return GetGameStateMachine()->GetActiveGameState()->AddGameObject<T>(Param1, Param2);
 	}
 
+	// Add a game object to the game with 3 parameters
+	template<class T, std::enable_if_t<std::is_base_of_v<GameObject, T>, T>* = nullptr>
+	T* AddGameObject(auto Param1, auto Param2, auto Param3) {
+		return GetGameStateMachine()->GetActiveGameState()->AddGameObject<T>(Param1, Param2, Param3);
+	}
+
 	// Restart the game to the default game state
 	void RestartGame();
 

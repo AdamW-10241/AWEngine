@@ -25,7 +25,7 @@ void LevelStateFirst::OnStart()
 
 	AddBackground(
 		BackgroundPosition,
-		1.3f,
+		0.9f,
 		"Content/NinjaAdventure/Custom Background/Background_FirstLevelState.png"
 	);
 
@@ -47,7 +47,6 @@ void LevelStateFirst::OnStart()
 	m_EnemySpawnPositions[3] = { Width - WidthOffset, Height - HeightOffset };
 
 	// Set key info
-	m_KeyRequirement = 1;
 	m_KeySpawnPosition = PlayerPosition;
 
 	// Set trigger info
@@ -57,6 +56,7 @@ void LevelStateFirst::OnStart()
 	};
 
 	m_LoadTriggerPosition = LoadTriggerPosition;
+	m_LoadTriggerScale = 2.5f;
 	m_NextLevelValue = 2;
 
 	Super::OnStart();

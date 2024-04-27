@@ -25,27 +25,33 @@ PlayState::PlayState() {
 
 	m_EndPlayTimer = 3.0f;
 
-	m_EnemyFrequency = 5.0f;
+	m_EnemyFrequency = 4.0f;
 	m_EnemySpawnTimer = 1.0f;
 
 	m_DifficultyScale = 1.0f;
-	m_DifficultyScaleIncreaseAmount = 0.5f;
+	m_DifficultyScaleIncreaseAmount = 0.1f;
 
 	m_EnemiesKilled = 0;
-	m_KeyRequirement = 1;
+	m_KeyRequirement = 5;
 	m_KeySpawned = false;
 	m_KeySpawnPosition = { 0.0f };
 	m_KeyCollected = false;
 
 	m_NextLevelValue = 0;
 
+	m_LoadTrigger = nullptr;
 	m_LoadTriggerPosition = { 0.0f };
-	m_TriggerSpawned = false;
+	m_LoadTriggerScale = 1.0f;
+	m_TriggerActive = false;
 }
 
 void PlayState::OnStart()
 {
+	ScaleDifficulty();
+	
 	CreateHUD();
+
+	AddLoadTrigger();
 }
 
 void PlayState::OnUpdate(float DeltaTime)
@@ -73,6 +79,7 @@ void PlayState::AddBackground(Vector2 Position, float Scale, const char* PathToF
 	m_Background = AddGameObject<Background>();
 	m_Background->SetBackgroundSprite(PathToFile);
 	m_Background->SetPosition(Position);
+	m_Background->SetScale(Scale);
 }
 
 void PlayState::AddPlayer(Vector2 Position, float Scale)
@@ -109,12 +116,20 @@ void PlayState::CheckKeySpawn()
 
 void PlayState::CheckTriggerSpawn()
 {
-	if (m_KeyCollected && !m_TriggerSpawned) {
+	if (m_KeyCollected && !m_TriggerActive) {
 		// Spawn load trigger
-		AddLoadTrigger(m_LoadTriggerPosition);
+		m_LoadTrigger->SetActive();
 
-		m_TriggerSpawned = !m_TriggerSpawned;
+		m_TriggerActive = !m_TriggerActive;
 	}
+}
+
+void PlayState::ScaleDifficulty()
+{
+	// Scale difficulty
+	m_KeyRequirement = int((float)m_KeyRequirement * m_DifficultyScale);
+
+	m_EnemyFrequency = std::fmaxf(m_EnemyFrequency / m_DifficultyScale, 1.0f);
 }
 
 void PlayState::UpdateScore()
@@ -162,14 +177,15 @@ void PlayState::EnemySpawner(float DeltaTime, float Scale)
 	}
 }
 
-void PlayState::AddLoadTrigger(Vector2 Position)
+void PlayState::AddLoadTrigger()
 {
 	// Add trigger
-	const auto Trigger = AddGameObject<LoadTrigger>(
+	m_LoadTrigger = AddGameObject<LoadTrigger>(
 		m_NextLevelValue, 
-		m_DifficultyScale + m_DifficultyScaleIncreaseAmount
+		m_DifficultyScale + m_DifficultyScaleIncreaseAmount,
+		m_LoadTriggerScale
 	);
-	Trigger->SetPosition(Position);
+	m_LoadTrigger->SetPosition(m_LoadTriggerPosition);
 }
 
 void PlayState::AddKey(Vector2 Position)

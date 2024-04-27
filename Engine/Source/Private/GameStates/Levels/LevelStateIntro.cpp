@@ -45,6 +45,7 @@ void LevelStateIntro::OnStart()
 	};
 
 	m_LoadTriggerPosition = LoadTriggerPosition;
+	m_LoadTriggerScale = 5.0f;
 	m_NextLevelValue = 1;
 	m_DifficultyScaleIncreaseAmount = 0.0f;
 
