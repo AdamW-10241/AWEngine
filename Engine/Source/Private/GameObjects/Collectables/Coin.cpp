@@ -1,5 +1,7 @@
 #include "GameObjects/Collectables/Coin.h"
 
+#include "Game.h"
+
 Coin::Coin()
 {
 	// Set variables
@@ -18,4 +20,11 @@ Coin::Coin()
 		"Content/NinjaAdventure/Items/Treasure/Coin2.png",
 		&AnimParams
 	);
+}
+
+void Coin::PlayFX()
+{
+	const auto VFX = Game::GetGame()->AddGameObject<VFX_CollectCoin>();
+	VFX->SetPosition(GetTransform().Position);
+	VFX->SetScale(m_Scale);
 }

@@ -1,5 +1,7 @@
 #include "GameObjects/Collectables/Key.h"
 
+#include "Game.h"
+
 Key::Key()
 {
 	// Set variables
@@ -12,4 +14,11 @@ Key::Key()
 	m_MainSprite = AddSprite(
 		"Content/NinjaAdventure/Items/Treasure/GoldKey.png"
 	);
+}
+
+void Key::PlayFX()
+{
+	const auto VFX = Game::GetGame()->AddGameObject<VFX_CollectKey>();
+	VFX->SetPosition(GetTransform().Position);
+	VFX->SetScale(m_Scale);
 }

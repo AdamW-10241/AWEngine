@@ -7,5 +7,5 @@ public:
 	Coin();
 
 protected:
-	virtual void PlayFX() override { OnPlayFX<VFX_CollectCoin>(m_Scale * 0.5f); }
+	virtual void PlayFX() override;
 };

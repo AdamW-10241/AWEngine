@@ -5,12 +5,12 @@ class PlayState;
 
 class LoadTrigger : public Collectable {
 public:
-	LoadTrigger();
+	LoadTrigger(uint32_t NextLevel);
 
 protected:
 	virtual void CollectCollectable();
 
 protected:
 	// Store pointer to next level
-	///PlayState* m_NextLevel;
+	uint32_t m_NextLevel;
 };

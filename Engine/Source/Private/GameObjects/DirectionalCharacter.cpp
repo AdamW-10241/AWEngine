@@ -40,9 +40,6 @@ void DirectionalCharacter::OnStart()
 	m_Bounds->m_Tag = GetTag();
 	m_Bounds->m_TargetTag = GetTargetTag();
 	m_Bounds->m_Debug = true;
-
-	// Set the speed
-	m_MaxSpeed * m_Scale;
 }
 
 void DirectionalCharacter::OnProcessInput(Input* GameInput)

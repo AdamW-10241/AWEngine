@@ -39,10 +39,12 @@ void LevelStateIntro::OnStart()
 	// Load trigger
 	Vector2 LoadTriggerPosition = {
 		HalfWidth,
-		Game::GetGame()->WindowHeightF() - Game::GetGame()->WindowHeightF() / 10.0f
+		0.0f
 	};
 
-	// AddLoadTrigger<LevelStateFirst>(LoadTriggerPosition);
+	// Add trigger
+	const auto Trigger = AddGameObject<LoadTrigger>(1);
+	Trigger->SetPosition(LoadTriggerPosition);
 
 	Super::OnStart();
 }

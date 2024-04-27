@@ -26,13 +26,6 @@ protected:
 
 	void AddPlayer(Vector2 Position, float Scale);
 
-	//template<class T, std::enable_if_t<std::is_base_of_v<PlayState, T>, T>* = nullptr>
-	//void AddLoadTrigger(Vector2 Position) {
-	//	// Add trigger
-	//	const auto Trigger = AddGameObject<LoadTrigger>(new T*);
-	//	Trigger->SetPosition(Position);
-	//}
-
 	void EnemySpawner(float DeltaTime, float Scale);
 
 	// Check player dead (to end game)
