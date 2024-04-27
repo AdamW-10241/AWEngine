@@ -12,6 +12,8 @@ void LevelStateIntro::OnStart()
 
 	LoadMusic("Content/Audio/MUSIC_Play.wav");
 
+	SetKeyCollected();
+
 	// Add objects
 	float HalfWidth = Game::GetGame()->WindowWidthF() / 2.0f;
 	float HalfHeight = Game::GetGame()->WindowHeightF() / 2.0f;
@@ -42,9 +44,9 @@ void LevelStateIntro::OnStart()
 		0.0f
 	};
 
-	// Add trigger
-	const auto Trigger = AddGameObject<LoadTrigger>(1);
-	Trigger->SetPosition(LoadTriggerPosition);
+	m_LoadTriggerPosition = LoadTriggerPosition;
+	m_NextLevelValue = 1;
+	m_DifficultyScaleIncreaseAmount = 0.0f;
 
 	Super::OnStart();
 }

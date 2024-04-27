@@ -3,7 +3,7 @@
 
 class LevelStateFirst : public PlayState {
 public:
-	LevelStateFirst() {}
+	LevelStateFirst(float DifficultyScale) { m_DifficultyScale = DifficultyScale; }
 
 protected:
 	virtual void OnStart() override;

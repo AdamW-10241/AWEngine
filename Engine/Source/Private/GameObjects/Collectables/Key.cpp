@@ -16,6 +16,12 @@ Key::Key()
 	);
 }
 
+void Key::CollectCollectable()
+{
+	// Mark collected key
+	((PlayState*)Game::GetGame()->GetGameStateMachine()->GetActiveGameState())->SetKeyCollected();
+}
+
 void Key::PlayFX()
 {
 	const auto VFX = Game::GetGame()->AddGameObject<VFX_CollectKey>();

@@ -1,7 +1,6 @@
 #include "GameObjects/Enemy.h"
 #include "GameObjects/Player.h"
 #include "GameObjects/Collectables/Coin.h"
-#include "GameObjects/Collectables/Key.h"
 #include "GameObjects/VFX/VFX_EnemyExplosion.h"
 #include "GameObjects/Weapons/Sword.h"
 #include "GameObjects/Weapons/Bow.h"
@@ -31,7 +30,7 @@ Enemy::Enemy(float DifficultyScale, float Scale)
 	m_TargetTag = "PLAYER";
 
 	// Default values
-	m_MaxSpeed = 150.0f;
+	m_MaxSpeed = 125.0f;
 	m_Deceleration = 5.0f;
 	m_AccelerationSpeed = 1000.0f;
 
@@ -92,22 +91,13 @@ Enemy::Enemy(float DifficultyScale, float Scale)
 
 	// Add weapons
 	if (rand() % 4 == 0) {
+		AddWeapon(Game::GetGame()->AddGameObject<Bow>(m_DifficultyScale));
+	}
+	else {
 		AddWeapon(Game::GetGame()->AddGameObject<Sword>(m_DifficultyScale));
 	}
 
-	if (rand() % 4 == 0) {
-		AddWeapon(Game::GetGame()->AddGameObject<Bow>(m_DifficultyScale));
-	}
-
 	UpdateWeaponStates();
-
-	// Pick random spawn spot
-	// FIX LATER
-	SetPosition({ 1255.0f,
-		Game::GetGame()->GetRandomFloatRange(
-			0.0f,
-			Game::GetGame()->WindowHeightF())
-		});
 }
 
 void Enemy::OnUpdate(float DeltaTime)
@@ -126,17 +116,15 @@ void Enemy::OnUpdate(float DeltaTime)
 
 		if (rand() % 3 == 0) {
 			// Toward player with random offset
-			// 2/3 to follow
 			m_MovementChoice = m_PlayerRef->GetTransform().Position - GetTransform().Position + (RandomOffset * 50.0f);
 		}
 		else {
-			// Random direction
-			// 1/3 to move randomly
-			m_MovementChoice = RandomOffset;
+			// Toward random spot
+			m_MovementChoice = GetTransform().Position + (RandomOffset * 50.0f);
 		}
 
 		// Randomly get time until next choice
-		m_TimeUntilNextMovementChoice = rand() % 8;
+		m_TimeUntilNextMovementChoice = rand() % 2;
 	}
 
 	// Reduce time until choice
@@ -147,11 +135,6 @@ void Enemy::OnUpdate(float DeltaTime)
 
 	// Attack if condition met
 	Attack(m_PlayerRef->GetTransform().Position, rand() % 100 == 0);
-
-	// Switch weapon if condition met
-	if (m_OwnedWeapons.size() > 1 && rand() % 500 == 0) {
-		SwitchWeapon(rand() % 2 == 0);
-	}
 
 	Super::OnUpdate(DeltaTime);
 
@@ -175,8 +158,8 @@ void Enemy::OnDeath(GameObject* DeathCauser)
 		SpawnedCoin->SetPosition(GetTransform().Position);
 	}
 
-	//const auto SpawnedKey = Game::GetGame()->Game::AddGameObject<Key>();
-	//SpawnedKey->SetPosition(GetTransform().Position);
+	// Mark killed enemy
+	((PlayState*)Game::GetGame()->GetGameStateMachine()->GetActiveGameState())->EnemyKilled();
 	
 	Super::OnDeath(DeathCauser);
 }

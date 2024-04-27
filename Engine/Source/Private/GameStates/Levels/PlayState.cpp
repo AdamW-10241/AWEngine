@@ -5,6 +5,7 @@
 #include "GameObjects/Player.h"
 #include "GameObjects/Enemy.h"
 #include "GameObjects/TextObject.h"
+#include "GameObjects/Collectables/Key.h"
 
 #include <string>
 #include <iomanip>
@@ -24,8 +25,22 @@ PlayState::PlayState() {
 
 	m_EndPlayTimer = 3.0f;
 
-	m_EnemyFrequency = 3.0f;
+	m_EnemyFrequency = 5.0f;
 	m_EnemySpawnTimer = 1.0f;
+
+	m_DifficultyScale = 1.0f;
+	m_DifficultyScaleIncreaseAmount = 0.5f;
+
+	m_EnemiesKilled = 0;
+	m_KeyRequirement = 1;
+	m_KeySpawned = false;
+	m_KeySpawnPosition = { 0.0f };
+	m_KeyCollected = false;
+
+	m_NextLevelValue = 0;
+
+	m_LoadTriggerPosition = { 0.0f };
+	m_TriggerSpawned = false;
 }
 
 void PlayState::OnStart()
@@ -37,6 +52,10 @@ void PlayState::OnUpdate(float DeltaTime)
 {
 	UpdateHUD();
 	
+	CheckKeySpawn();
+
+	CheckTriggerSpawn();
+
 	CheckEndGame(DeltaTime);
 }
 
@@ -77,6 +96,27 @@ void PlayState::CheckEndGame(float DeltaTime)
 	}
 }
 
+void PlayState::CheckKeySpawn()
+{
+	if (!m_KeySpawned && m_EnemiesKilled >= m_KeyRequirement) {
+		// Spawn key
+		const auto SpawnedKey = AddGameObject<Key>();
+		SpawnedKey->SetPosition(m_KeySpawnPosition);
+
+		m_KeySpawned = !m_KeySpawned;
+	}
+}
+
+void PlayState::CheckTriggerSpawn()
+{
+	if (m_KeyCollected && !m_TriggerSpawned) {
+		// Spawn load trigger
+		AddLoadTrigger(m_LoadTriggerPosition);
+
+		m_TriggerSpawned = !m_TriggerSpawned;
+	}
+}
+
 void PlayState::UpdateScore()
 {
 	int Score = Game::GetGame()->m_Score;
@@ -113,14 +153,30 @@ void PlayState::EnemySpawner(float DeltaTime, float Scale)
 	// Check timer
 	if (m_EnemySpawnTimer <= 0.0f) {
 		// Spawn Enemy
-		float DifficultyScale = Game::GetGame()->GetRandomFloatRange(1.0f, 2.0f);
-		Enemy* E = AddGameObject<Enemy>(DifficultyScale, Scale);
-
-		E->SetPlayerRef(m_PlayerRef);
+		Enemy* SpawnedEnemy = AddGameObject<Enemy>(m_DifficultyScale, Scale);
+		SpawnedEnemy->SetPlayerRef(m_PlayerRef);
+		SpawnedEnemy->SetPosition(m_EnemySpawnPositions[rand() % 4]);
 
 		// Reset the timer
 		m_EnemySpawnTimer = m_EnemyFrequency;
 	}
+}
+
+void PlayState::AddLoadTrigger(Vector2 Position)
+{
+	// Add trigger
+	const auto Trigger = AddGameObject<LoadTrigger>(
+		m_NextLevelValue, 
+		m_DifficultyScale + m_DifficultyScaleIncreaseAmount
+	);
+	Trigger->SetPosition(Position);
+}
+
+void PlayState::AddKey(Vector2 Position)
+{	
+	// Add key
+	const auto SpawnedKey = Game::GetGame()->Game::AddGameObject<Key>();
+	SpawnedKey->SetPosition(Position);
 }
 
 void PlayState::ResetScore()

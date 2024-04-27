@@ -7,5 +7,7 @@ public:
 	Key();
 
 protected:
+	virtual void CollectCollectable() override;
+
 	virtual void PlayFX() override;
 };
