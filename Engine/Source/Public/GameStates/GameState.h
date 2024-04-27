@@ -92,6 +92,8 @@ protected:
 
 	virtual void OnGarbageCollection() {}
 
+	void LoadMusic(const char* PathToFile) { m_BGM = Mix_LoadMUS(PathToFile); }
+
 protected:
 	// Background
 	Background* m_Background;

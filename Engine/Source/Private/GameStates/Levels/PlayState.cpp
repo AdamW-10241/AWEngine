@@ -17,11 +17,11 @@
 
 PlayState::PlayState() {
 	m_ScoreText = nullptr;
-	m_FreqText = nullptr;
 	m_PlayerHealthText = nullptr;
-	m_BGM = Mix_LoadMUS("Content/Audio/MUSIC_Play.wav");
+
 	m_PlayerHealth = -1.0f;
 	m_PlayerRef = nullptr;
+
 	m_EndPlayTimer = 3.0f;
 
 	m_EnemyFrequency = 3.0f;
@@ -46,7 +46,6 @@ void PlayState::OnCleanup()
 	m_PlayerRef->DestroyObject();
 	m_ScoreText->DestroyObject();
 	m_PlayerHealthText->DestroyObject();
-	m_FreqText->DestroyObject();
 }
 
 void PlayState::AddBackground(Vector2 Position, float Scale, const char* PathToFile)
@@ -55,7 +54,6 @@ void PlayState::AddBackground(Vector2 Position, float Scale, const char* PathToF
 	m_Background = AddGameObject<Background>();
 	m_Background->SetBackgroundSprite(PathToFile);
 	m_Background->SetPosition(Position);
-	m_Background->m_Scale = Scale;
 }
 
 void PlayState::AddPlayer(Vector2 Position, float Scale)
@@ -63,7 +61,6 @@ void PlayState::AddPlayer(Vector2 Position, float Scale)
 	// Add player
 	m_PlayerRef = AddGameObject<Player>(Scale);
 	m_PlayerRef->SetPosition(Position);
-	m_PlayerRef->m_Scale = Scale;
 }
 
 void PlayState::CheckEndGame(float DeltaTime)
@@ -84,7 +81,10 @@ void PlayState::UpdateScore()
 {
 	int Score = Game::GetGame()->m_Score;
 	
-	std::string ScoreString = "Score: " + std::to_string(Score);
+	std::stringstream stream;
+	stream << std::fixed << Score;
+
+	std::string ScoreString = stream.str();
 	m_ScoreText->SetText(ScoreString.c_str());
 }
 
@@ -105,17 +105,7 @@ void PlayState::UpdateHealth()
 	}
 }
 
-void PlayState::UpdateFrequencyText()
-{
-	// Use a stream to set float text precision
-	std::stringstream stream;
-	stream << std::fixed << std::setprecision(1) << m_EnemyFrequency;
-
-	std::string FreqString = "Enemy Spawn Time: " + stream.str();
-	m_FreqText->SetText(FreqString.c_str());
-}
-
-void PlayState::EnemySpawner(float DeltaTime)
+void PlayState::EnemySpawner(float DeltaTime, float Scale)
 {
 	// Countdown spawn timer
 	m_EnemySpawnTimer -= DeltaTime;
@@ -124,14 +114,12 @@ void PlayState::EnemySpawner(float DeltaTime)
 	if (m_EnemySpawnTimer <= 0.0f) {
 		// Spawn Enemy
 		float DifficultyScale = Game::GetGame()->GetRandomFloatRange(1.0f, 2.0f);
-		Enemy* E = AddGameObject<Enemy>(DifficultyScale, 3.5f);
+		Enemy* E = AddGameObject<Enemy>(DifficultyScale, Scale);
 
 		E->SetPlayerRef(m_PlayerRef);
 
 		// Reset the timer
 		m_EnemySpawnTimer = m_EnemyFrequency;
-		
-		UpdateFrequencyText();
 	}
 }
 
@@ -143,23 +131,19 @@ void PlayState::ResetScore()
 void PlayState::CreateHUD()
 {
 	// Create HUD objects
+	float ScreenWidth = Game::GetGame()->WindowWidthF();
+	float ScreenHeight = Game::GetGame()->WindowHeightF();
+	float Offset = ScreenHeight / 40.0f;
+
 	m_ScoreText = AddGameObject<TextObject>();
-	m_ScoreText->SetPosition({ 10.0f, 10.0f });
+	m_ScoreText->SetPosition({ ScreenWidth - Offset, Offset });
 	m_ScoreText->SetFontSize(35);
-	m_ScoreText->SetAligment(AL_TOP_LEFT);
+	m_ScoreText->SetAligment(AL_TOP_RIGHT);
 
 	m_PlayerHealthText = AddGameObject<TextObject>();
-	m_PlayerHealthText->SetPosition({
-		10.0f,
-		Game::GetGame()->WindowHeightF() - 10.0f
-	});
+	m_PlayerHealthText->SetPosition({ Offset, Offset});
 	m_PlayerHealthText->SetFontSize(35);
-	m_PlayerHealthText->SetAligment(AL_BOTTOM_LEFT);
-
-	m_FreqText = AddGameObject<TextObject>();
-	m_FreqText->SetPosition({ 10.0f, 55.0f });
-	m_FreqText->SetFontSize(25);
-	m_FreqText->SetAligment(AL_TOP_LEFT);
+	m_PlayerHealthText->SetAligment(AL_TOP_LEFT);
 
 	UpdateHUD();
 }
@@ -170,6 +154,4 @@ void PlayState::UpdateHUD()
 	UpdateScore();
 
 	UpdateHealth();
-
-	UpdateFrequencyText();
 }

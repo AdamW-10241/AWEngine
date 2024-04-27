@@ -135,6 +135,9 @@
     <ClCompile Include="Source\Private\GameStates\Levels\LevelStateIntro.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Private\GameObjects\Collectables\LoadTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Public\Game.h">
@@ -276,6 +279,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Public\GameStates\Levels\LevelStateIntro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\GameObjects\Collectables\LoadTrigger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

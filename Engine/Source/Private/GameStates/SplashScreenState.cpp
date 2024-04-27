@@ -8,8 +8,6 @@
 
 SplashScreenState::SplashScreenState()
 {
-	m_BGM = Mix_LoadMUS("Content/Audio/MUSIC_Splash.wav");
-
 	m_TitleText = nullptr;
 	m_BaseWaitTimer = 2.0f;
 	m_WaitTimer = m_BaseWaitTimer;
@@ -21,6 +19,8 @@ SplashScreenState::SplashScreenState()
 
 void SplashScreenState::OnStart()
 {
+	LoadMusic("Content/Audio/MUSIC_Splash.wav");
+	
 	// Add objects
 	m_Background = AddGameObject<Background>();
 	m_Background->SetBackgroundSprite("Content/NinjaAdventure/Custom Background/Background_GameOverState.png");

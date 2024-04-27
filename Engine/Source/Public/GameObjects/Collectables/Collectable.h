@@ -11,6 +11,8 @@ public:
 	Collectable();
 
 protected:
+	virtual void OnStart();
+
 	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;
 	
 	virtual void CollectCollectable() {};

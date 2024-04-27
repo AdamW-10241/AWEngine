@@ -1,8 +1,5 @@
 #include "GameObjects/Collectables/Key.h"
 
-#include "SDL2/SDL_mixer.h"
-#include "Game.h"
-
 Key::Key()
 {
 	// Set variables
@@ -15,7 +12,4 @@ Key::Key()
 	m_MainSprite = AddSprite(
 		"Content/NinjaAdventure/Items/Treasure/GoldKey.png"
 	);
-
-	// Set the scale
-	SetScale(m_Scale);
 }

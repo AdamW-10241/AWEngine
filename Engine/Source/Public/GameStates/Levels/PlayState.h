@@ -1,6 +1,8 @@
 #pragma once
 #include "GameStates/GameState.h"
 
+#include "GameObjects/Collectables/LoadTrigger.h"
+
 class TextObject;
 class Player;
 
@@ -24,7 +26,14 @@ protected:
 
 	void AddPlayer(Vector2 Position, float Scale);
 
-	void EnemySpawner(float DeltaTime);
+	//template<class T, std::enable_if_t<std::is_base_of_v<PlayState, T>, T>* = nullptr>
+	//void AddLoadTrigger(Vector2 Position) {
+	//	// Add trigger
+	//	const auto Trigger = AddGameObject<LoadTrigger>(new T*);
+	//	Trigger->SetPosition(Position);
+	//}
+
+	void EnemySpawner(float DeltaTime, float Scale);
 
 	// Check player dead (to end game)
 	// Must be used with UpdateHealth() to update the stored player health
@@ -43,15 +52,11 @@ protected:
 
 	void UpdateHealth();
 
-	void UpdateFrequencyText();
-
 protected:
 	// Text rendering objects
 	TextObject* m_ScoreText;
 
 	TextObject* m_PlayerHealthText;
-
-	TextObject* m_FreqText;
 	
 	// Player health counter
 	float m_PlayerHealth;

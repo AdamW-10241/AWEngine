@@ -1,8 +1,5 @@
 #include "GameObjects/Collectables/Coin.h"
 
-#include "SDL2/SDL_mixer.h"
-#include "Game.h"
-
 Coin::Coin()
 {
 	// Set variables
@@ -21,7 +18,4 @@ Coin::Coin()
 		"Content/NinjaAdventure/Items/Treasure/Coin2.png",
 		&AnimParams
 	);
-
-	// Set the scale
-	SetScale(m_Scale);
 }

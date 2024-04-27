@@ -101,6 +101,7 @@
     <ClCompile Include="Source\Private\GameObjects\Character.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Collectables\Collectable.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Collectables\Key.cpp" />
+    <ClCompile Include="Source\Private\GameObjects\Collectables\LoadTrigger.cpp" />
     <ClCompile Include="Source\Private\GameObjects\DirectionalCharacter.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Enemy.cpp" />
     <ClCompile Include="Source\Private\GameObjects\GameObject.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Source\Public\GameObjects\Collectables\Coin.h" />
     <ClInclude Include="Source\Public\GameObjects\Collectables\Collectable.h" />
     <ClInclude Include="Source\Public\GameObjects\Collectables\Key.h" />
+    <ClInclude Include="Source\Public\GameObjects\Collectables\LoadTrigger.h" />
     <ClInclude Include="Source\Public\GameObjects\DirectionalCharacter.h" />
     <ClInclude Include="Source\Public\GameObjects\Enemy.h" />
     <ClInclude Include="Source\Public\GameObjects\GameObject.h" />

@@ -5,13 +5,13 @@
 
 void GameState::Start()
 {	
+	OnStart();
+
 	// Play background music
 	if (m_BGM != nullptr) {
 		Mix_PlayMusic(m_BGM, -1);
 		Mix_VolumeMusic(80);
 	}
-	
-	OnStart();
 }
 
 void GameState::Cleanup()
