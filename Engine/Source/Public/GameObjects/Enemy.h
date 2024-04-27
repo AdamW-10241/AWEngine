@@ -9,6 +9,8 @@ public:
 
 	void SetPlayerRef(Player* PlayerRef) { m_PlayerRef = PlayerRef; }
 
+	void ToggleFastMode();
+
 protected:
 	virtual void OnUpdate(float DeltaTime) override;
 
@@ -30,4 +32,9 @@ protected:
 
 	// Player reference
 	Player* m_PlayerRef;
+
+	// Toggles
+	float m_BaseMaxSpeed;
+
+	bool m_FastMode;
 };

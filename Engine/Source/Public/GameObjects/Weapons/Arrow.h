@@ -8,6 +8,8 @@ public:
 	virtual void FireProjectile() override;
 
 protected:
+	virtual void OnStart() override;
+
 	virtual void CreateHitVFX(Vector2 Position) override;
 
 	virtual void CreateMissVFX(Vector2 Position) override;

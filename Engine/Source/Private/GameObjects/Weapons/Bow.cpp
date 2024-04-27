@@ -73,5 +73,9 @@ void Bow::SpawnArrow()
 	SpawnedArrow->SetPosition(GetTransform().Position + m_MainSprite->m_Offset.Position);
 	SpawnedArrow->SetRotation(m_MainSprite->m_Offset.Rotation - m_RotationOffset);
 
+	if (m_ToggleProjectileSprites) {
+		SpawnedArrow->ToggleSprite();
+	}
+
 	SpawnedArrow->FireProjectile();
 }

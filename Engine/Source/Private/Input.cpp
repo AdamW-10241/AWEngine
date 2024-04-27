@@ -108,38 +108,35 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 		);
 		break;
 	case ID_CHEATS_MAXHEAL:
-		// Check for playstate
+		// Check for level
 		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
-			// Check player is not nullptr
-			if (PS->m_PlayerRef) {
-				// Check player is already dead
-				if (PS->m_PlayerRef->GetHealth() <= 0.0f) {
-					Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
-						"Cheats",
-						"Player is already dead!"
-					);
-					break;
-				}
-				
-				// Max heal player
-				PS->m_PlayerRef->ResetHealth();
-
-				Game::GetGame()->GetWinMenu()->ActivatePopup(
+			// Check player is already dead
+			if (PS->m_PlayerRef->GetHealth() <= 0.0f) {
+				Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 					"Cheats",
-					"Player healed to full!"
+					"Player is already dead!"
 				);
 				break;
 			}
+				
+			// Max heal player
+			PS->m_PlayerRef->ResetHealth();
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Player healed to full!"
+			);
+			break;
 		}
 		
-		// Handle not in playstate
+		// Handle not in level
 		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 			"Cheats",
 			"No player to heal!"
 		);
 		break;
 	case ID_CHEATS_OPENNEXTLEVEL:
-		// Check for playstate
+		// Check for level
 		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
 			// Open next level
 			PS->SetKeyCollected();
@@ -151,14 +148,14 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 			break;
 		}
 
-		// Handle not in playstate
+		// Handle not in level
 		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 			"Cheats",
 			"No level to open!"
 		);
 		break;
 	case ID_CHEATS_MAXSCORE:
-		// Check for playstate
+		// Check for level
 		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
 			// Open next level
 			Game::GetGame()->m_Score = 999999;
@@ -170,29 +167,105 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 			break;
 		}
 
-		// Handle not in playstate
+		// Handle not in level
 		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 			"Cheats",
-			"Must be in-game to set score!"
+			"Must be in a level to set score!"
 		);
 		break;
 	case ID_CHEATS_TOGGLEINVINCIBILITY:
-		// Check for playstate
+		// Check for level
 		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
 			// Toggle invincibility
 			PS->m_PlayerRef->ToggleInvincibility();
 
 			Game::GetGame()->GetWinMenu()->ActivatePopup(
 				"Cheats",
-				"Player invincibility toggled!\n\nInvincibility only lasts for this level!"
+				"Player invincibility toggled!\n\nOnly lasts for this level!"
 			);
 			break;
 		}
 
-		// Handle not in playstate
+		// Handle not in level
 		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 			"Cheats",
-			"No player to toggle invincibility!"
+			"Must be in a level to toggle invincibility!"
+		);
+		break;
+	case ID_CHEATS_TOGGLEFASTERENEMIES:
+		// Check for level
+		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Toggle faster enemies
+			PS->ToggleFasterEnemies();
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Faster enemies toggled!\n\nOnly effects newly spawned enemies!\n\nOnly lasts for this level!"
+			);
+			break;
+		}
+
+		// Handle not in level
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"Must be in a level to toggle faster enemies!"
+		);
+		break;
+	case ID_CHEATS_TOGGLEFASTERENEMYSPAWNS:
+		// Check for level
+		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Toggle faster enemy spawns
+			PS->ToggleFasterEnemySpawns();
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Faster enemy spawns toggled!\n\nOnly lasts for this level!"
+			);
+			break;
+		}
+
+		// Handle not in level
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"Must be in a level to toggle faster enemy spawns!"
+		);
+		break;
+	case ID_CHEATS_TOGGLEREVERSEDCONTROLS:
+		// Check for level
+		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Toggle reversed controls
+			PS->m_PlayerRef->ToggleReversedControls();
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Reversed controls toggled!\n\nOnly lasts for this level!"
+			);
+			break;
+		}
+
+		// Handle not in level
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"Must be in a level to toggle reversed controls!"
+		);
+		break;
+	case ID_VISUALS_TOGGLEPROJECTILESPRITE:
+		// Check for level
+		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Toggle reversed controls
+			PS->ToggleProjectileSprites();
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Visuals",
+				"Projectile sprites toggled!\n\nOnly effects newly spawned enemies!\n\nOnly lasts for this level!"
+			);
+			break;
+		}
+
+		// Handle not in level
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Visuals",
+			"Must be in a level to toggle projectile sprites!"
 		);
 		break;
 	default:

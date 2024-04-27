@@ -19,6 +19,11 @@ public:
 	// Get HUD
 	HUD* GetHUD() const { return m_HUD; }
 
+	// Toggles
+	void ToggleFasterEnemies() { m_ToggleFasterEnemies = !m_ToggleFasterEnemies; }
+	void ToggleFasterEnemySpawns();
+	void ToggleProjectileSprites();
+
 public:
 	// Reference to the player
 	Player* m_PlayerRef;
@@ -67,7 +72,11 @@ protected:
 	float m_EndPlayTimer;
 
 	// Timers for enemy spawning
-	float m_EnemyFrequency, m_EnemySpawnTimer;
+	float m_BaseEnemyFrequency;
+
+	float m_EnemyFrequency;
+		
+	float m_EnemySpawnTimer;
 
 	// Enemy
 	Vector2 m_EnemySpawnPositions[4];
@@ -98,4 +107,9 @@ protected:
 	float m_LoadTriggerScale;
 
 	bool m_TriggerActive;
+
+	// Toggles
+	bool m_ToggleFasterEnemies;
+	bool m_ToggleFasterEnemySpawns;
+	bool m_ToggleProjectileSprites;
 };

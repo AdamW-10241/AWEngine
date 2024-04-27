@@ -26,6 +26,15 @@ Projectile::Projectile()
 	// Add bounds
 	m_Bounds = AddBounds(0.0f, ScaledSize());
 	m_Bounds->m_Tag = "PROJECTILE";
+
+	// Toggle
+	m_ToggleSprite = false;
+}
+
+void Projectile::ToggleSprite()
+{
+	// Toggle sprite
+	m_ToggleSprite = !m_ToggleSprite;
 }
 
 void Projectile::OnUpdate(float DeltaTime)

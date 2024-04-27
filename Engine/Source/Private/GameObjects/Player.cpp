@@ -108,20 +108,20 @@ void Player::OnProcessInput(Input* GameInput)
 
 	Super::OnProcessInput(GameInput);
 
+	// Reverse controls if set
+	int ReverseFactor = m_ToggleReversedControls ? -1 : 1;
+
 	if (GameInput->IsKeyDown(AW_KEY_W)) {
-		AddMovementInput(Vector2(0.0f, -1.0f));
+		AddMovementInput(Vector2(0.0f, -1.0f * ReverseFactor));
 	}
 	if (GameInput->IsKeyDown(AW_KEY_S)) {
-		AddMovementInput(Vector2(0.0f, 1.0f));
+		AddMovementInput(Vector2(0.0f, 1.0f * ReverseFactor));
 	}
 	if (GameInput->IsKeyDown(AW_KEY_A)) {
-		AddMovementInput(Vector2(-1.0f, 0.0f));
+		AddMovementInput(Vector2(-1.0f * ReverseFactor, 0.0f));
 	}
 	if (GameInput->IsKeyDown(AW_KEY_D)) {
-		AddMovementInput(Vector2(1.0f, 0.0f));
-	}
-	if (GameInput->IsKeyDown(AW_KEY_D)) {
-		AddMovementInput(Vector2(1.0f, 0.0f));
+		AddMovementInput(Vector2(1.0f * ReverseFactor, 0.0f));
 	}
 
 	// Dash

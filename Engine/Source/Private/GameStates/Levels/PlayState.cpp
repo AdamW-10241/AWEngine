@@ -20,7 +20,8 @@ PlayState::PlayState() {
 
 	m_EndPlayTimer = 3.0f;
 
-	m_EnemyFrequency = 4.0f;
+	m_BaseEnemyFrequency = 4.0f;
+	m_EnemyFrequency = m_BaseEnemyFrequency;
 	m_EnemySpawnTimer = 1.0f;
 	
 	m_BasePauseTimer = 1.0f;
@@ -43,6 +44,34 @@ PlayState::PlayState() {
 	m_TriggerActive = false;
 
 	m_CanPause = true;
+
+	// Toggles
+	m_ToggleFasterEnemies = false;
+	m_ToggleFasterEnemySpawns = false;
+	m_ToggleProjectileSprites = false;
+}
+
+void PlayState::ToggleFasterEnemySpawns()
+{
+	// Toggle faster enemy spawns
+	m_ToggleFasterEnemySpawns = !m_ToggleFasterEnemySpawns;
+
+	if (m_ToggleFasterEnemySpawns) {
+		m_EnemyFrequency = m_BaseEnemyFrequency / 2.0f;
+	}
+	else {
+		m_EnemyFrequency = m_BaseEnemyFrequency;
+	}
+}
+
+void PlayState::ToggleProjectileSprites()
+{
+	// Toggle projectile sprites
+	m_ToggleProjectileSprites = !m_ToggleProjectileSprites;
+
+	if (m_ToggleProjectileSprites) {
+		m_PlayerRef->ToggleProjectileSprites();
+	}
 }
 
 void PlayState::OnStart()
@@ -141,6 +170,14 @@ void PlayState::EnemySpawner(float DeltaTime, float Scale)
 		Enemy* SpawnedEnemy = AddGameObject<Enemy>(m_DifficultyScale, Scale);
 		SpawnedEnemy->SetPlayerRef(m_PlayerRef);
 		SpawnedEnemy->SetPosition(m_EnemySpawnPositions[rand() % 4]);
+
+		if (m_ToggleFasterEnemies) {
+			SpawnedEnemy->ToggleFastMode();
+		}
+
+		if (m_ToggleProjectileSprites) {
+			SpawnedEnemy->ToggleProjectileSprites();
+		}
 
 		// Reset the timer
 		m_EnemySpawnTimer = m_EnemyFrequency;

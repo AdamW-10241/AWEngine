@@ -38,6 +38,9 @@ public:
 
 	const char* GetTargetTag() const { return _strdup(m_TargetTag); }
 
+	// Toggles
+	void ToggleProjectileSprites();
+
 protected:
 	virtual void OnStart() override;
 

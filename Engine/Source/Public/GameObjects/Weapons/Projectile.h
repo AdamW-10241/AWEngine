@@ -17,6 +17,9 @@ public:
 	// Get owner
 	Weapon* GetOwner() const { return m_Owner; }
 
+	// Toggles
+	void ToggleSprite();
+
 protected:
 	virtual void OnUpdate(float DeltaTime) override;
 
@@ -47,4 +50,7 @@ protected:
 
 	// Damage
 	float m_Damage;
+
+	// Toggles
+	bool m_ToggleSprite;
 };

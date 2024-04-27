@@ -29,8 +29,12 @@ Enemy::Enemy(float DifficultyScale, float Scale)
 	m_Tag = "ENEMY";
 	m_TargetTag = "PLAYER";
 
+	m_FastMode = false;
+
 	// Default values
-	m_MaxSpeed = 125.0f;
+	m_BaseMaxSpeed = 125.0f;
+	m_MaxSpeed = m_BaseMaxSpeed;
+
 	m_Deceleration = 5.0f;
 	m_AccelerationSpeed = 1000.0f;
 
@@ -98,6 +102,19 @@ Enemy::Enemy(float DifficultyScale, float Scale)
 	}
 
 	UpdateWeaponStates();
+}
+
+void Enemy::ToggleFastMode()
+{
+	// Toggle fast mode
+	m_FastMode = !m_FastMode; 
+	
+	if (m_FastMode) {
+		m_MaxSpeed = m_BaseMaxSpeed * 2;
+	}
+	else {
+		m_MaxSpeed = m_BaseMaxSpeed;
+	}
 }
 
 void Enemy::OnUpdate(float DeltaTime)

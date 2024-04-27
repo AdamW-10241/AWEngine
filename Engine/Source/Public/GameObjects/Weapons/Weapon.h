@@ -40,6 +40,9 @@ public:
 
 	virtual void Cleanup();
 
+	// Toggles
+	void ToggleProjectileSprites();
+
 protected:
 	virtual void OnStart() override;
 
@@ -91,4 +94,7 @@ protected:
 	float m_AttackDuration;
 
 	float m_AttackTimer;
+
+	// Toggles
+	bool m_ToggleProjectileSprites;
 };

@@ -10,7 +10,9 @@ public:
 
 	float GetCurrentDash() const { return m_DashTimer; }
 
+	// Toggles
 	void ToggleInvincibility() { m_ToggleInvincible = !m_ToggleInvincible; }
+	void ToggleReversedControls() { m_ToggleReversedControls = !m_ToggleReversedControls; }
 
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
@@ -33,5 +35,8 @@ protected:
 	float m_BaseMaxSpeed;
 
 private:
+	// Toggles
 	bool m_ToggleInvincible;
+
+	bool m_ToggleReversedControls;
 };

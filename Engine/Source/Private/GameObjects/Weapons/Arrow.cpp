@@ -9,14 +9,8 @@ Arrow::Arrow(float Scale)
 {
 	// Set variables
 	m_Scale = Scale;
-	m_Size = 15.0f;
 
 	m_MaxSpeed = 1000.0f;
-
-	// Main sprite
-	m_MainSprite = AddSprite(
-		"Content/NinjaAdventure/Items/Weapons/Bow/Arrow.png"
-	);
 
 	// Set the scale
 	SetScale(m_Scale);
@@ -24,6 +18,28 @@ Arrow::Arrow(float Scale)
 	m_Bounds->SetBoundsExtent(ScaledSize());
 	m_Bounds->m_OriginOffset = -ScaledHalfSize();
 	m_Bounds->m_Debug = false;
+}
+
+void Arrow::OnStart()
+{
+	// Add sprite
+	if (m_ToggleSprite) {
+		// Toggled
+		AnimationParams AnimParams;
+		AnimParams.fps = 12;
+		AnimParams.FrameHeight = 16;
+		AnimParams.FrameWidth = 16;
+		AnimParams.EndFrame = 3;
+		AnimParams.MaxFrames = 4;
+
+		m_Size = 16.0f;
+		m_MainSprite = AddSprite("Content/NinjaAdventure/FX/Projectile/Fireball.png", &AnimParams);
+	}
+	else {
+		// Default
+		m_Size = 15.0f;
+		m_MainSprite = AddSprite("Content/NinjaAdventure/Items/Weapons/Bow/Arrow.png");
+	}
 }
 
 void Arrow::CreateHitVFX(Vector2 Position)

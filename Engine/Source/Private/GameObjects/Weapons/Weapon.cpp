@@ -22,6 +22,9 @@ Weapon::Weapon(float DifficultyScale)
 	m_CooldownTimer = 0.0f;
 	m_AttackDuration = 1.0f;
 	m_AttackTimer = 0.0f;
+
+	// Toggles
+	m_ToggleProjectileSprites = false;
 }
 
 void Weapon::SetOwner(DirectionalCharacter* Owner)
@@ -123,6 +126,12 @@ void Weapon::Cleanup()
 	}
 
 	Super::Cleanup();
+}
+
+void Weapon::ToggleProjectileSprites()
+{
+	// Toggle projectile sprites
+	m_ToggleProjectileSprites = !m_ToggleProjectileSprites;
 }
 
 void Weapon::OnStart()

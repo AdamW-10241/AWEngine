@@ -29,6 +29,14 @@ DirectionalCharacter::DirectionalCharacter()
 	}
 }
 
+void DirectionalCharacter::ToggleProjectileSprites()
+{
+	// Toggle projectile
+	for (Weapon* W : m_OwnedWeapons) {
+		W->ToggleProjectileSprites();
+	}
+}
+
 void DirectionalCharacter::OnStart()
 {
 	// Set the scale
