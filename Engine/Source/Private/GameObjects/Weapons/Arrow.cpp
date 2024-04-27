@@ -23,7 +23,7 @@ Arrow::Arrow(float Scale)
 
 	m_Bounds->SetBoundsExtent(ScaledSize());
 	m_Bounds->m_OriginOffset = -ScaledHalfSize();
-	m_Bounds->m_Debug = true;
+	m_Bounds->m_Debug = false;
 }
 
 void Arrow::CreateHitVFX(Vector2 Position)

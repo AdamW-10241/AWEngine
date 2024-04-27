@@ -19,7 +19,7 @@ void Collectable::OnStart()
 	m_Bounds = AddBounds(0.0f, ScaledSize());
 	m_Bounds->m_OriginOffset = -ScaledHalfSize();
 	m_Bounds->m_Tag = "COLLECTABLE";
-	m_Bounds->m_Debug = true;
+	m_Bounds->m_Debug = false;
 }
 
 void Collectable::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)

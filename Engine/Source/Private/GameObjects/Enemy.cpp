@@ -90,7 +90,7 @@ Enemy::Enemy(float DifficultyScale, float Scale)
 	SetAnimation(m_LastMovementDirection, true);
 
 	// Add weapons
-	if (rand() % 4 == 0) {
+	if (rand() % 3 == 0) {
 		AddWeapon(Game::GetGame()->AddGameObject<Bow>(m_DifficultyScale));
 	}
 	else {
@@ -103,29 +103,7 @@ Enemy::Enemy(float DifficultyScale, float Scale)
 void Enemy::OnUpdate(float DeltaTime)
 {
 	// Randomly choose movement
-	if (m_TimeUntilNextMovementChoice - DeltaTime <= 0.0f) {
-		// Check player is valid
-		if (m_PlayerRef == nullptr) {
-			return;
-		}
-
-		// Randomly determine movement direction
-		float const RangeConst = 2.0f;
-		Vector2 RandomOffset = { Game::GetGame()->GetRandomFloatRange(-RangeConst, RangeConst),
-			Game::GetGame()->GetRandomFloatRange(-RangeConst, RangeConst) };
-
-		if (rand() % 10 == 0) {
-			// Toward Screen Center
-			m_MovementChoice = GetTransform().Position - Game::GetGame()->GetScreenCenter();
-		}
-		else {
-			// Toward player with random offset
-			m_MovementChoice = m_PlayerRef->GetTransform().Position - GetTransform().Position + (RandomOffset * 50.0f);
-		}
-
-		// Randomly get time until next choice
-		m_TimeUntilNextMovementChoice = rand() % 5;
-	}
+	Move(DeltaTime);
 
 	// Reduce time until choice
 	m_TimeUntilNextMovementChoice -= DeltaTime;
@@ -170,5 +148,24 @@ void Enemy::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)
 	if (auto PlayerRef = dynamic_cast<Player*>(OverlapBounds->GetOwner())) {
 		PlayerRef->ApplyDamage(this, 1);
 		ApplyDamage(PlayerRef, 1);
+	}
+}
+
+void Enemy::Move(float DeltaTime)
+{
+	// Handle movement
+	if (m_TimeUntilNextMovementChoice <= 0.0f) {
+		// Determine movement direction
+		if (rand() % 10 == 0) {
+			// Toward Screen Center
+			m_MovementChoice = Game::GetGame()->GetScreenCenter() - GetTransform().Position;
+		}
+		else {
+			// Toward player with random offset
+			m_MovementChoice = m_PlayerRef->GetTransform().Position - GetTransform().Position;
+		}
+
+		// Get time until next choice
+		m_TimeUntilNextMovementChoice = rand() % 5;
 	}
 }

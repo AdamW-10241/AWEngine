@@ -98,13 +98,13 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 	case ID_GAME_CONTROLS:
 		Game::GetGame()->GetWinMenu()->ActivatePopup(
 			"Game Controls",
-			"WASD - Move Player\nLeft Click - Attack\nScroll Wheel - Change Weapon\nLeft Shift - Dash\nP Key - Pause\n\nSee additional info in the INFORMATION menu page!"
+			"WASD - Move Player\nLeft Click / Hold - Attack\nScroll Wheel - Change Weapon\nLeft Shift - Dash\nP Key - Pause\n\nSee additional info in the INFORMATION menu page!"
 		);
 		break;
 	case ID_HELP_ABOUTASTRALWAVEENGINE:
 		Game::GetGame()->GetWinMenu()->ActivatePopup(
 			"Astral Wave Engine",
-			"Astral Wave Engine is an SDL2-based C++ 2D game engine.\nIt was created by Adam Leigh Williams in 2024."
+			"Astral Wave Engine is an SDL2-based C++ 2D game engine.\n\nIt was created by Adam Leigh Williams in 2024.\n\nThis game, Ruins of Oblivion, was made as a final assessment."
 		);
 		break;
 	case ID_CHEATS_MAXHEAL:
@@ -116,7 +116,7 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 				if (PS->m_PlayerRef->GetHealth() <= 0.0f) {
 					Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 						"Cheats",
-						"Player is already dead and can not be healed!"
+						"Player is already dead!"
 					);
 					break;
 				}
@@ -135,29 +135,64 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 		// Handle not in playstate
 		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 			"Cheats",
-			"No player exists to heal!"
+			"No player to heal!"
 		);
 		break;
-	case ID_CHEATS_INSTANTFIRE:
+	case ID_CHEATS_OPENNEXTLEVEL:
 		// Check for playstate
 		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
-			// Check player is not nullptr
-			if (PS->m_PlayerRef) {
-				// Set instant fire
-				// PlayStateTest->m_PlayerRef->SetInstantFire();
+			// Open next level
+			PS->SetKeyCollected();
 
-				Game::GetGame()->GetWinMenu()->ActivatePopup(
-					"Cheats",
-					"Player instant-firing toggled!"
-				);
-				break;
-			}
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Next level opened!"
+			);
+			break;
 		}
 
 		// Handle not in playstate
 		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
 			"Cheats",
-			"No player exists toggle instant-firing!"
+			"No level to open!"
+		);
+		break;
+	case ID_CHEATS_MAXSCORE:
+		// Check for playstate
+		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Open next level
+			Game::GetGame()->m_Score = 999999;
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Max score set!"
+			);
+			break;
+		}
+
+		// Handle not in playstate
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"Must be in-game to set score!"
+		);
+		break;
+	case ID_CHEATS_TOGGLEINVINCIBILITY:
+		// Check for playstate
+		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Toggle invincibility
+			PS->m_PlayerRef->ToggleInvincibility();
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Player invincibility toggled!\n\nInvincibility only lasts for this level!"
+			);
+			break;
+		}
+
+		// Handle not in playstate
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"No player to toggle invincibility!"
 		);
 		break;
 	default:

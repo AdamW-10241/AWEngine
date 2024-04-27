@@ -39,7 +39,7 @@ void DirectionalCharacter::OnStart()
 	m_Bounds->m_OriginOffset = -ScaledHalfSize();
 	m_Bounds->m_Tag = GetTag();
 	m_Bounds->m_TargetTag = GetTargetTag();
-	m_Bounds->m_Debug = true;
+	m_Bounds->m_Debug = false;
 }
 
 void DirectionalCharacter::OnProcessInput(Input* GameInput)

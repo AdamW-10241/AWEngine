@@ -28,6 +28,8 @@ Player::Player(float Scale)
 	m_DashTimer = 0.0f;
 
 	m_DashMultiplier = 3.0f;
+	
+	m_ToggleInvincible = false;
 
 	// Default values
 	m_BaseMaxSpeed = 300.0f;
@@ -144,6 +146,13 @@ void Player::OnProcessInput(Input* GameInput)
 
 void Player::OnUpdate(float DeltaTime)
 {
+	// Invincibility
+	if (m_ToggleInvincible) {
+		if (m_Health < m_MaxHealth) {
+			m_Health = m_MaxHealth;
+		}
+	}
+	
 	if (m_Health <= 0) {
 		return;
 	}

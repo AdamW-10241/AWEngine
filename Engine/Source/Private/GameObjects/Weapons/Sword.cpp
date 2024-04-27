@@ -112,7 +112,7 @@ void Sword::AddWeaponBounds()
 	m_Bounds->m_OriginOffset = -ScaledHalfSize() * BoundsScalar;
 	m_Bounds->m_Tag = "WEAPON";
 	m_Bounds->m_TargetTag = m_Owner->GetTargetTag();
-	m_Bounds->m_Debug = true;
+	m_Bounds->m_Debug = false;
 }
 
 void Sword::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)

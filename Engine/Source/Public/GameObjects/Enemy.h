@@ -16,6 +16,8 @@ protected:
 
 	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;
 
+	void Move(float DeltaTime);
+
 protected:
 	// Time until the next movemnt choice is made
 	float m_TimeUntilNextMovementChoice;

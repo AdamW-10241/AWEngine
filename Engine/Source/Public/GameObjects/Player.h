@@ -10,6 +10,8 @@ public:
 
 	float GetCurrentDash() const { return m_DashTimer; }
 
+	void ToggleInvincibility() { m_ToggleInvincible = !m_ToggleInvincible; }
+
 protected:
 	virtual void OnProcessInput(Input* GameInput) override;
 
@@ -29,4 +31,7 @@ protected:
 	float m_DashMultiplier;
 
 	float m_BaseMaxSpeed;
+
+private:
+	bool m_ToggleInvincible;
 };

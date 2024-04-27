@@ -51,7 +51,7 @@ void LevelStateSecond::OnStart()
 
 	// Set trigger info
 	Vector2 LoadTriggerPosition = {
-		HalfWidth,
+		Width * 0.49f,
 		0.0f
 	};
 
