@@ -10,6 +10,7 @@ struct SDL_Rect;
 class Texture {
 public:
 	Texture(SDL_Renderer* Renderer);
+	Texture(SDL_Renderer* Renderer, bool IsGUI);
 	virtual ~Texture();
 
 	// Import and create a texture
@@ -26,6 +27,9 @@ public:
 
 	// Get the original image path
 	const char* GetPath() const { return m_Path; }
+
+	// Get whether the texture is GUI
+	const bool GetIsGUI() const { return m_IsGUI; }
 
 	// Set the clip for the texture
 	void SetClip(int x, int y, int w, int h);
@@ -59,6 +63,13 @@ protected:
 	// Path to original image
 	const char* m_Path;
 
+	// Store whether or not the texture is GUI
+	bool m_IsGUI;
+
 	// Store the clip for the texture
 	SDL_Rect* m_ClipRect;
+
+private:
+	// Initialise texture
+	void InitialiseTexture(SDL_Renderer* Renderer, bool IsGUI = false);
 };

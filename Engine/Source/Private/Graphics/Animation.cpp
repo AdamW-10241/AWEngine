@@ -24,9 +24,9 @@ Animation::~Animation()
 	}
 }
 
-bool Animation::CreateAnimation(const char* PathToFile, AnimationParams* Params)
+bool Animation::CreateAnimation(const char* PathToFile, bool isGUI, AnimationParams* Params)
 {
-	m_TextureRef = Game::GetGame()->ImportTexture(PathToFile);
+	m_TextureRef = Game::GetGame()->ImportTexture(PathToFile, isGUI);
 
 	// If the import failed
 	if (m_TextureRef == nullptr)

@@ -68,24 +68,28 @@ Enemy::Enemy(float DifficultyScale, float Scale)
 	// Add enemy sprite: moving, right
 	m_DirectionSprites.push_back(AddSprite(
 		"Content/NinjaAdventure/Actor/Characters/Skeleton/SeparateAnim/Adjusted Animations/Moving-Right.png",
+		false,
 		&AnimParams
 	));
 
 	// Add enemy sprite: moving, left
 	m_DirectionSprites.push_back(AddSprite(
 		"Content/NinjaAdventure/Actor/Characters/Skeleton/SeparateAnim/Adjusted Animations/Moving-Left.png",
+		false,
 		&AnimParams
 	));
 
 	// Add enemy sprite: moving, up
 	m_DirectionSprites.push_back(AddSprite(
 		"Content/NinjaAdventure/Actor/Characters/Skeleton/SeparateAnim/Adjusted Animations/Moving-Up.png",
+		false,
 		&AnimParams
 	));
 
 	// Add enemy sprite: moving, down
 	m_DirectionSprites.push_back(AddSprite(
 		"Content/NinjaAdventure/Actor/Characters/Skeleton/SeparateAnim/Adjusted Animations/Moving-Down.png",
+		false,
 		&AnimParams
 	));
 

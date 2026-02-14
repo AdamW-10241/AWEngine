@@ -30,21 +30,22 @@ void Game::DestroyGame()
 	delete GetGame();
 }
 
-Texture* Game::ImportTexture(const char* PathToFile)
+Texture* Game::ImportTexture(const char* PathToFile, bool isGUI)
 {
-	Texture* NewTexture = new Texture(m_RendererRef);
+	Texture* NewTexture = new Texture(m_RendererRef, isGUI);
+	TArray<Texture*>& TextureStack = isGUI ? m_GUITextureStack : m_TextureStack;
 
 	// Loop through all of the game textures 
-	for (Texture* TexRef : m_TextureStack)
+	for (Texture* TexRef : TextureStack)
 	{
-		// Check if the texture has already been imported
+		// Check if the texture has already been imported 
 		if (std::strcmp(TexRef->GetPath(), PathToFile) == 0)
 		{
 			// If there was a matching path
-			// Copy the successfully mathced element
+			// Copy the successfully matched element
 			NewTexture->CopyTexture(TexRef);
 			// Add it to the texture stack
-			m_TextureStack.push_back(NewTexture);
+			TextureStack.push_back(NewTexture);
 			// Return the new texture and ignore the rest of the function
 			return NewTexture;
 		}
@@ -60,7 +61,7 @@ Texture* Game::ImportTexture(const char* PathToFile)
 	else
 	{
 		// If the import was successful
-		m_TextureStack.push_back(NewTexture);
+		TextureStack.push_back(NewTexture);
 	}
 
 	return NewTexture;
@@ -69,9 +70,10 @@ Texture* Game::ImportTexture(const char* PathToFile)
 void Game::DestroyTexture(Texture* TextureToDestroy)
 {
 	int TexturesFound = 0;
+	TArray<Texture*>& TextureStack = TextureToDestroy->GetIsGUI() ? m_GUITextureStack : m_TextureStack;
 
 	// Loop through all of the textures
-	for (Texture* TexRef : m_TextureStack)
+	for (Texture* TexRef : TextureStack)
 	{
 		// If the texture has a matching path
 		if (std::strcmp(TextureToDestroy->GetPath(), TexRef->GetPath()) == 0)
@@ -92,11 +94,11 @@ void Game::DestroyTexture(Texture* TextureToDestroy)
 	}
 
 	// Find the texture in the array
-	auto it = std::find(m_TextureStack.begin(), m_TextureStack.end(), TextureToDestroy);
+	auto it = std::find(TextureStack.begin(), TextureStack.end(), TextureToDestroy);
 	// If the texture is found
-	if (it != m_TextureStack.end())
+	if (it != TextureStack.end())
 	{
-		m_TextureStack.erase(it);
+		TextureStack.erase(it);
 	}
 
 	// Remove the texture object from memory
@@ -309,6 +311,12 @@ void Game::Cleanup()
 	}
 
 	// Cleanup and remove all textures in the texture stack
+	for (int i = m_GUITextureStack.size() - 1; i > -1; --i)
+	{
+		DestroyTexture(m_GUITextureStack[i]);
+	}
+
+	// Cleanup and remove all textures in the texture stack
 	for (int i = m_TextureStack.size() - 1; i > -1; --i)
 	{
 		DestroyTexture(m_TextureStack[i]);
@@ -392,6 +400,13 @@ void Game::Render()
 	// Render custom graphics
 	// Draw all textures in the texture stack
 	for (const auto TexRef : m_TextureStack) {
+		if (TexRef != nullptr) {
+			TexRef->Draw();
+		}
+	}
+
+	// Draw all textures in the GUI texture stack
+	for (const auto TexRef : m_GUITextureStack) {
 		if (TexRef != nullptr) {
 			TexRef->Draw();
 		}

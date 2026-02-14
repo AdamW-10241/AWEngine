@@ -29,7 +29,7 @@ public:
 	~Animation();
 
 	// Imports the animation and adds animation data
-	bool CreateAnimation(const char* PathToFile, AnimationParams* Params = nullptr);
+	bool CreateAnimation(const char* PathToFile, bool isGUI = false, AnimationParams* Params = nullptr);
 	
 	// Update the animation logic each frame
 	void Update(float DeltaTime);

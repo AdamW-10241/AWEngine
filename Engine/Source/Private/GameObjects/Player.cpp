@@ -68,24 +68,28 @@ Player::Player(float Scale)
 	// Add player sprite: moving, right
 	m_DirectionSprites.push_back(AddSprite(
 		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Right.png",
+		false,
 		&AnimParams
 	));
 
 	// Add player sprite: moving, left
 	m_DirectionSprites.push_back(AddSprite(
 		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Left.png",
+		false,
 		&AnimParams
 	));
 
 	// Add player sprite: moving, up
 	m_DirectionSprites.push_back(AddSprite(
 		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Up.png",
+		false,
 		&AnimParams
 	));
 
 	// Add player sprite: moving, down
 	m_DirectionSprites.push_back(AddSprite(
 		"Content/NinjaAdventure/Actor/Characters/MaskFrog/SeparateAnim/Adjusted Animations/Moving-Down.png",
+		false,
 		&AnimParams
 	));
 

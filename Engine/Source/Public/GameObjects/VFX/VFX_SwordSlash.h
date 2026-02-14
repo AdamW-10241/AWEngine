@@ -13,6 +13,7 @@ public:
 
 		AddSprite(
 			"Content/NinjaAdventure/FX/SlashFx/SlashDouble/SpriteSheet.png",
+			false,
 			&AnimParams
 		);
 	}

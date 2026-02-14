@@ -13,6 +13,7 @@ public:
 
 		AddSprite(
 			"Content/NinjaAdventure/FX/Magic/Spark/SpriteSheet.png",
+			false,
 			&AnimParams
 		);
 

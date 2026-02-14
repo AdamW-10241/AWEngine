@@ -13,6 +13,7 @@ public:
 
 		AddSprite(
 			"Content/NinjaAdventure/FX/Magic/Circle/SpriteSheetSpark.png",
+			false,
 			&AnimParams
 		);
 	}

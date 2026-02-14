@@ -33,7 +33,10 @@ void Arrow::OnStart()
 		AnimParams.MaxFrames = 4;
 
 		m_Size = 16.0f;
-		m_MainSprite = AddSprite("Content/NinjaAdventure/FX/Projectile/Fireball.png", &AnimParams);
+		m_MainSprite = AddSprite("Content/NinjaAdventure/FX/Projectile/Fireball.png",
+			false,
+			&AnimParams
+		);
 	}
 	else {
 		// Default

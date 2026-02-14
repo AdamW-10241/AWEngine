@@ -13,6 +13,7 @@ public:
 
 		AddSprite(
 			"Content/NinjaAdventure/FX/Smoke/Smoke/SpriteSheet.png",
+			false,
 			&AnimParams
 		);
 	}

@@ -11,11 +11,11 @@ void SpriteObject::Cleanup()
 	}
 }
 
-Sprite* SpriteObject::AddSprite(const char* PathToFile, AnimationParams* Params)
+Sprite* SpriteObject::AddSprite(const char* PathToFile, bool isGUI, AnimationParams* Params)
 {
 	Animation* NewAnim = new Animation();
 
-	if (!NewAnim->CreateAnimation(PathToFile, Params)) {
+	if (!NewAnim->CreateAnimation(PathToFile, isGUI, Params)) {
 		return nullptr;
 	}
 	

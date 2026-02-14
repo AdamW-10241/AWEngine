@@ -40,7 +40,7 @@ public:
 
 protected:
 	// Add an animation / sprite to the sprite stack
-	Sprite* AddSprite(const char* PathToFile, AnimationParams* Params = nullptr);
+	Sprite* AddSprite(const char* PathToFile, bool isGUI = false, AnimationParams* Params = nullptr);
 
 	virtual void OnPostUpdate(float DeltaTime) override;
 

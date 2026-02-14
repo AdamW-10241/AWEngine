@@ -26,7 +26,7 @@ public:
 	void QuitApp() { m_IsGameOpen = false; }
 
 	// Import a texture to the game
-	Texture* ImportTexture(const char* PathToFile);
+	Texture* ImportTexture(const char* PathToFile, bool isGUI = false);
 
 	// Safe destroy the texture
 	void DestroyTexture(Texture* TextureToDestroy);
@@ -142,6 +142,9 @@ private:
 
 	// Stores all of the textures in the game
 	TArray<Texture*> m_TextureStack;
+
+	// Stores all of the GUI textures in the game
+	TArray<Texture*> m_GUITextureStack;
 
 	// Stores all text elements
 	TArray<Text*> m_TextStack;

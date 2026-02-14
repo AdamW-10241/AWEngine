@@ -18,6 +18,7 @@ Coin::Coin()
 
 	m_MainSprite = AddSprite(
 		"Content/NinjaAdventure/Items/Treasure/Coin2.png",
+		false,
 		&AnimParams
 	);
 }

@@ -41,7 +41,8 @@ HUD::HUD(Player* PlayerRef)
 
 	// Add sprite
 	m_MainSprite = AddSprite(
-		"Content/CustomHUD.png"
+		"Content/CustomHUD.png",
+		true
 	);
 }
 

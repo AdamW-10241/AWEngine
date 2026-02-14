@@ -5,17 +5,12 @@
 
 Texture::Texture(SDL_Renderer* Renderer)
 {
-	// Initalise Member Variabless
-	m_RendererRef = Renderer;
-	m_Angle = 0.0f;
-	m_Path = "";
-	m_PosX = m_PosY = 0;
-	m_ScaleX = m_ScaleY = 1.0f;
-	m_SurfaceData = nullptr;
-	m_TextureRef = nullptr;
-	m_ClipRect = nullptr;
-	m_IsVisible = true;
-	m_Alignment = AL_CENTER;
+	InitialiseTexture(Renderer);
+}
+
+Texture::Texture(SDL_Renderer* Renderer, bool IsGUI)
+{
+	InitialiseTexture(Renderer, IsGUI);
 }
 
 Texture::~Texture()
@@ -63,6 +58,7 @@ bool Texture::ImportTexture(const char* PathToFile)
 void Texture::CopyTexture(Texture* CopyTexture)
 {
 	m_Path = CopyTexture->m_Path;
+	m_IsGUI = CopyTexture->m_IsGUI;
 	m_SurfaceData = CopyTexture->m_SurfaceData;
 	m_TextureRef = CopyTexture->m_TextureRef;
 }
@@ -183,4 +179,20 @@ void Texture::SetClip(int x, int y, int w, int h)
 	m_ClipRect->y = y;
 	m_ClipRect->w = w;
 	m_ClipRect->h = h;
+}
+
+void Texture::InitialiseTexture(SDL_Renderer* Renderer, bool IsGUI)
+{
+	// Initalise Member Variables
+	m_RendererRef = Renderer;
+	m_Angle = 0.0f;
+	m_Path = "";
+	m_PosX = m_PosY = 0;
+	m_ScaleX = m_ScaleY = 1.0f;
+	m_SurfaceData = nullptr;
+	m_TextureRef = nullptr;
+	m_ClipRect = nullptr;
+	m_IsVisible = true;
+	m_Alignment = AL_CENTER;
+	m_IsGUI = IsGUI;
 }

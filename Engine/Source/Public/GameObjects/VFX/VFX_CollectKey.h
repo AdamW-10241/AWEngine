@@ -13,6 +13,7 @@ public:
 
 		AddSprite(
 			"Content/NinjaAdventure/FX/Magic/Spirit/SpriteSheetBlue.png",
+			false,
 			&AnimParams
 		);
 
