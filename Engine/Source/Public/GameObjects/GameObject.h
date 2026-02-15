@@ -1,6 +1,7 @@
 #pragma once
 #include "Math/Vector2.h"	
 #include "EngineTypes.h"
+#include "SoundManager.h"
 
 class Input;
 class Bounds;

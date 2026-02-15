@@ -9,6 +9,7 @@
 
 enum DC_SFX{
 	DC_SFX_DEATH = 0,
+	DC_SFX_DEATH_SLASH = 1,
 
 	// Not a sound effect, just the number of SFX
 	DC_SFX_NUM
@@ -52,7 +53,7 @@ protected:
 
 	virtual void CollectGarbage() override;
 
-	virtual void OnDeath(GameObject* DeathCauser) override;
+	virtual void OnDeath(GameObject* DeathCauser, bool doDestroy = true) override;
 
 	void AddWeapon(Weapon* NewWeapon);
 

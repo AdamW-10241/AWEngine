@@ -19,7 +19,7 @@ protected:
 
 	virtual void OnUpdate(float DeltaTime) override;
 
-	virtual void OnDeath(GameObject* DeathCauser);
+	virtual void OnDeath(GameObject* DeathCauser, bool doDestroy = true);
 
 protected:
 	// Store the different effects for the engine effects

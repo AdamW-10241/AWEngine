@@ -14,7 +14,7 @@ public:
 protected:
 	virtual void OnUpdate(float DeltaTime) override;
 
-	virtual void OnDeath(GameObject* DeathCauser) override;
+	virtual void OnDeath(GameObject* DeathCauser, bool doDestroy = true) override;
 
 	virtual void OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds) override;
 

@@ -50,7 +50,7 @@ public:
 protected:
 	virtual void OnPostUpdate(float DeltaTime) override;
 
-	virtual void OnDeath(GameObject* DeathCauser);
+	virtual void OnDeath(GameObject* DeathCauser, bool doDestroy = true);
 
 protected:
 	// Main sprite that represents the character

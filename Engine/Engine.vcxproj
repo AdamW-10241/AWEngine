@@ -197,6 +197,7 @@ xcopy /Y /E "$(ProjectDir)Content" "$(SolutionDir)Build\$(Configuration)\Content
     <ClCompile Include="Source\Private\GameObjects\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Private\GameObjects\Collectables\Coin.cpp" />
     <ClCompile Include="Source\Private\GameObjects\HUD.cpp" />
+    <ClCompile Include="Source\Private\SoundManager.cpp" />
     <ClCompile Include="Source\Public\GameObjects\VFX\VFX_CollectCoin.h" />
     <ClCompile Include="Source\Private\GameStates\Levels\LevelStateFirst.cpp" />
     <ClCompile Include="Source\Source.cpp" />
@@ -221,7 +222,7 @@ xcopy /Y /E "$(ProjectDir)Content" "$(SolutionDir)Build\$(Configuration)\Content
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_CollectKey.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Projectile.h" />
     <ClInclude Include="Source\Public\GameObjects\TextObject.h" />
-    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_EnemyExplosion.h" />
+    <ClInclude Include="Source\Public\GameObjects\VFX\VFX_Explosion.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VFX_SwordSlash.h" />
     <ClInclude Include="Source\Public\GameObjects\VFX\VisualEffectObject.h" />
     <ClInclude Include="Source\Public\GameObjects\Weapons\Arrow.h" />
@@ -251,6 +252,7 @@ xcopy /Y /E "$(ProjectDir)Content" "$(SolutionDir)Build\$(Configuration)\Content
     <ClInclude Include="Source\Public\Math\Vector2.h" />
     <ClInclude Include="Source\Public\Graphics\TextureTypes.h" />
     <ClInclude Include="Source\Public\Menus\WinMenu.h" />
+    <ClInclude Include="Source\Public\SoundManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />

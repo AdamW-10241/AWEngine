@@ -30,6 +30,7 @@ Player::Player(float Scale)
 	m_DashMultiplier = 3.0f;
 	
 	m_ToggleInvincible = false;
+	m_ToggleReversedControls = false;
 
 	// Default values
 	m_BaseMaxSpeed = 300.0f;
@@ -102,6 +103,10 @@ Player::Player(float Scale)
 	AddWeapon(Game::GetGame()->AddGameObject<Bow>());
 
 	UpdateWeaponStates();
+
+	// Load sound effects
+	m_DC_SFX[DC_SFX_DEATH] = SoundManager::Get().LoadSound("Content/Audio/DEATH_SFX_PLAYER.wav");
+	Mix_VolumeChunk(m_DC_SFX[DC_SFX_DEATH], 100);
 }
 
 void Player::OnProcessInput(Input* GameInput)
@@ -178,7 +183,7 @@ void Player::OnUpdate(float DeltaTime)
 	ScreenBorder(ScaledHalfSize());
 }
 
-void Player::OnDeath(GameObject* DeathCauser)
+void Player::OnDeath(GameObject* DeathCauser, bool doDestroy)
 {
 	for (auto Item : GetAllSprites()) {
 		Item->SetActive(false);
@@ -188,5 +193,5 @@ void Player::OnDeath(GameObject* DeathCauser)
 		Item->DestroyBounds();
 	}
 
-	DestroyWeapons();
+	Super::OnDeath(DeathCauser, false);
 }

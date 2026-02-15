@@ -1,7 +1,6 @@
 #include "GameObjects/Enemy.h"
 #include "GameObjects/Player.h"
 #include "GameObjects/Collectables/Coin.h"
-#include "GameObjects/VFX/VFX_EnemyExplosion.h"
 #include "GameObjects/Weapons/Sword.h"
 #include "GameObjects/Weapons/Bow.h"
 
@@ -98,11 +97,22 @@ Enemy::Enemy(float DifficultyScale, float Scale)
 	SetAnimation(m_LastMovementDirection, true);
 
 	// Add weapons
-	if (rand() % 3 == 0) {
-		AddWeapon(Game::GetGame()->AddGameObject<Bow>(m_DifficultyScale));
-	}
-	else {
+	int scaleEnemyTypes = (m_DifficultyScale > 1.5) ? 1 : 0;	// Include dual wielding enemy
+	int randomEnemyType = rand() % (2 + scaleEnemyTypes);
+
+	switch (randomEnemyType) {
+	case 0:
 		AddWeapon(Game::GetGame()->AddGameObject<Sword>(m_DifficultyScale));
+		break;
+	case 1:
+		AddWeapon(Game::GetGame()->AddGameObject<Bow>(m_DifficultyScale));
+		break;
+	case 2:
+		AddWeapon(Game::GetGame()->AddGameObject<Sword>(m_DifficultyScale));
+		AddWeapon(Game::GetGame()->AddGameObject<Bow>(m_DifficultyScale));
+		break;
+	default:
+		break;
 	}
 
 	UpdateWeaponStates();
@@ -135,21 +145,20 @@ void Enemy::OnUpdate(float DeltaTime)
 	// Attack if condition met
 	Attack(m_PlayerRef->GetTransform().Position, rand() % 175 == 0);
 
+	// Attempt to switch weapon, randomly
+	if (rand() % 1000 == 0) { SwitchWeapon(rand() % 2); };
+
 	Super::OnUpdate(DeltaTime);
 
 	// Screen border
 	ScreenBorder(ScaledHalfSize());
 }
 
-void Enemy::OnDeath(GameObject* DeathCauser)
+void Enemy::OnDeath(GameObject* DeathCauser, bool doDestroy)
 {
 	if (auto PlayerTest = dynamic_cast<Player*>(DeathCauser)) {
 		Game::GetGame()->m_Score += m_ScoreValue;
 	}
-
-	auto VFX = Game::GetGame()->Game::AddGameObject<VFX_EnemyExplosion>();
-	VFX->SetPosition(GetTransform().Position);
-	VFX->SetScale(m_Scale);
 
 	// Randomly spawn a coin
 	if (rand() % 3 == 0) {
@@ -160,7 +169,7 @@ void Enemy::OnDeath(GameObject* DeathCauser)
 	// Mark killed enemy
 	((PlayState*)Game::GetGame()->GetGameStateMachine()->GetActiveGameState())->EnemyKilled();
 	
-	Super::OnDeath(DeathCauser);
+	Super::OnDeath(DeathCauser, doDestroy);
 }
 
 void Enemy::OnOverlapEnter(Bounds* OverlapBounds, Bounds* HitBounds)

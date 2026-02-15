@@ -1,9 +1,9 @@
 #pragma once
 #include "GameObjects/VFX/VisualEffectObject.h"
 
-class VFX_EnemyExplosion : public VisualEffectObject {
+class VFX_Explosion : public VisualEffectObject {
 public:
-	VFX_EnemyExplosion() {
+	VFX_Explosion() {
 		AnimationParams AnimParams;
 		AnimParams.fps = 24;
 		AnimParams.EndFrame = 5;

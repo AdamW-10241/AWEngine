@@ -2,6 +2,7 @@
 
 #include "Input.h"
 #include "Game.h"
+#include "GameObjects/VFX/VFX_Explosion.h"
 #include "SDL2/SDL_mixer.h"
 
 #include "Debug.h"
@@ -19,14 +20,9 @@ DirectionalCharacter::DirectionalCharacter()
 	m_Tag = "ALL";
 	m_TargetTag = "ALL";
 
-	// Load sound effects
-	m_DC_SFX[DC_SFX_DEATH] = Mix_LoadWAV("Content/Audio/DEATH_SFX_DC.wav");
-
-	for (auto SFX : m_DC_SFX) {
-		if (SFX != nullptr) {
-			Mix_VolumeChunk(SFX, 15);
-		}
-	}
+	// Death sfx
+	m_DC_SFX[DC_SFX_DEATH_SLASH] = SoundManager::Get().LoadSound("Content/Audio/DEATH_SFX_DC.wav");
+	Mix_VolumeChunk(m_DC_SFX[DC_SFX_DEATH_SLASH], 15);
 }
 
 void DirectionalCharacter::ToggleProjectileSprites()
@@ -89,13 +85,6 @@ void DirectionalCharacter::Cleanup()
 	}
 	m_OwnedWeapons.clear();
 
-	// Cleanup SFX
-	for (auto Item : m_DC_SFX) {
-		if (Item != nullptr) {
-			Mix_FreeChunk(Item);
-		}
-	}
-
 	Super::Cleanup();
 }
 
@@ -117,17 +106,21 @@ void DirectionalCharacter::CollectGarbage()
 	Super::CollectGarbage();
 }
 
-void DirectionalCharacter::OnDeath(GameObject* DeathCauser)
+void DirectionalCharacter::OnDeath(GameObject* DeathCauser, bool doDestroy)
 {
 	// Destroy weapons
 	DestroyWeapons();
 
-	// Play death sfx
-	if (m_DC_SFX[DC_SFX_DEATH] != nullptr) {
-		Mix_PlayChannel(-1, m_DC_SFX[DC_SFX_DEATH], 0);
-	}
+	// Play vfx
+	auto VFX = Game::GetGame()->Game::AddGameObject<VFX_Explosion>();
+	VFX->SetPosition(GetTransform().Position);
+	VFX->SetScale(m_Scale);
 
-	Super::OnDeath(DeathCauser);
+	// Play sfx
+	SoundManager::Get().PlaySound(m_DC_SFX[DC_SFX_DEATH]);
+	SoundManager::Get().PlaySound(m_DC_SFX[DC_SFX_DEATH_SLASH]);
+
+	Super::OnDeath(DeathCauser, doDestroy);
 }
 
 void DirectionalCharacter::AddWeapon(Weapon* NewWeapon)

@@ -36,7 +36,7 @@ void Character::OnPostUpdate(float DeltaTime)
 	Super::OnPostUpdate(DeltaTime);
 }
 
-void Character::OnDeath(GameObject* DeathCauser)
+void Character::OnDeath(GameObject* DeathCause, bool doDestroy)
 {
-	DestroyObject();
+	if (doDestroy) DestroyObject();
 }
