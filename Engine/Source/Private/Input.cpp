@@ -101,10 +101,10 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 			"WASD - Move Player\nLeft Click / Hold - Attack\nScroll Wheel - Change Weapon\nLeft Shift - Dash\nP Key - Pause\n\nSee additional info in the INFORMATION menu page!"
 		);
 		break;
-	case ID_HELP_ABOUTASTRALWAVEENGINE:
+	case ID_HELP_ABOUTRUINSOFOBLIVION:
 		Game::GetGame()->GetWinMenu()->ActivatePopup(
-			"Astral Wave Engine",
-			"Astral Wave Engine is an SDL2-based C++ 2D game engine.\n\nIt was created by Adam Leigh Williams in 2024.\n\nThis game, Ruins of Oblivion, was made as a final assessment."
+			"Ruins Of Oblivion",
+			"Ruins Of Oblivion is an SDL2-based 2D C++ game.\n\nIt was designed and developed by Adam Leigh Williams in 2024.\n\nThis game, Ruins of Oblivion, was made for a unit final assessment."
 		);
 		break;
 	case ID_CHEATS_MAXHEAL:
