@@ -25,6 +25,7 @@ Weapon::Weapon(float DifficultyScale)
 
 	// Toggles
 	m_ToggleProjectileSprites = false;
+	m_ToggleRapidAttack = false;
 }
 
 void Weapon::SetOwner(DirectionalCharacter* Owner)
@@ -77,6 +78,18 @@ void Weapon::Attack()
 	m_AttackTimer = m_AttackDuration;
 }
 
+void Weapon::Cooldown()
+{	
+	// Use rapid attack cooldown if toggled
+	if (m_ToggleRapidAttack) {
+		m_CooldownTimer = m_CooldownDuration / 10;
+		return;
+	}
+	
+	// Standard cooldown
+	m_CooldownTimer = m_CooldownDuration;
+}
+
 void Weapon::SetIdlePosition(float RadiusMultiplier)
 {
 	// Update object position
@@ -126,12 +139,6 @@ void Weapon::Cleanup()
 	}
 
 	Super::Cleanup();
-}
-
-void Weapon::ToggleProjectileSprites()
-{
-	// Toggle projectile sprites
-	m_ToggleProjectileSprites = !m_ToggleProjectileSprites;
 }
 
 void Weapon::OnStart()

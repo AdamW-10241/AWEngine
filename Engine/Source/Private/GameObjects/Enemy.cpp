@@ -97,8 +97,10 @@ Enemy::Enemy(float DifficultyScale, float Scale)
 	SetAnimation(m_LastMovementDirection, true);
 
 	// Add weapons
-	int scaleEnemyTypes = (m_DifficultyScale > 1.5) ? 1 : 0;	// Include dual wielding enemy
-	int randomEnemyType = rand() % (2 + scaleEnemyTypes);
+	int scaleEnemyTypes = 0;
+	if (m_DifficultyScale >= 1.6f) scaleEnemyTypes = 2;
+	else if (m_DifficultyScale >= 1.3f) scaleEnemyTypes = 1;
+	int randomEnemyType = rand() % (2 + (scaleEnemyTypes > 0));
 
 	switch (randomEnemyType) {
 	case 0:
@@ -106,6 +108,7 @@ Enemy::Enemy(float DifficultyScale, float Scale)
 		break;
 	case 1:
 		AddWeapon(Game::GetGame()->AddGameObject<Bow>(m_DifficultyScale));
+		if (scaleEnemyTypes >= 2) ToggleBowTripleShot();
 		break;
 	case 2:
 		AddWeapon(Game::GetGame()->AddGameObject<Sword>(m_DifficultyScale));

@@ -33,6 +33,24 @@ void DirectionalCharacter::ToggleProjectileSprites()
 	}
 }
 
+void DirectionalCharacter::ToggleBowTripleShot()
+{
+	// Toggle rapid attack
+	for (Weapon* W : m_OwnedWeapons) {
+		if (auto BowTest = dynamic_cast<Bow*>(W)) {
+			BowTest->ToggleTripleShot();
+		}
+	}
+}
+
+void DirectionalCharacter::ToggleRapidAttack()
+{
+	// Toggle rapid attack
+	for (Weapon* W : m_OwnedWeapons) {
+		W->ToggleRapidAttack();
+	}
+}
+
 void DirectionalCharacter::OnStart()
 {
 	// Set the scale

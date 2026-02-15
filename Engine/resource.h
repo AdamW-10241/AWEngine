@@ -8,7 +8,7 @@
 #define ID_FILE_EXITAPP                 40002
 #define ID_HELP_                        40003
 #define ID_GAME_CONTROLS                40004
-#define ID_HELP_ABOUTRUINSOFOBLIVION	40005
+#define ID_HELP_ABOUTRUINSOFOBLIVION    40005
 #define ID_GAME_CHEATS                  40006
 #define ID_CHEATS_MAXHEAL               40007
 #define ID_CHEATS_OPENNEXTLEVEL         40008
@@ -19,13 +19,15 @@
 #define ID_CHEATS_TOGGLEREVERSEDCONTROLS 40013
 #define ID_GAME_VISUALS                 40014
 #define ID_VISUALS_TOGGLEPROJECTILESPRITE 40015
+#define ID_CHEATS_TOGGLEBOWTRIPLESHOT   40016
+#define ID_CHEATS_TOGGLERAPIDATTACK    40017
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        111
-#define _APS_NEXT_COMMAND_VALUE         40016
+#define _APS_NEXT_COMMAND_VALUE         40018
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

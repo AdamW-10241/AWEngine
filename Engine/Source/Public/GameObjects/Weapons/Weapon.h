@@ -32,7 +32,7 @@ public:
 
 	bool IsAttacking() const { return m_AttackTimer > 0.0f; }
 
-	void Cooldown() { m_CooldownTimer = m_CooldownDuration; }
+	void Cooldown();
 	
 	bool IsCooldown() const { return m_CooldownTimer > 0.0; }
 
@@ -41,7 +41,8 @@ public:
 	virtual void Cleanup();
 
 	// Toggles
-	void ToggleProjectileSprites();
+	void ToggleProjectileSprites() { m_ToggleProjectileSprites = !m_ToggleProjectileSprites; }
+	void ToggleRapidAttack() { m_ToggleRapidAttack = !m_ToggleRapidAttack; }
 
 protected:
 	virtual void OnStart() override;
@@ -97,4 +98,5 @@ protected:
 
 	// Toggles
 	bool m_ToggleProjectileSprites;
+	bool m_ToggleRapidAttack;
 };

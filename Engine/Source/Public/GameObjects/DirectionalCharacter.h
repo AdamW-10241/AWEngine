@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObjects/Character.h"
 #include "GameObjects/Weapons/Weapon.h"
+#include "GameObjects/Weapons/Bow.h"
 
 #define DIRECTION_RIGHT 0
 #define DIRECTION_LEFT 1
@@ -41,6 +42,8 @@ public:
 
 	// Toggles
 	void ToggleProjectileSprites();
+	void ToggleBowTripleShot();
+	void ToggleRapidAttack();
 
 protected:
 	virtual void OnStart() override;
@@ -87,6 +90,5 @@ protected:
 
 	// Tags
 	const char* m_Tag;
-
 	const char* m_TargetTag;
 };

@@ -25,6 +25,8 @@ Bow::Bow(float DifficultyScale)
 	m_Scale = 3.0f;
 	m_Size = 10.0f;
 
+	m_ToggleTripleShot = false;
+
 	// Main sprite
 	m_MainSprite = AddSprite(
 		"Content/NinjaAdventure/Items/Weapons/Bow/Sprite.png"
@@ -49,7 +51,14 @@ Bow::Bow(float DifficultyScale)
 void Bow::OnAttack()
 {
 	// Spawn Arrow
-	SpawnArrow();
+	if (m_ToggleTripleShot) {
+		SpawnArrow(-30.0f);
+		SpawnArrow();
+		SpawnArrow(30.0f);
+	}
+	else {
+		SpawnArrow();
+	}
 
 	// Set the cooldown timer
 	Cooldown();
@@ -63,7 +72,7 @@ void Bow::SetIdlePosition(float RadiusMultiplier)
 	SetAimPosition(RadiusMultiplier - Offset);
 }
 
-void Bow::SpawnArrow()
+void Bow::SpawnArrow(float rotationOffset)
 {
 	// Spawning the game object / projectile
 	Arrow* SpawnedArrow = Game::GetGame()->AddGameObject<Arrow>(m_Scale);
@@ -71,7 +80,7 @@ void Bow::SpawnArrow()
 	// Adjust the arrow
 	SpawnedArrow->SetupProjectile(this, m_Damage);
 	SpawnedArrow->SetPosition(GetTransform().Position + m_MainSprite->m_Offset.Position);
-	SpawnedArrow->SetRotation(m_MainSprite->m_Offset.Rotation - m_RotationOffset);
+	SpawnedArrow->SetRotation(m_MainSprite->m_Offset.Rotation - m_RotationOffset + rotationOffset);
 
 	if (m_ToggleProjectileSprites) {
 		SpawnedArrow->ToggleSprite();

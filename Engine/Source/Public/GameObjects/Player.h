@@ -34,9 +34,7 @@ protected:
 
 	float m_BaseMaxSpeed;
 
-private:
 	// Toggles
 	bool m_ToggleInvincible;
-
 	bool m_ToggleReversedControls;
 };

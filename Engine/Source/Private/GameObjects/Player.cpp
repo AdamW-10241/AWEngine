@@ -161,20 +161,21 @@ void Player::OnUpdate(float DeltaTime)
 			m_Health = m_MaxHealth;
 		}
 	}
-	
-	if (m_Health <= 0) {
-		return;
-	}
-	
+
+	// Skip if dead
+	if (m_Health <= 0) return;
+
+	// Decelerate after dash
 	if (m_MaxSpeed > m_BaseMaxSpeed) {
 		m_MaxSpeed -= DeltaTime * m_BaseMaxSpeed * 5.0f;
 	}
 	else {
 		m_MaxSpeed = m_BaseMaxSpeed;
 	}
-
+	
 	Super::OnUpdate(DeltaTime);
 
+	// Decrease time until next dash
 	if (m_DashTimer > 0.0f) {
 		m_DashTimer -= DeltaTime;
 	}

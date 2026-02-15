@@ -249,6 +249,44 @@ void Input::HandleWinMenuEvents(SDL_Event* Event)
 			"Must be in a level to toggle reversed controls!"
 		);
 		break;
+	case ID_CHEATS_TOGGLEBOWTRIPLESHOT:
+		// Check for level
+		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Toggle bow triple show
+			PS->m_PlayerRef->ToggleBowTripleShot();
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Bow triple shot toggled!\n\nOnly lasts for this level!"
+			);
+			break;
+		}
+
+		// Handle not in level
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"Must be in a level to toggle bow triple shot!"
+		);
+		break;
+	case ID_CHEATS_TOGGLERAPIDATTACK:
+		// Check for level
+		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
+			// Toggle bow triple show
+			PS->m_PlayerRef->ToggleRapidAttack();
+
+			Game::GetGame()->GetWinMenu()->ActivatePopup(
+				"Cheats",
+				"Rapid attack toggled!\n\nOnly lasts for this level!"
+			);
+			break;
+		}
+
+		// Handle not in level
+		Game::GetGame()->GetWinMenu()->ActivatePopupWarning(
+			"Cheats",
+			"Must be in a level to toggle rapid attack!"
+		);
+		break;
 	case ID_VISUALS_TOGGLEPROJECTILESPRITE:
 		// Check for level
 		if (auto PS = dynamic_cast<PlayState*>(Game::GetGame()->GetGameStateMachine()->GetActiveGameState())) {
