@@ -341,7 +341,9 @@ void Game::Cleanup()
 		SDL_DestroyWindow(m_WindowRef);
 	}
 
-	Mix_CloseAudio();
+	// Shutdown sound manager
+	SoundManager::Get().Shutdown();
+
 	TTF_Quit();
 	SDL_Quit();
 

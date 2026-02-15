@@ -103,10 +103,6 @@ Player::Player(float Scale)
 	AddWeapon(Game::GetGame()->AddGameObject<Bow>());
 
 	UpdateWeaponStates();
-
-	// Load sound effects
-	m_DC_SFX[DC_SFX_DEATH] = SoundManager::Get().LoadSound("Content/Audio/DEATH_SFX_PLAYER.wav");
-	Mix_VolumeChunk(m_DC_SFX[DC_SFX_DEATH], 100);
 }
 
 void Player::OnProcessInput(Input* GameInput)
@@ -193,6 +189,9 @@ void Player::OnDeath(GameObject* DeathCauser, bool doDestroy)
 	for (auto Item : GetAllBounds()) {
 		Item->DestroyBounds();
 	}
+
+	// Play sfx
+	SoundManager::Get().PlaySound(AW_SOUND_DEATH_PLAYER);
 
 	Super::OnDeath(DeathCauser, false);
 }

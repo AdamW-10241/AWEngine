@@ -19,10 +19,6 @@ DirectionalCharacter::DirectionalCharacter()
 
 	m_Tag = "ALL";
 	m_TargetTag = "ALL";
-
-	// Death sfx
-	m_DC_SFX[DC_SFX_DEATH_SLASH] = SoundManager::Get().LoadSound("Content/Audio/DEATH_SFX_DC.wav");
-	Mix_VolumeChunk(m_DC_SFX[DC_SFX_DEATH_SLASH], 15);
 }
 
 void DirectionalCharacter::ToggleProjectileSprites()
@@ -135,8 +131,7 @@ void DirectionalCharacter::OnDeath(GameObject* DeathCauser, bool doDestroy)
 	VFX->SetScale(m_Scale);
 
 	// Play sfx
-	SoundManager::Get().PlaySound(m_DC_SFX[DC_SFX_DEATH]);
-	SoundManager::Get().PlaySound(m_DC_SFX[DC_SFX_DEATH_SLASH]);
+	SoundManager::Get().PlaySound(AW_SOUND_DEATH_STANDARD);
 
 	Super::OnDeath(DeathCauser, doDestroy);
 }

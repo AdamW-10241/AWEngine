@@ -8,14 +8,6 @@
 #define DIRECTION_UP 2
 #define DIRECTION_DOWN 3
 
-enum DC_SFX{
-	DC_SFX_DEATH = 0,
-	DC_SFX_DEATH_SLASH = 1,
-
-	// Not a sound effect, just the number of SFX
-	DC_SFX_NUM
-};
-
 class DirectionalCharacter : public Character {
 public:
 	DirectionalCharacter();
@@ -77,9 +69,6 @@ protected:
 
 	// Store the index of the used weapon
 	uint32_t m_UsedWeapon;
-
-	// Store sound effects
-	Mix_Chunk* m_DC_SFX[DC_SFX_NUM] = { nullptr };
 
 	// Store the last movement direction as integer
 	// Right - 1, Left - 2, Up - 3, Down - 4

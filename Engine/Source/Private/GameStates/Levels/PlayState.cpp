@@ -57,7 +57,7 @@ void PlayState::ToggleFasterEnemySpawns()
 	m_ToggleFasterEnemySpawns = !m_ToggleFasterEnemySpawns;
 
 	if (m_ToggleFasterEnemySpawns) {
-		m_EnemyFrequency = m_BaseEnemyFrequency / 2.0f;
+		m_EnemyFrequency = m_BaseEnemyFrequency / 4.0f;
 	}
 	else {
 		m_EnemyFrequency = m_BaseEnemyFrequency;
